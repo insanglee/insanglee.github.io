@@ -1,0 +1,22 @@
+---
+title: "Insang Lee"
+about:
+  template: trestles
+  image-shape: round
+  image-width: 14em
+  links:
+    - icon: envelope
+      text: Email
+      href: mailto:Insang.Lee@utdallas.edu
+    - icon: github
+      text: GitHub
+      href: https://github.com/insanglee
+---
+
+I am a PhD student in Criminology at the University of Texas at Dallas.
+
+## Research Interests
+
+- Crime Analysis, Policing, and Public Safety
+- Environmental Criminology, Crime Mapping, and GIS
+- Technology-Facilitated Crime and AI-Assisted Crime Analysis

@@ -1,0 +1,28 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Insang Lee"
+  description: "PhD student in Criminology at the University of Texas at Dallas"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: research.qmd
+        text: Research
+      - href: teaching.qmd
+        text: Teaching
+      - href: cv.qmd
+        text: CV
+    right:
+      - icon: github
+        href: https://github.com/insanglee
+      - icon: envelope
+        href: mailto:Insang.Lee@utdallas.edu
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
