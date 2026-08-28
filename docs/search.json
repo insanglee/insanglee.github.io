@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "CV",
+    "section": "",
+    "text": "Download PDF"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Insang Lee",
@@ -12,34 +19,6 @@
     "title": "Insang Lee",
     "section": "Research Interests",
     "text": "Research Interests\n\nCrime Analysis, Policing, and Public Safety\nEnvironmental Criminology, Crime Mapping, and GIS\nTechnology-Facilitated Crime and AI-Assisted Crime Analysis"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
-    "objectID": "cv.html",
-    "href": "cv.html",
-    "title": "CV",
-    "section": "",
-    "text": "Download PDF"
-  },
-  {
-    "objectID": "research.html",
-    "href": "research.html",
-    "title": "Research",
-    "section": "",
-    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
-  },
-  {
-    "objectID": "research.html#working-papers",
-    "href": "research.html#working-papers",
-    "title": "Research",
-    "section": "",
-    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
   },
   {
     "objectID": "teaching.html",
@@ -61,5 +40,26 @@
     "title": "Teaching",
     "section": "Teaching Assistant",
     "text": "Teaching Assistant\nCRIM 3302 — Advanced Criminology\nSpring 2026, Fall 2025, Spring 2025, Fall 2024\nThe University of Texas at Dallas"
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
+  },
+  {
+    "objectID": "research.html#working-papers",
+    "href": "research.html#working-papers",
+    "title": "Research",
+    "section": "",
+    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
   }
 ]
