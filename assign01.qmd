@@ -1,0 +1,14 @@
+---
+title: "Assignment 1"
+editor: visual
+---
+
+## Website Design
+
+This website was created using RStudio and Quarto and is published through GitHub Pages. I used the Cosmo theme because it provides a simple and professional appearance that is appropriate for an academic website.
+
+The navigation bar is organized to make the main information easy to access. The Home page provides a brief introduction and my research interests. The Research page presents my current research and working papers. The Teaching page summarizes my teaching experience, and the CV page provides access to my current curriculum vitae. I also added an Assignments menu for course-related materials.
+
+I chose a simple layout with minimal visual elements so that visitors can focus on the content. The website includes direct links to my GitHub profile and email address, which make it easier for visitors to find additional information or contact me.
+
+The website was built as a Quarto project in RStudio. The rendered HTML files are stored in the `docs` folder and published through GitHub Pages. This structure allows me to update the website by editing the Quarto files, rendering the site again, and pushing the updated files to GitHub.

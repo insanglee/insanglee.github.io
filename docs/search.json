@@ -7,18 +7,32 @@
     "text": "Download PDF"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Insang Lee",
+    "objectID": "assign01.html",
+    "href": "assign01.html",
+    "title": "Assignment 1",
     "section": "",
-    "text": "I am a PhD student in Criminology at the University of Texas at Dallas."
+    "text": "This website was created using RStudio and Quarto and is published through GitHub Pages. I used the Cosmo theme because it provides a simple and professional appearance that is appropriate for an academic website.\nThe navigation bar is organized to make the main information easy to access. The Home page provides a brief introduction and my research interests. The Research page presents my current research and working papers. The Teaching page summarizes my teaching experience, and the CV page provides access to my current curriculum vitae. I also added an Assignments menu for course-related materials.\nI chose a simple layout with minimal visual elements so that visitors can focus on the content. The website includes direct links to my GitHub profile and email address, which make it easier for visitors to find additional information or contact me.\nThe website was built as a Quarto project in RStudio. The rendered HTML files are stored in the docs folder and published through GitHub Pages. This structure allows me to update the website by editing the Quarto files, rendering the site again, and pushing the updated files to GitHub."
   },
   {
-    "objectID": "index.html#research-interests",
-    "href": "index.html#research-interests",
-    "title": "Insang Lee",
-    "section": "Research Interests",
-    "text": "Research Interests\n\nCrime Analysis, Policing, and Public Safety\nEnvironmental Criminology, Crime Mapping, and GIS\nTechnology-Facilitated Crime and AI-Assisted Crime Analysis"
+    "objectID": "assign01.html#website-design",
+    "href": "assign01.html#website-design",
+    "title": "Assignment 1",
+    "section": "",
+    "text": "This website was created using RStudio and Quarto and is published through GitHub Pages. I used the Cosmo theme because it provides a simple and professional appearance that is appropriate for an academic website.\nThe navigation bar is organized to make the main information easy to access. The Home page provides a brief introduction and my research interests. The Research page presents my current research and working papers. The Teaching page summarizes my teaching experience, and the CV page provides access to my current curriculum vitae. I also added an Assignments menu for course-related materials.\nI chose a simple layout with minimal visual elements so that visitors can focus on the content. The website includes direct links to my GitHub profile and email address, which make it easier for visitors to find additional information or contact me.\nThe website was built as a Quarto project in RStudio. The rendered HTML files are stored in the docs folder and published through GitHub Pages. This structure allows me to update the website by editing the Quarto files, rendering the site again, and pushing the updated files to GitHub."
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
+  },
+  {
+    "objectID": "research.html#working-papers",
+    "href": "research.html#working-papers",
+    "title": "Research",
+    "section": "",
+    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
   },
   {
     "objectID": "teaching.html",
@@ -42,18 +56,18 @@
     "text": "Teaching Assistant\nCRIM 3302 — Advanced Criminology\nSpring 2026, Fall 2025, Spring 2025, Fall 2024\nThe University of Texas at Dallas"
   },
   {
-    "objectID": "research.html",
-    "href": "research.html",
-    "title": "Research",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Insang Lee",
     "section": "",
-    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
+    "text": "I am a PhD student in Criminology at the University of Texas at Dallas."
   },
   {
-    "objectID": "research.html#working-papers",
-    "href": "research.html#working-papers",
-    "title": "Research",
-    "section": "",
-    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
+    "objectID": "index.html#research-interests",
+    "href": "index.html#research-interests",
+    "title": "Insang Lee",
+    "section": "Research Interests",
+    "text": "Research Interests\n\nCrime Analysis, Policing, and Public Safety\nEnvironmental Criminology, Crime Mapping, and GIS\nTechnology-Facilitated Crime and AI-Assisted Crime Analysis"
   },
   {
     "objectID": "about.html",
