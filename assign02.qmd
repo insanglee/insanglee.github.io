@@ -29,7 +29,7 @@ Source: Google Trends website
 
 The five-year file covered September 2021 to September 2026, and the data were monthly. When I changed the time window to one year, the data changed to weekly.
 
-Google Trends does not show actual search counts. The values are scaled from 0 to 100. A value of 100 represents the highest level of relative search interest within the query, while 0 represents the lowest level of relative interest.
+Google Trends does not show actual search counts. The values are scaled from 0 to 100. A value of 100 represents the peak level of relative search interest within the query, while 0 represents very low relative interest.
 
 I also removed “Election” from the original query and downloaded the data again. The values for Trump and Kamala Harris changed. This showed that the values are rescaled depending on which search terms are included in the query.
 
@@ -86,7 +86,7 @@ I compared “Kamala Harris” and “Harris,” and the two series were not the
 
 ## Comparing the Two Methods
 
-The website and R results were not exactly the same. For example, for September 2021, the website value for Trump was 4, while the R-based value was lower.
+The website and R results were not exactly the same. For example, for September 2021, the website value for Trump was 4, while the R-based value was 1, which was 3 points lower.
 
 The R method was easier to reproduce because the search settings were written directly in the code. It would also be easier to use R if I needed to collect data for many search terms. With the website method, I had to record the search settings manually.
 

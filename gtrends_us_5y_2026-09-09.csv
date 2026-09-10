@@ -226,7 +226,7 @@ date,hits,keyword,geo,time,gprop,category
 2025-12-21T00:00:00Z,4,Trump,US,today+5-y,web,0
 2025-12-28T00:00:00Z,4,Trump,US,today+5-y,web,0
 2026-01-04T00:00:00Z,5,Trump,US,today+5-y,web,0
-2026-01-11T00:00:00Z,5,Trump,US,today+5-y,web,0
+2026-01-11T00:00:00Z,4,Trump,US,today+5-y,web,0
 2026-01-18T00:00:00Z,5,Trump,US,today+5-y,web,0
 2026-01-25T00:00:00Z,5,Trump,US,today+5-y,web,0
 2026-02-01T00:00:00Z,6,Trump,US,today+5-y,web,0

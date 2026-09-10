@@ -95,7 +95,7 @@
     "href": "assign02.html#website-results",
     "title": "Assignment 2",
     "section": "Website Results",
-    "text": "Website Results\nThe five-year file covered September 2021 to September 2026, and the data were monthly. When I changed the time window to one year, the data changed to weekly.\nGoogle Trends does not show actual search counts. The values are scaled from 0 to 100. A value of 100 represents the highest level of relative search interest within the query, while 0 represents the lowest level of relative interest.\nI also removed “Election” from the original query and downloaded the data again. The values for Trump and Kamala Harris changed. This showed that the values are rescaled depending on which search terms are included in the query."
+    "text": "Website Results\nThe five-year file covered September 2021 to September 2026, and the data were monthly. When I changed the time window to one year, the data changed to weekly.\nGoogle Trends does not show actual search counts. The values are scaled from 0 to 100. A value of 100 represents the peak level of relative search interest within the query, while 0 represents very low relative interest.\nI also removed “Election” from the original query and downloaded the data again. The values for Trump and Kamala Harris changed. This showed that the values are rescaled depending on which search terms are included in the query."
   },
   {
     "objectID": "assign02.html#google-trends-in-r",
@@ -109,7 +109,7 @@
     "href": "assign02.html#comparing-the-two-methods",
     "title": "Assignment 2",
     "section": "Comparing the Two Methods",
-    "text": "Comparing the Two Methods\nThe website and R results were not exactly the same. For example, for September 2021, the website value for Trump was 4, while the R-based value was lower.\nThe R method was easier to reproduce because the search settings were written directly in the code. It would also be easier to use R if I needed to collect data for many search terms. With the website method, I had to record the search settings manually.\nBoth methods can also have problems. The website interface can change, while gtrendsR depends on an unofficial service and may be affected by rate limits or changes to Google Trends.\nI ran the same gtrendsR call twice a few minutes apart. In my run, the two results were identical. However, Google Trends uses sampled search data, so repeated pulls are not guaranteed to always return the same values."
+    "text": "Comparing the Two Methods\nThe website and R results were not exactly the same. For example, for September 2021, the website value for Trump was 4, while the R-based value was 1, which was 3 points lower.\nThe R method was easier to reproduce because the search settings were written directly in the code. It would also be easier to use R if I needed to collect data for many search terms. With the website method, I had to record the search settings manually.\nBoth methods can also have problems. The website interface can change, while gtrendsR depends on an unofficial service and may be affected by rate limits or changes to Google Trends.\nI ran the same gtrendsR call twice a few minutes apart. In my run, the two results were identical. However, Google Trends uses sampled search data, so repeated pulls are not guaranteed to always return the same values."
   },
   {
     "objectID": "assign01.html#website-design",
