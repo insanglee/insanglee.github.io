@@ -38,6 +38,8 @@ I also removed “Election” from the original query and downloaded the data ag
 I also collected Google Trends data using the `gtrendsR` package in R. The R object contained more information than the website CSV. It included interest by country, region, DMA, and city, as well as related topics and related queries.
 
 ```{r}
+#| warning: false
+
 library(gtrendsR)
 library(readr)
 
@@ -51,7 +53,6 @@ TrumpHarrisElection <- gtrends(
 )
 
 the_df <- TrumpHarrisElection$interest_over_time
-plot(TrumpHarrisElection)
 
 write_csv(
   the_df,
