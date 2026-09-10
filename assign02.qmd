@@ -1,0 +1,94 @@
+---
+title: "Assignment 2"
+editor: visual
+---
+
+## Query Parameters
+
+### Google Trends Website Query 1
+
+Search terms: Trump, Kamala Harris, Election\
+Geography: United States\
+Time window: Past 5 years\
+Category: All categories\
+Search type: Web Search\
+Date and time pulled: September 8, 2026, 7:43 PM\
+Source: Google Trends website
+
+### Google Trends Website Query 2
+
+Search term: AI safety\
+Geography: United States\
+Time window: Past 5 years\
+Category: All categories\
+Search type: Web Search\
+Date and time pulled: September 8, 2026, 7:44 PM\
+Source: Google Trends website
+
+## Website Results
+
+The five-year file covered September 2021 to September 2026, and the data were monthly. When I changed the time window to one year, the data changed to weekly.
+
+Google Trends does not show actual search counts. The values are scaled from 0 to 100. A value of 100 represents the highest level of relative search interest within the query, while 0 represents the lowest level of relative interest.
+
+I also removed “Election” from the original query and downloaded the data again. The values for Trump and Kamala Harris changed. This showed that the values are rescaled depending on which search terms are included in the query.
+
+## Google Trends in R
+
+I also collected Google Trends data using the `gtrendsR` package in R. The R object contained more information than the website CSV. It included interest by country, region, DMA, and city, as well as related topics and related queries.
+
+```{r}
+library(gtrendsR)
+library(readr)
+
+TrumpHarrisElection <- gtrends(
+  c("Trump", "Harris", "election"),
+  onlyInterest = TRUE,
+  geo = "US",
+  gprop = "web",
+  time = "today+5-y",
+  category = 0
+)
+
+the_df <- TrumpHarrisElection$interest_over_time
+plot(TrumpHarrisElection)
+
+write_csv(
+  the_df,
+  paste0("gtrends_us_5y_", Sys.Date(), ".csv")
+)
+```
+
+```{r}
+library(readr)
+library(ggplot2)
+
+cached_data <- read_csv(
+  "gtrends_us_5y_2026-09-09.csv",
+  show_col_types = FALSE
+)
+
+cached_data$hits_num <- parse_number(cached_data$hits)
+
+ggplot(cached_data,
+       aes(x = date, y = hits_num, color = keyword)) +
+  geom_line() +
+  labs(
+    title = "Google Trends Interest Over Time",
+    x = "Date",
+    y = "Search interest",
+    color = "Search term"
+  )
+```
+
+I compared “Kamala Harris” and “Harris,” and the two series were not the same. “Harris” is a broader search term and can include searches that are not about Kamala Harris. This showed that the search term used can affect what is actually being measured.
+
+## Comparing the Two Methods
+
+The website and R results were not exactly the same. For example, for September 2021, the website value for Trump was 4, while the R-based value was lower.
+
+The R method was easier to reproduce because the search settings were written directly in the code. It would also be easier to use R if I needed to collect data for many search terms. With the website method, I had to record the search settings manually.
+
+Both methods can also have problems. The website interface can change, while `gtrendsR` depends on an unofficial service and may be affected by rate limits or changes to Google Trends.
+
+I ran the same `gtrendsR` call twice a few minutes apart. In my run, the two results were identical. However, Google Trends uses sampled search data, so repeated pulls are not guaranteed to always return the same values.

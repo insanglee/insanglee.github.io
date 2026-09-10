@@ -1,0 +1,8 @@
+---
+title: "EPPS 6302"
+---
+
+## Assignments
+
+- [Assignment 1](assign01.qmd)
+- [Assignment 2](assign02.qmd)

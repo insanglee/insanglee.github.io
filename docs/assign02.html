@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>About – Insang Lee</title>
+<title>Assignment 2 – Insang Lee</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -181,15 +181,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#query-parameters" id="toc-query-parameters" class="nav-link active" data-scroll-target="#query-parameters">Query Parameters</a>
+  <ul class="collapse">
+  <li><a href="#google-trends-website-query-1" id="toc-google-trends-website-query-1" class="nav-link" data-scroll-target="#google-trends-website-query-1">Google Trends Website Query 1</a></li>
+  <li><a href="#google-trends-website-query-2" id="toc-google-trends-website-query-2" class="nav-link" data-scroll-target="#google-trends-website-query-2">Google Trends Website Query 2</a></li>
+  </ul></li>
+  <li><a href="#website-results" id="toc-website-results" class="nav-link" data-scroll-target="#website-results">Website Results</a></li>
+  <li><a href="#google-trends-in-r" id="toc-google-trends-in-r" class="nav-link" data-scroll-target="#google-trends-in-r">Google Trends in R</a></li>
+  <li><a href="#comparing-the-two-methods" id="toc-comparing-the-two-methods" class="nav-link" data-scroll-target="#comparing-the-two-methods">Comparing the Two Methods</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About</h1>
+<h1 class="title">Assignment 2</h1>
 </div>
 
 
@@ -206,15 +219,111 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>About this site</p>
+<section id="query-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="query-parameters">Query Parameters</h2>
+<section id="google-trends-website-query-1" class="level3">
+<h3 class="anchored" data-anchor-id="google-trends-website-query-1">Google Trends Website Query 1</h3>
+<p>Search terms: Trump, Kamala Harris, Election<br>
+Geography: United States<br>
+Time window: Past 5 years<br>
+Category: All categories<br>
+Search type: Web Search<br>
+Date and time pulled: September 8, 2026, 7:43 PM<br>
+Source: Google Trends website</p>
+</section>
+<section id="google-trends-website-query-2" class="level3">
+<h3 class="anchored" data-anchor-id="google-trends-website-query-2">Google Trends Website Query 2</h3>
+<p>Search term: AI safety<br>
+Geography: United States<br>
+Time window: Past 5 years<br>
+Category: All categories<br>
+Search type: Web Search<br>
+Date and time pulled: September 8, 2026, 7:44 PM<br>
+Source: Google Trends website</p>
+</section>
+</section>
+<section id="website-results" class="level2">
+<h2 class="anchored" data-anchor-id="website-results">Website Results</h2>
+<p>The five-year file covered September 2021 to September 2026, and the data were monthly. When I changed the time window to one year, the data changed to weekly.</p>
+<p>Google Trends does not show actual search counts. The values are scaled from 0 to 100. A value of 100 represents the highest level of relative search interest within the query, while 0 represents the lowest level of relative interest.</p>
+<p>I also removed “Election” from the original query and downloaded the data again. The values for Trump and Kamala Harris changed. This showed that the values are rescaled depending on which search terms are included in the query.</p>
+</section>
+<section id="google-trends-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="google-trends-in-r">Google Trends in R</h2>
+<p>I also collected Google Trends data using the <code>gtrendsR</code> package in R. The R object contained more information than the website CSV. It included interest by country, region, DMA, and city, as well as related topics and related queries.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtrendsR)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>TrumpHarrisElection <span class="ot">&lt;-</span> <span class="fu">gtrends</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"Trump"</span>, <span class="st">"Harris"</span>, <span class="st">"election"</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">onlyInterest =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">geo =</span> <span class="st">"US"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">gprop =</span> <span class="st">"web"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">time =</span> <span class="st">"today+5-y"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">category =</span> <span class="dv">0</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>the_df <span class="ot">&lt;-</span> TrumpHarrisElection<span class="sc">$</span>interest_over_time</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(TrumpHarrisElection)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+ℹ Please use tidy evaluation idioms with `aes()`.
+ℹ See also `vignette("ggplot2-in-packages")` for more information.
+ℹ The deprecated feature was likely used in the gtrendsR package.
+  Please report the issue at &lt;https://github.com/PMassicotte/gtrendsR/issues&gt;.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign02_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  the_df,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="st">"gtrends_us_5y_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>cached_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gtrends_us_5y_2026-09-09.csv"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>cached_data<span class="sc">$</span>hits_num <span class="ot">&lt;-</span> <span class="fu">parse_number</span>(cached_data<span class="sc">$</span>hits)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cached_data,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> hits_num, <span class="at">color =</span> keyword)) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Google Trends Interest Over Time"</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Search interest"</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Search term"</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign02_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>I compared “Kamala Harris” and “Harris,” and the two series were not the same. “Harris” is a broader search term and can include searches that are not about Kamala Harris. This showed that the search term used can affect what is actually being measured.</p>
+</section>
+<section id="comparing-the-two-methods" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-the-two-methods">Comparing the Two Methods</h2>
+<p>The website and R results were not exactly the same. For example, for September 2021, the website value for Trump was 4, while the R-based value was lower.</p>
+<p>The R method was easier to reproduce because the search settings were written directly in the code. It would also be easier to use R if I needed to collect data for many search terms. With the website method, I had to record the search settings manually.</p>
+<p>Both methods can also have problems. The website interface can change, while <code>gtrendsR</code> depends on an unofficial service and may be affected by rate limits or changes to Google Trends.</p>
+<p>I ran the same <code>gtrendsR</code> call twice a few minutes apart. In my run, the two results were identical. However, Google Trends uses sampled search data, so repeated pulls are not guaranteed to always return the same values.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

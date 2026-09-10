@@ -15,8 +15,10 @@ website:
         text: Teaching
       - text: Assignments
         menu:
-          - href: assign01.qmd
-            text: Assignment 1 
+          - href: epps6302.qmd
+            text: "EPPS 6302"
+          - href: epps6356.qmd
+            text: "EPPS 6356"
       - href: cv.qmd
         text: CV
     right:
