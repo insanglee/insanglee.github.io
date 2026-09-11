@@ -4,4 +4,4 @@ title: "EPPS 6356"
 
 ## Assignments
 
-Assignments will be added here.
+- [Assignment 1](epps6356_assign01.qmd)
