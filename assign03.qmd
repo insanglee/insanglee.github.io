@@ -1,6 +1,10 @@
 ---
 title: "Assignment 3"
 editor: visual
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
 ---
 
 ```{r}
@@ -46,11 +50,9 @@ acs_wide <- acs_wide |>
   )
 ```
 
-## Median Household Income Map {.text-center}
+## Median Household Income Map
 
 ```{r}
-#| code-fold: true
-
 ggplot(acs_wide) +
   geom_sf(aes(fill = incomeE), color = NA) +
   scale_fill_viridis_c(
@@ -69,11 +71,9 @@ ggplot(acs_wide) +
   )
 ```
 
-## Poverty Rate: Top and Bottom 10 Counties {.text-center}
+## Poverty Rate: Top and Bottom 10 Counties
 
 ```{r}
-#| code-fold: true
-
 top10 <- acs_wide |>
   st_drop_geometry() |>
   arrange(desc(pov_rate)) |>
@@ -107,33 +107,25 @@ bottom10_table <- bottom10 |>
     `Poverty Rate` = pov_rate,
     `MOE` = pov_moe
   )
-
-knitr::kable(
-  top10_table,
-  caption = "Texas Counties with the Highest Poverty Rates"
-)
-
-knitr::kable(
-  bottom10_table,
-  caption = "Texas Counties with the Lowest Poverty Rates"
-)
 ```
+
 ### Texas Counties with the Highest Poverty Rates {.text-center}
+
 ```{r}
 #| echo: false
 knitr::kable(top10_table)
 ```
 
 ### Texas Counties with the Lowest Poverty Rates {.text-center}
+
 ```{r}
 #| echo: false
 knitr::kable(bottom10_table)
 ```
 
-### Uncertainty in Poverty Rate Estimates {.text-center}
-```{r}
-#| code-fold: true
+## Uncertainty Check
 
+```{r}
 uncertainty_pair <- acs_wide |>
   st_drop_geometry() |>
   filter(NAME %in% c("Dimmit County, Texas", "Zapata County, Texas")) |>
@@ -144,13 +136,9 @@ uncertainty_pair <- acs_wide |>
     `Lower Bound` = sprintf("%.2f%%", (pov_rate - pov_moe) * 100),
     `Upper Bound` = sprintf("%.2f%%", (pov_rate + pov_moe) * 100)
   )
-
-knitr::kable(
-  uncertainty_pair,
-  caption = "Uncertainty in Poverty Rate Estimates"
-)
 ```
-### Uncertainty in Poverty Rate Estimates
+
+### Uncertainty in Poverty Rate Estimates {.text-center}
 
 ```{r}
 #| echo: false
