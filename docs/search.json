@@ -7,11 +7,25 @@
     "text": "Download PDF"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "epps6302.html",
+    "href": "epps6302.html",
+    "title": "EPPS 6302",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "Assignment 1\nAssignment 2"
+  },
+  {
+    "objectID": "epps6302.html#assignments",
+    "href": "epps6302.html#assignments",
+    "title": "EPPS 6302",
+    "section": "",
+    "text": "Assignment 1\nAssignment 2"
+  },
+  {
+    "objectID": "assignment03_starter.html",
+    "href": "assignment03_starter.html",
+    "title": "Packages",
+    "section": "",
+    "text": "Packages\n\nlibrary(tidycensus)\nlibrary(tigris)\n\nTo enable caching of data, set `options(tigris_use_cache = TRUE)`\nin your R script or .Rprofile.\n\nlibrary(sf)\n\nLinking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(ggplot2)\nlibrary(readr)\n\noptions(tigris_use_cache = TRUE)\n\n\n\n1) API key — run ONCE in the console, never in this file\n\n# census_api_key(\"YOUR_CENSUS_KEY\", install = TRUE)\n\n\n\n2) Explore variables (no cache argument — deprecated and ignored)\n\nvars &lt;- load_variables(2024, \"acs5\")\nvars |&gt; dplyr::filter(grepl(\"^B19\", name)) |&gt; dplyr::slice_head(n = 10)\n\n# A tibble: 10 × 4\n   name        label                                concept            geography\n   &lt;chr&gt;       &lt;chr&gt;                                &lt;chr&gt;              &lt;chr&gt;    \n 1 B19001A_001 Estimate!!Total:                     Household Income … tract    \n 2 B19001A_002 Estimate!!Total:!!Less than $10,000  Household Income … tract    \n 3 B19001A_003 Estimate!!Total:!!$10,000 to $14,999 Household Income … tract    \n 4 B19001A_004 Estimate!!Total:!!$15,000 to $19,999 Household Income … tract    \n 5 B19001A_005 Estimate!!Total:!!$20,000 to $24,999 Household Income … tract    \n 6 B19001A_006 Estimate!!Total:!!$25,000 to $29,999 Household Income … tract    \n 7 B19001A_007 Estimate!!Total:!!$30,000 to $34,999 Household Income … tract    \n 8 B19001A_008 Estimate!!Total:!!$35,000 to $39,999 Household Income … tract    \n 9 B19001A_009 Estimate!!Total:!!$40,000 to $44,999 Household Income … tract    \n10 B19001A_010 Estimate!!Total:!!$45,000 to $49,999 Household Income … tract    \n\n\n\n\n3) Parameters (EDIT ME)\n\nstate_abbr &lt;- \"TX\"\ngeo_level &lt;- \"county\" # options: state, county, tract, block group\n\nmy_vars &lt;- c(\n  income = \"B19013_001\", # median household income\n  pov = \"B17001_002\", # people below poverty\n  povden = \"B17001_001\" # poverty universe = denominator\n)\n\nyear_acs &lt;- 2024\nsurvey &lt;- \"acs5\"\n\n\n\n4) Download, wide — one row per area, and the sf class survives\n\nacs_wide &lt;- get_acs(\n  geography = geo_level,\n  variables = my_vars,\n  state = state_abbr,\n  year = year_acs,\n  survey = survey,\n  geometry = TRUE,\n  output = \"wide\"\n)\n\nGetting data from the 2020-2024 5-year ACS\n\n\n\n\n5) Derive a rate, and carry its margin of error through\n\nacs_wide &lt;- acs_wide |&gt;\n  mutate(\n    pov_rate = povE / povdenE,\n    pov_moe = moe_prop(povE, povdenE, povM, povdenM)\n  )\n\n\n\n6) Map (edit titles/theme)\n\nggplot(acs_wide) +\n  geom_sf(aes(fill = incomeE), color = NA) +\n  scale_fill_viridis_c(name = \"Median HH Income\") +\n  labs(\n    title = paste0(\n      \"ACS \", year_acs, \" 5-year: Median Income — \",\n      state_abbr, \" (\", geo_level, \")\"\n    ),\n    caption = \"Source: U.S. Census Bureau via tidycensus\"\n  ) +\n  theme_minimal() +\n  theme(\n    text = element_text(family = \"Palatino\"), # drop if not installed\n    plot.title = element_text(size = 14, face = \"bold\"),\n    plot.caption = element_text(size = 8),\n    legend.position = \"inside\",\n    legend.position.inside = c(0.2, 0.15)\n  )\n\n\n\n\n\n\n\n\n\n\n7) Table (top/bottom by poverty rate, with MOE)\n\ntop10 &lt;- acs_wide |&gt;\n  st_drop_geometry() |&gt;\n  arrange(desc(pov_rate)) |&gt;\n  select(NAME, pov_rate, pov_moe, povE, povM) |&gt;\n  slice_head(n = 10)\n\nbottom10 &lt;- acs_wide |&gt;\n  st_drop_geometry() |&gt;\n  arrange(pov_rate) |&gt;\n  select(NAME, pov_rate, pov_moe, povE, povM) |&gt;\n  slice_head(n = 10)\n\ntop10\n\n                     NAME  pov_rate    pov_moe  povE povM\n1    Dimmit County, Texas 0.4110586 0.08875886  3390  732\n2    Zapata County, Texas 0.3839325 0.06042973  5190  818\n3    Zavala County, Texas 0.3392113 0.09532959  3174  892\n4     Starr County, Texas 0.3351580 0.03229430 21981 2118\n5     Duval County, Texas 0.3327076 0.08395552  3013  761\n6  Presidio County, Texas 0.3200000 0.12776257  1896  757\n7   Edwards County, Texas 0.3186549 0.23243917   398  304\n8  Jim Hogg County, Texas 0.3142733 0.11147440  1451  515\n9   Swisher County, Texas 0.3009816 0.06897943  1901  436\n10  Kleberg County, Texas 0.2809489 0.04334271  8077 1250\n\nbottom10\n\n                      NAME   pov_rate     pov_moe  povE povM\n1   Rockwall County, Texas 0.04038319 0.006878397  4949  843\n2   Sterling County, Texas 0.04323570 0.028825941    62   42\n3     Sutton County, Texas 0.04509202 0.028526638   147   93\n4    Kendall County, Texas 0.05029487 0.014324837  2405  685\n5  Armstrong County, Texas 0.05194805 0.027989677    92   50\n6      Foard County, Texas 0.05573419 0.043883153    52   42\n7    Roberts County, Texas 0.05649038 0.038729854    47   33\n8     Loving County, Texas 0.06060606 0.025248351     2    2\n9   Hemphill County, Texas 0.06191075 0.032366749   197  103\n10    Collin County, Texas 0.06234559 0.003548944 71971 4097\n\n\n\n\n8) Save outputs\n\nwrite_csv(\n  st_drop_geometry(acs_wide),\n  paste0(\"acs_\", state_abbr, \"_\", year_acs, \".csv\")\n)"
   },
   {
     "objectID": "index.html",
@@ -28,32 +42,39 @@
     "text": "Research Interests\n\nCrime Analysis, Policing, and Public Safety\nEnvironmental Criminology, Crime Mapping, and GIS\nTechnology-Facilitated Crime and AI-Assisted Crime Analysis"
   },
   {
-    "objectID": "research.html",
-    "href": "research.html",
-    "title": "Research",
+    "objectID": "assign03.html",
+    "href": "assign03.html",
+    "title": "Assignment 3",
     "section": "",
-    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
+    "text": "ggplot(acs_wide) +\n  geom_sf(aes(fill = incomeE), color = NA) +\n  scale_fill_viridis_c(\n    name = \"Median HH Income\"\n  ) +\n  labs(\n    title = \"Median Household Income in Texas\",\n    subtitle = \"2024 ACS 5-Year Estimates by County\",\n    caption = \"Source: U.S. Census Bureau via tidycensus\"\n  ) +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(size = 14, face = \"bold\"),\n    plot.caption = element_text(size = 8),\n    legend.position = \"right\"\n  )"
   },
   {
-    "objectID": "research.html#working-papers",
-    "href": "research.html#working-papers",
-    "title": "Research",
+    "objectID": "assign03.html#median-household-income-map",
+    "href": "assign03.html#median-household-income-map",
+    "title": "Assignment 3",
     "section": "",
-    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
+    "text": "ggplot(acs_wide) +\n  geom_sf(aes(fill = incomeE), color = NA) +\n  scale_fill_viridis_c(\n    name = \"Median HH Income\"\n  ) +\n  labs(\n    title = \"Median Household Income in Texas\",\n    subtitle = \"2024 ACS 5-Year Estimates by County\",\n    caption = \"Source: U.S. Census Bureau via tidycensus\"\n  ) +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(size = 14, face = \"bold\"),\n    plot.caption = element_text(size = 8),\n    legend.position = \"right\"\n  )"
   },
   {
-    "objectID": "epps6356.html",
-    "href": "epps6356.html",
-    "title": "EPPS 6356",
-    "section": "",
-    "text": "Assignment 1"
+    "objectID": "assign03.html#poverty-rate-top-and-bottom-10-counties",
+    "href": "assign03.html#poverty-rate-top-and-bottom-10-counties",
+    "title": "Assignment 3",
+    "section": "Poverty Rate: Top and Bottom 10 Counties",
+    "text": "Poverty Rate: Top and Bottom 10 Counties\n\ntop10 &lt;- acs_wide |&gt;\n  st_drop_geometry() |&gt;\n  arrange(desc(pov_rate)) |&gt;\n  select(NAME, pov_rate, pov_moe) |&gt;\n  slice_head(n = 10)\n\nbottom10 &lt;- acs_wide |&gt;\n  st_drop_geometry() |&gt;\n  arrange(pov_rate) |&gt;\n  select(NAME, pov_rate, pov_moe) |&gt;\n  slice_head(n = 10)\n\ntop10_table &lt;- top10 |&gt;\n  mutate(\n    pov_rate = sprintf(\"%.2f%%\", pov_rate * 100),\n    pov_moe = sprintf(\"±%.2f pp\", pov_moe * 100)\n  ) |&gt;\n  rename(\n    County = NAME,\n    `Poverty Rate` = pov_rate,\n    `MOE` = pov_moe\n  )\n\nbottom10_table &lt;- bottom10 |&gt;\n  mutate(\n    pov_rate = sprintf(\"%.2f%%\", pov_rate * 100),\n    pov_moe = sprintf(\"±%.2f pp\", pov_moe * 100)\n  ) |&gt;\n  rename(\n    County = NAME,\n    `Poverty Rate` = pov_rate,\n    `MOE` = pov_moe\n  )\n\nknitr::kable(\n  top10_table,\n  caption = \"Texas Counties with the Highest Poverty Rates\"\n)\n\n\nTexas Counties with the Highest Poverty Rates\n\n\nCounty\nPoverty Rate\nMOE\n\n\n\n\nDimmit County, Texas\n41.11%\n±8.88 pp\n\n\nZapata County, Texas\n38.39%\n±6.04 pp\n\n\nZavala County, Texas\n33.92%\n±9.53 pp\n\n\nStarr County, Texas\n33.52%\n±3.23 pp\n\n\nDuval County, Texas\n33.27%\n±8.40 pp\n\n\nPresidio County, Texas\n32.00%\n±12.78 pp\n\n\nEdwards County, Texas\n31.87%\n±23.24 pp\n\n\nJim Hogg County, Texas\n31.43%\n±11.15 pp\n\n\nSwisher County, Texas\n30.10%\n±6.90 pp\n\n\nKleberg County, Texas\n28.09%\n±4.33 pp\n\n\n\n\nknitr::kable(\n  bottom10_table,\n  caption = \"Texas Counties with the Lowest Poverty Rates\"\n)\n\n\nTexas Counties with the Lowest Poverty Rates\n\n\nCounty\nPoverty Rate\nMOE\n\n\n\n\nRockwall County, Texas\n4.04%\n±0.69 pp\n\n\nSterling County, Texas\n4.32%\n±2.88 pp\n\n\nSutton County, Texas\n4.51%\n±2.85 pp\n\n\nKendall County, Texas\n5.03%\n±1.43 pp\n\n\nArmstrong County, Texas\n5.19%\n±2.80 pp\n\n\nFoard County, Texas\n5.57%\n±4.39 pp\n\n\nRoberts County, Texas\n5.65%\n±3.87 pp\n\n\nLoving County, Texas\n6.06%\n±2.52 pp\n\n\nHemphill County, Texas\n6.19%\n±3.24 pp\n\n\nCollin County, Texas\n6.23%\n±0.35 pp"
   },
   {
-    "objectID": "epps6356.html#assignments",
-    "href": "epps6356.html#assignments",
-    "title": "EPPS 6356",
-    "section": "",
-    "text": "Assignment 1"
+    "objectID": "assign03.html#uncertainty-check",
+    "href": "assign03.html#uncertainty-check",
+    "title": "Assignment 3",
+    "section": "Uncertainty Check",
+    "text": "Uncertainty Check\n\nuncertainty_pair &lt;- acs_wide |&gt;\n  st_drop_geometry() |&gt;\n  filter(NAME %in% c(\"Dimmit County, Texas\", \"Zapata County, Texas\")) |&gt;\n  transmute(\n    County = NAME,\n    `Poverty Rate` = sprintf(\"%.2f%%\", pov_rate * 100),\n    MOE = sprintf(\"±%.2f pp\", pov_moe * 100),\n    `Lower Bound` = sprintf(\"%.2f%%\", (pov_rate - pov_moe) * 100),\n    `Upper Bound` = sprintf(\"%.2f%%\", (pov_rate + pov_moe) * 100)\n  )\n\nknitr::kable(\n  uncertainty_pair,\n  caption = \"Uncertainty in Poverty Rate Estimates\"\n)\n\n\nUncertainty in Poverty Rate Estimates\n\n\n\n\n\n\n\n\n\nCounty\nPoverty Rate\nMOE\nLower Bound\nUpper Bound\n\n\n\n\nDimmit County, Texas\n41.11%\n±8.88 pp\n32.23%\n49.98%\n\n\nZapata County, Texas\n38.39%\n±6.04 pp\n32.35%\n44.44%\n\n\n\n\n\nDimmit County has an estimated poverty rate of 41.11% with a margin of error of ±8.88 percentage points, while Zapata County has an estimated rate of 38.39% with a margin of error of ±6.04 percentage points. Their confidence intervals overlap substantially. Therefore, although Dimmit County ranks above Zapata County based on the point estimates, the difference should not be interpreted as a clearly established difference in poverty rates because of the uncertainty in the ACS estimates."
+  },
+  {
+    "objectID": "assign03.html#methods-note",
+    "href": "assign03.html#methods-note",
+    "title": "Assignment 3",
+    "section": "Methods Note",
+    "text": "Methods Note\nI used the 2024 ACS 5-year estimates for Texas counties. I used median household income (B19013_001) for the map and calculated the poverty rate using the number of people below poverty (B17001_002) divided by the poverty universe (B17001_001). I also kept the margins of error because ACS estimates include sampling uncertainty. The poverty-rate margin of error was calculated using moe_prop(). The results show that county rankings should be interpreted carefully because counties with similar estimates may have overlapping confidence intervals."
   },
   {
     "objectID": "teaching.html",
@@ -75,6 +96,34 @@
     "title": "Teaching",
     "section": "Teaching Assistant",
     "text": "Teaching Assistant\nCRIM 3302 — Advanced Criminology\nSpring 2026, Fall 2025, Spring 2025, Fall 2024\nThe University of Texas at Dallas"
+  },
+  {
+    "objectID": "epps6356.html",
+    "href": "epps6356.html",
+    "title": "EPPS 6356",
+    "section": "",
+    "text": "Assignment 1"
+  },
+  {
+    "objectID": "epps6356.html#assignments",
+    "href": "epps6356.html#assignments",
+    "title": "EPPS 6356",
+    "section": "",
+    "text": "Assignment 1"
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
+  },
+  {
+    "objectID": "research.html#working-papers",
+    "href": "research.html#working-papers",
+    "title": "Research",
+    "section": "",
+    "text": "Youth Gang Involvement and Criminal Offending among Serious Adolescent Offenders: A Rational Choice Mediation Perspective\nwith S. Hong and S. Han\nThis study examines whether gang involvement shapes adolescents’ perceptions of the rewards and costs of offending and whether these perceptions mediate the relationship between gang involvement and subsequent criminal offending.\nData-generating process. The study uses longitudinal data from the Pathways to Desistance project, which followed 1,354 serious adolescent offenders recruited from court systems in Maricopa County, Arizona, and Philadelphia County, Pennsylvania, from adolescence into young adulthood. Participants were interviewed 11 times over approximately seven years, producing repeated measures of gang involvement, perceptions of crime-related rewards and costs, and self-reported offending."
   },
   {
     "objectID": "assign02.html",
@@ -119,18 +168,11 @@
     "text": "Website Design\nThis website was created using RStudio and Quarto and is published through GitHub Pages. I used the Cosmo theme because it provides a clean and professional appearance that is appropriate for an academic website.\nThe navigation bar is organized so that visitors can easily access the main sections of the website. The Home page provides a brief introduction and summarizes my research interests. The Research page presents my current research and working papers, while the Teaching page summarizes my teaching experience. The CV page provides access to my current curriculum vitae, and the Assignments menu contains course-related materials.\nI chose a simple layout with minimal visual elements so that the focus remains on the content. I also considered readability and ease of navigation when designing the website. The colors, fonts, and overall structure are kept simple and consistent across the pages. Because the primary purpose of the website is to present my academic work, I wanted visitors to be able to quickly find information about my research, teaching, and CV without unnecessary visual elements.\nThe website also includes direct links to my GitHub profile and email address so that visitors can easily find additional information or contact me. The same navigation structure is used across the website to provide a consistent user experience.\nThe website was built as a Quarto project in RStudio. The rendered HTML files are stored in the docs folder and published through GitHub Pages. This structure allows me to update the website by editing the Quarto files, rendering the site again, and pushing the updated files to GitHub."
   },
   {
-    "objectID": "epps6302.html",
-    "href": "epps6302.html",
-    "title": "EPPS 6302",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "Assignment 1\nAssignment 2"
-  },
-  {
-    "objectID": "epps6302.html#assignments",
-    "href": "epps6302.html#assignments",
-    "title": "EPPS 6302",
-    "section": "",
-    "text": "Assignment 1\nAssignment 2"
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
     "objectID": "epps6356_assign01.html",

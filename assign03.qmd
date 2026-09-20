@@ -1,0 +1,142 @@
+---
+title: "Assignment 3"
+editor: visual
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidycensus)
+library(tigris)
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(readr)
+
+options(tigris_use_cache = TRUE)
+
+state_abbr <- "TX"
+geo_level <- "county"
+
+my_vars <- c(
+  income = "B19013_001",
+  pov = "B17001_002",
+  povden = "B17001_001"
+)
+
+year_acs <- 2024
+survey <- "acs5"
+
+acs_wide <- get_acs(
+  geography = geo_level,
+  variables = my_vars,
+  state = state_abbr,
+  year = year_acs,
+  survey = survey,
+  geometry = TRUE,
+  output = "wide"
+)
+
+acs_wide <- acs_wide |>
+  mutate(
+    pov_rate = povE / povdenE,
+    pov_moe = moe_prop(povE, povdenE, povM, povdenM)
+  )
+```
+
+## Median Household Income Map
+
+```{r}
+ggplot(acs_wide) +
+  geom_sf(aes(fill = incomeE), color = NA) +
+  scale_fill_viridis_c(
+    name = "Median HH Income"
+  ) +
+  labs(
+    title = "Median Household Income in Texas",
+    subtitle = "2024 ACS 5-Year Estimates by County",
+    caption = "Source: U.S. Census Bureau via tidycensus"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    plot.caption = element_text(size = 8),
+    legend.position = "right"
+  )
+```
+
+## Poverty Rate: Top and Bottom 10 Counties
+
+```{r}
+top10 <- acs_wide |>
+  st_drop_geometry() |>
+  arrange(desc(pov_rate)) |>
+  select(NAME, pov_rate, pov_moe) |>
+  slice_head(n = 10)
+
+bottom10 <- acs_wide |>
+  st_drop_geometry() |>
+  arrange(pov_rate) |>
+  select(NAME, pov_rate, pov_moe) |>
+  slice_head(n = 10)
+
+top10_table <- top10 |>
+  mutate(
+    pov_rate = sprintf("%.2f%%", pov_rate * 100),
+    pov_moe = sprintf("±%.2f pp", pov_moe * 100)
+  ) |>
+  rename(
+    County = NAME,
+    `Poverty Rate` = pov_rate,
+    `MOE` = pov_moe
+  )
+
+bottom10_table <- bottom10 |>
+  mutate(
+    pov_rate = sprintf("%.2f%%", pov_rate * 100),
+    pov_moe = sprintf("±%.2f pp", pov_moe * 100)
+  ) |>
+  rename(
+    County = NAME,
+    `Poverty Rate` = pov_rate,
+    `MOE` = pov_moe
+  )
+
+knitr::kable(
+  top10_table,
+  caption = "Texas Counties with the Highest Poverty Rates"
+)
+
+knitr::kable(
+  bottom10_table,
+  caption = "Texas Counties with the Lowest Poverty Rates"
+)
+```
+
+## Uncertainty Check
+
+```{r}
+uncertainty_pair <- acs_wide |>
+  st_drop_geometry() |>
+  filter(NAME %in% c("Dimmit County, Texas", "Zapata County, Texas")) |>
+  transmute(
+    County = NAME,
+    `Poverty Rate` = sprintf("%.2f%%", pov_rate * 100),
+    MOE = sprintf("±%.2f pp", pov_moe * 100),
+    `Lower Bound` = sprintf("%.2f%%", (pov_rate - pov_moe) * 100),
+    `Upper Bound` = sprintf("%.2f%%", (pov_rate + pov_moe) * 100)
+  )
+
+knitr::kable(
+  uncertainty_pair,
+  caption = "Uncertainty in Poverty Rate Estimates"
+)
+```
+
+Dimmit County has an estimated poverty rate of 41.11% with a margin of error of ±8.88 percentage points, while Zapata County has an estimated rate of 38.39% with a margin of error of ±6.04 percentage points. Their confidence intervals overlap substantially. Therefore, although Dimmit County ranks above Zapata County based on the point estimates, the difference should not be interpreted as a clearly established difference in poverty rates because of the uncertainty in the ACS estimates.
+
+## Methods Note
+
+I used the 2024 ACS 5-year estimates for Texas counties. I used median household income (B19013_001) for the map and calculated the poverty rate using the number of people below poverty (B17001_002) divided by the poverty universe (B17001_001). I also kept the margins of error because ACS estimates include sampling uncertainty. The poverty-rate margin of error was calculated using moe_prop(). The results show that county rankings should be interpreted carefully because counties with similar estimates may have overlapping confidence intervals.
