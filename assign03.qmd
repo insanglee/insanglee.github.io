@@ -118,6 +118,19 @@ knitr::kable(
   caption = "Texas Counties with the Lowest Poverty Rates"
 )
 ```
+### Texas Counties with the Highest Poverty Rates
+
+```{r}
+#| echo: false
+knitr::kable(top10_table)
+```
+
+### Texas Counties with the Lowest Poverty Rates
+
+```{r}
+#| echo: false
+knitr::kable(bottom10_table)
+```
 
 ## Uncertainty Check
 
@@ -139,6 +152,12 @@ knitr::kable(
   uncertainty_pair,
   caption = "Uncertainty in Poverty Rate Estimates"
 )
+```
+### Uncertainty in Poverty Rate Estimates
+
+```{r}
+#| echo: false
+knitr::kable(uncertainty_pair)
 ```
 
 Dimmit County has an estimated poverty rate of 41.11% with a margin of error of ±8.88 percentage points, while Zapata County has an estimated rate of 38.39% with a margin of error of ±6.04 percentage points. Their confidence intervals overlap substantially. Therefore, although Dimmit County ranks above Zapata County based on the point estimates, the difference should not be interpreted as a clearly established difference in poverty rates because of the uncertainty in the ACS estimates.
