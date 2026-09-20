@@ -118,22 +118,19 @@ knitr::kable(
   caption = "Texas Counties with the Lowest Poverty Rates"
 )
 ```
-### Texas Counties with the Highest Poverty Rates
-
+### Texas Counties with the Highest Poverty Rates {.text-center}
 ```{r}
 #| echo: false
 knitr::kable(top10_table)
 ```
 
-### Texas Counties with the Lowest Poverty Rates
-
+### Texas Counties with the Lowest Poverty Rates {.text-center}
 ```{r}
 #| echo: false
 knitr::kable(bottom10_table)
 ```
 
-## Uncertainty Check
-
+### Uncertainty in Poverty Rate Estimates {.text-center}
 ```{r}
 #| code-fold: true
 
