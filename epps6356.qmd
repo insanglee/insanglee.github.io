@@ -5,3 +5,4 @@ title: "EPPS 6356"
 ## Assignments
 
 - [Assignment 1](epps6356_assign01.qmd)
+- [Assignment 2](epps6356_assign02.qmd)
