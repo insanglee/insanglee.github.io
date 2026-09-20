@@ -109,14 +109,14 @@ bottom10_table <- bottom10 |>
   )
 ```
 
-### Texas Counties with the Highest Poverty Rates {.text-center}
+<h3 style="text-align: center;">Texas Counties with the Highest Poverty Rates</h3>
 
 ```{r}
 #| echo: false
 knitr::kable(top10_table)
 ```
 
-### Texas Counties with the Lowest Poverty Rates {.text-center}
+<h3 style="text-align: center;">Texas Counties with the Lowest Poverty Rates</h3>
 
 ```{r}
 #| echo: false
@@ -138,7 +138,7 @@ uncertainty_pair <- acs_wide |>
   )
 ```
 
-### Uncertainty in Poverty Rate Estimates {.text-center}
+<h3 style="text-align: center;">Uncertainty in Poverty Rate Estimates</h3>
 
 ```{r}
 #| echo: false
