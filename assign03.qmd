@@ -49,6 +49,8 @@ acs_wide <- acs_wide |>
 ## Median Household Income Map
 
 ```{r}
+#| code-fold: true
+
 ggplot(acs_wide) +
   geom_sf(aes(fill = incomeE), color = NA) +
   scale_fill_viridis_c(
@@ -70,6 +72,8 @@ ggplot(acs_wide) +
 ## Poverty Rate: Top and Bottom 10 Counties
 
 ```{r}
+#| code-fold: true
+
 top10 <- acs_wide |>
   st_drop_geometry() |>
   arrange(desc(pov_rate)) |>
@@ -118,6 +122,8 @@ knitr::kable(
 ## Uncertainty Check
 
 ```{r}
+#| code-fold: true
+
 uncertainty_pair <- acs_wide |>
   st_drop_geometry() |>
   filter(NAME %in% c("Dimmit County, Texas", "Zapata County, Texas")) |>
