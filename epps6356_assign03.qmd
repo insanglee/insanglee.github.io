@@ -207,7 +207,7 @@ ggplot(
   )
 ```
 
-The serif font becomes a `theme()` setting in ggplot2. Because the point colour and shape are fixed rather than mapped to variables, they are specified directly in `geom_point()`. If colour or shape represented a data variable, they could be controlled with `scale_*()` functions. The regression line added with `abline()` in base R is reproduced with `geom_smooth(method = "lm")`. None of the tuned settings used here lacked a practical ggplot2 equivalent.
+The serif font became a `theme()` setting through `theme_classic(base_family = "serif")`. The fixed point colour, shape, and size were specified directly in `geom_point()` rather than through `scale_*()` functions because they were not mapped to data variables. Therefore, none of the settings in this particular chart required a `scale_*()` function. The regression line added with `abline()` in base R was reproduced with `geom_smooth(method = "lm")`. All of the tuned base-R settings used here had a practical ggplot2 equivalent.
 
 ## 5. Pre-Hackathon: Daily COVID Deaths in Europe
 
@@ -368,3 +368,7 @@ par(
   mar = c(5.1, 4.1, 4.1, 2.1)
 )
 ```
+
+## AI Use Appendix
+
+ChatGPT was used for troubleshooting selected R errors and clarifying parts of the assignment instructions. I executed the code, reviewed the outputs, and made the final decisions about the figures and content.

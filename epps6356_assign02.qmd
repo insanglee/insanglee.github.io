@@ -354,3 +354,7 @@ legend(
   bty = "n"
 )
 ```
+
+## AI Use Appendix
+
+ChatGPT was used to clarify selected R syntax and assignment instructions. I reviewed and executed the final work myself.

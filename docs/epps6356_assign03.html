@@ -198,6 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#select-points-to-label" id="toc-select-points-to-label" class="nav-link" data-scroll-target="#select-points-to-label">Select Points to Label</a></li>
   <li><a href="#replicated-chart" id="toc-replicated-chart" class="nav-link" data-scroll-target="#replicated-chart">Replicated Chart</a></li>
   </ul></li>
+  <li><a href="#ai-use-appendix" id="toc-ai-use-appendix" class="nav-link" data-scroll-target="#ai-use-appendix">AI Use Appendix</a></li>
   </ul>
 </nav>
     </div>
@@ -471,7 +472,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The serif font becomes a <code>theme()</code> setting in ggplot2. Because the point colour and shape are fixed rather than mapped to variables, they are specified directly in <code>geom_point()</code>. If colour or shape represented a data variable, they could be controlled with <code>scale_*()</code> functions. The regression line added with <code>abline()</code> in base R is reproduced with <code>geom_smooth(method = "lm")</code>. None of the tuned settings used here lacked a practical ggplot2 equivalent.</p>
+<p>The serif font became a <code>theme()</code> setting through <code>theme_classic(base_family = "serif")</code>. The fixed point colour, shape, and size were specified directly in <code>geom_point()</code> rather than through <code>scale_*()</code> functions because they were not mapped to data variables. Therefore, none of the settings in this particular chart required a <code>scale_*()</code> function. The regression line added with <code>abline()</code> in base R was reproduced with <code>geom_smooth(method = "lm")</code>. All of the tuned base-R settings used here had a practical ggplot2 equivalent.</p>
 </section>
 <section id="pre-hackathon-daily-covid-deaths-in-europe" class="level2">
 <h2 class="anchored" data-anchor-id="pre-hackathon-daily-covid-deaths-in-europe">5. Pre-Hackathon: Daily COVID Deaths in Europe</h2>
@@ -648,9 +649,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-
-
 </section>
+</section>
+<section id="ai-use-appendix" class="level2">
+<h2 class="anchored" data-anchor-id="ai-use-appendix">AI Use Appendix</h2>
+<p>ChatGPT was used for troubleshooting selected R errors and clarifying parts of the assignment instructions. I executed the code, reviewed the outputs, and made the final decisions about the figures and content.</p>
+
+
 </section>
 
 </main> <!-- /main -->
