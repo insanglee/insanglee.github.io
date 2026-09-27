@@ -235,7 +235,7 @@
     "href": "epps6356_assign02.html#pie",
     "title": "Assignment 2",
     "section": "6. pie()",
-    "text": "6. pie()\npie() displays the proportions of categories as slices of a circle.\n\n\nCode\ncontinent_names &lt;- c(\n  \"Latin America\",\n  \"N America & Oceania\",\n  \"Western Europe\",\n  \"Middle East & N. Africa\",\n  \"Africa\",\n  \"South Asia\",\n  \"Eastern Europe & Central Asia\",\n  \"East Asia\"\n)\n\ncontinent_counts &lt;- table(hpi_2025$Continent)\n\npie(\n  continent_counts,\n  labels = continent_names,\n  main = \"Countries by Continent, 2025\"\n)"
+    "text": "6. pie()\npie() displays the proportions of categories as slices of a circle.\n\n\nCode\ncontinent_names &lt;- c(\n  \"Latin America\",\n  \"N America & Oceania\",\n  \"Western Europe\",\n  \"Middle East & N. Africa\",\n  \"Africa\",\n  \"South Asia\",\n  \"Eastern Europe & Central Asia\",\n  \"East Asia\"\n)\n\ncontinent_counts &lt;- table(hpi_2025$Continent)\n\npie(\n  continent_counts,\n  labels = names(continent_counts),\n  main = \"Countries by Continent, 2025\"\n)"
   },
   {
     "objectID": "epps6356_assign02.html#persp",

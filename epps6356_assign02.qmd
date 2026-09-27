@@ -145,7 +145,7 @@ continent_counts <- table(hpi_2025$Continent)
 
 pie(
   continent_counts,
-  labels = continent_names,
+  labels = names(continent_counts),
   main = "Countries by Continent, 2025"
 )
 ```
