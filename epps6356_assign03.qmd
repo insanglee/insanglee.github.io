@@ -1,0 +1,370 @@
+---
+title: "Assignment 3: Anatomy of a Chart"
+format:
+  html:
+    code-fold: true
+execute:
+  warning: false
+  message: false
+---
+
+## 1. Document a Chart
+
+I selected the boxplot example from Murrell's R graphics code. The comments below describe what each call contributes to the finished figure.
+
+```{r}
+# Set the margins for the boxplot
+par(mar = c(3, 4.1, 2, 0))
+
+# Draw boxplots for the VC supplement groups at each dose
+boxplot(
+  len ~ dose,
+  data = ToothGrowth,
+  boxwex = 0.25,
+  at = 1:3 - 0.2,
+  subset = supp == "VC",
+  col = "white",
+  xlab = "",
+  ylab = "tooth length",
+  ylim = c(0, 35)
+)
+
+# Add the x-axis label below the plot
+mtext(
+  "Vitamin C dose (mg)",
+  side = 1,
+  line = 2.5,
+  cex = 0.8
+)
+
+# Add boxplots for the OJ supplement groups beside the VC boxplots
+boxplot(
+  len ~ dose,
+  data = ToothGrowth,
+  add = TRUE,
+  boxwex = 0.25,
+  at = 1:3 + 0.2,
+  subset = supp == "OJ"
+)
+
+# Add a legend identifying the two supplement groups
+legend(
+  1.5,
+  9,
+  c("Ascorbic acid", "Orange juice"),
+  fill = c("white", "gray"),
+  bty = "n"
+)
+
+# Restore the default plot margins
+par(mar = c(5.1, 4.1, 4.1, 2.1))
+```
+
+## 2. Anscombe's Quartet
+
+The four Anscombe datasets have nearly identical regression statistics, but their plots show very different patterns.
+
+```{r}
+data(anscombe)
+
+par(mfrow = c(2, 2))
+
+plot_colors <- c(
+  "steelblue",
+  "firebrick",
+  "darkgreen",
+  "purple"
+)
+
+plot_symbols <- c(
+  16,
+  17,
+  15,
+  18
+)
+
+line_types <- c(
+  1,
+  2,
+  3,
+  4
+)
+
+for(i in 1:4) {
+
+  x <- anscombe[[paste0("x", i)]]
+  y <- anscombe[[paste0("y", i)]]
+
+  plot(
+    x,
+    y,
+    main = paste("Dataset", i),
+    xlab = paste0("x", i),
+    ylab = paste0("y", i),
+    pch = plot_symbols[i],
+    col = plot_colors[i]
+  )
+
+  abline(
+    lm(y ~ x),
+    col = plot_colors[i],
+    lty = line_types[i],
+    lwd = 2
+  )
+}
+
+par(mfrow = c(1, 1))
+```
+
+### Regression Comparison
+
+```{r}
+results <- data.frame(
+  Dataset = 1:4,
+  Intercept = NA,
+  Slope = NA,
+  R_squared = NA,
+  Residual_SE = NA
+)
+
+for(i in 1:4) {
+
+  x <- anscombe[[paste0("x", i)]]
+  y <- anscombe[[paste0("y", i)]]
+
+  model <- lm(y ~ x)
+
+  results$Intercept[i] <- coef(model)[1]
+  results$Slope[i] <- coef(model)[2]
+  results$R_squared[i] <- summary(model)$r.squared
+  results$Residual_SE[i] <- summary(model)$sigma
+}
+
+results
+```
+
+Although the four datasets have nearly identical slopes, intercepts, R-squared values, and residual standard errors, the visual patterns are very different. Summary statistics alone can hide nonlinear relationships, outliers, and unusual data structures that become clear when the data are plotted.
+
+## 3. Finetune Without Leaving Base R
+
+I used a serif font, non-default colours, and a non-default plotting character.
+
+```{r}
+x <- anscombe$x1
+y <- anscombe$y1
+
+plot(
+  x,
+  y,
+  main = "Anscombe Dataset 1",
+  xlab = "x1",
+  ylab = "y1",
+  family = "serif",
+  col = "steelblue",
+  pch = 17,
+  cex = 1.2
+)
+
+abline(
+  lm(y ~ x),
+  col = "firebrick",
+  lwd = 2
+)
+```
+
+## 4. Reproduce the Tuned Chart with ggplot2
+
+```{r}
+library(ggplot2)
+
+anscombe1 <- data.frame(
+  x = anscombe$x1,
+  y = anscombe$y1
+)
+
+ggplot(
+  anscombe1,
+  aes(x = x, y = y)
+) +
+  geom_point(
+    color = "steelblue",
+    shape = 17,
+    size = 3
+  ) +
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    color = "firebrick",
+    linewidth = 1
+  ) +
+  labs(
+    title = "Anscombe Dataset 1",
+    x = "x1",
+    y = "y1"
+  ) +
+  theme_classic(
+    base_family = "serif"
+  )
+```
+
+The serif font becomes a `theme()` setting in ggplot2. Because the point colour and shape are fixed rather than mapped to variables, they are specified directly in `geom_point()`. If colour or shape represented a data variable, they could be controlled with `scale_*()` functions. The regression line added with `abline()` in base R is reproduced with `geom_smooth(method = "lm")`. None of the tuned settings used here lacked a practical ggplot2 equivalent.
+
+## 5. Pre-Hackathon: Daily COVID Deaths in Europe
+
+The target chart shows one point per country per day, a rotated date axis, a single non-default colour, and labels for selected high points.
+
+```{r}
+url <- paste0(
+  "https://raw.githubusercontent.com/owid/covid-19-data/",
+  "master/public/data/owid-covid-data.csv"
+)
+
+if(!file.exists("owid-covid-data.csv")) {
+  download.file(
+    url,
+    "owid-covid-data.csv"
+  )
+}
+
+owidall <- read.csv(
+  "owid-covid-data.csv"
+)
+
+owidall <- owidall[
+  !grepl("^OWID", owidall$iso_code),
+]
+
+owideu <- subset(
+  owidall,
+  continent == "Europe"
+)
+
+owideu$date <- as.Date(
+  owideu$date
+)
+
+covid_plot <- subset(
+  owideu,
+  !is.na(new_deaths) &
+    !is.na(date) &
+    new_deaths >= 0
+)
+```
+
+### Select Points to Label
+
+```{r}
+pick_high_point <- function(country, start_date, end_date) {
+
+  d <- subset(
+    covid_plot,
+    location == country &
+      date >= as.Date(start_date) &
+      date <= as.Date(end_date)
+  )
+
+  d[which.max(d$new_deaths), ]
+}
+
+label_points <- rbind(
+
+  pick_high_point(
+    "Spain",
+    "2020-03-01",
+    "2020-04-15"
+  ),
+
+  pick_high_point(
+    "Spain",
+    "2020-04-16",
+    "2020-06-30"
+  ),
+
+  pick_high_point(
+    "Germany",
+    "2020-10-01",
+    "2021-03-31"
+  ),
+
+  pick_high_point(
+    "Germany",
+    "2022-07-01",
+    "2023-04-30"
+  ),
+
+  pick_high_point(
+    "Ukraine",
+    "2021-07-01",
+    "2022-03-31"
+  ),
+
+  pick_high_point(
+    "Italy",
+    "2023-01-01",
+    "2023-08-31"
+  )
+)
+```
+
+### Replicated Chart
+
+```{r}
+par(mfrow = c(1, 1))
+par(mar = c(7, 5, 3, 2))
+
+plot_start <- as.Date("2020-01-01")
+plot_end <- as.Date("2023-08-31")
+
+plot(
+  covid_plot$date,
+  covid_plot$new_deaths,
+  pch = 16,
+  cex = 0.45,
+  col = "deeppink",
+  xlab = "",
+  ylab = "COVID Deaths in Europe (Daily)",
+  xaxt = "n",
+  xlim = c(plot_start, plot_end),
+  ylim = c(
+    0,
+    max(
+      covid_plot$new_deaths[
+        covid_plot$date >= plot_start &
+          covid_plot$date <= plot_end
+      ],
+      na.rm = TRUE
+    ) * 1.12
+  )
+)
+
+axis.Date(
+  1,
+  at = seq(
+    plot_start,
+    plot_end,
+    length.out = 12
+  ),
+  format = "%Y-%m-%d",
+  las = 2,
+  cex.axis = 0.7
+)
+
+mtext(
+  "Date",
+  side = 1,
+  line = 5.5
+)
+
+text(
+  label_points$date,
+  label_points$new_deaths,
+  labels = label_points$location,
+  pos = 3,
+  offset = 0.4,
+  cex = 0.65
+)
+
+par(
+  mar = c(5.1, 4.1, 4.1, 2.1)
+)
+```
