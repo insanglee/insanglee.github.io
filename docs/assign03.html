@@ -190,6 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#poverty-rate-top-and-bottom-10-counties" id="toc-poverty-rate-top-and-bottom-10-counties" class="nav-link" data-scroll-target="#poverty-rate-top-and-bottom-10-counties">Poverty Rate: Top and Bottom 10 Counties</a></li>
   <li><a href="#uncertainty-check" id="toc-uncertainty-check" class="nav-link" data-scroll-target="#uncertainty-check">Uncertainty Check</a></li>
   <li><a href="#methods-note" id="toc-methods-note" class="nav-link" data-scroll-target="#methods-note">Methods Note</a></li>
+  <li><a href="#ai-use-appendix" id="toc-ai-use-appendix" class="nav-link" data-scroll-target="#ai-use-appendix">AI Use Appendix</a></li>
   </ul>
 </nav>
     </div>
@@ -486,6 +487,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="methods-note" class="level2">
 <h2 class="anchored" data-anchor-id="methods-note">Methods Note</h2>
 <p>I used the 2024 ACS 5-year estimates for Texas counties. I used median household income (B19013_001) for the map and calculated the poverty rate using the number of people below poverty (B17001_002) divided by the poverty universe (B17001_001). I also kept the margins of error because ACS estimates include sampling uncertainty. The poverty-rate margin of error was calculated using moe_prop(). The results show that county rankings should be interpreted carefully because counties with similar estimates may have overlapping confidence intervals.</p>
+</section>
+<section id="ai-use-appendix" class="level2">
+<h2 class="anchored" data-anchor-id="ai-use-appendix">AI Use Appendix</h2>
+<p>ChatGPT was used for troubleshooting selected R code and clarifying parts of the ACS analysis, including poverty-rate and margin-of-error calculations. I executed the code, reviewed the outputs, and made the final decisions about the tables, map, and written interpretation.</p>
 
 
 </section>

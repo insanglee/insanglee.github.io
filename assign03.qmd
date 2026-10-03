@@ -162,3 +162,7 @@ Dimmit County has an estimated poverty rate of 41.11% with a margin of error of 
 ## Methods Note
 
 I used the 2024 ACS 5-year estimates for Texas counties. I used median household income (B19013_001) for the map and calculated the poverty rate using the number of people below poverty (B17001_002) divided by the poverty universe (B17001_001). I also kept the margins of error because ACS estimates include sampling uncertainty. The poverty-rate margin of error was calculated using moe_prop(). The results show that county rankings should be interpreted carefully because counties with similar estimates may have overlapping confidence intervals.
+
+## AI Use Appendix
+
+ChatGPT was used for troubleshooting selected R code and clarifying parts of the ACS analysis, including poverty-rate and margin-of-error calculations. I executed the code, reviewed the outputs, and made the final decisions about the tables, map, and written interpretation.
