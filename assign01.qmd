@@ -16,3 +16,7 @@ I chose a simple layout with minimal visual elements so that the focus remains o
 The website also includes direct links to my GitHub profile and email address so that visitors can easily find additional information or contact me. The same navigation structure is used across the website to provide a consistent user experience.
 
 The website was built as a Quarto project in RStudio. The rendered HTML files are stored in the `docs` folder and published through GitHub Pages. This structure allows me to update the website by editing the Quarto files, rendering the site again, and pushing the updated files to GitHub.
+
+## AI Use Appendix
+
+ChatGPT was used to clarify parts of the assignment instructions and assist with selected aspects of the Quarto website setup. I reviewed the final website structure and content myself.

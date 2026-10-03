@@ -93,3 +93,7 @@ The R method was easier to reproduce because the search settings were written di
 Both methods can also have problems. The website interface can change, while `gtrendsR` depends on an unofficial service and may be affected by rate limits or changes to Google Trends.
 
 I ran the same `gtrendsR` call twice a few minutes apart. In my run, the two results were identical. However, Google Trends uses sampled search data, so repeated pulls are not guaranteed to always return the same values.
+
+## AI Use Appendix
+
+ChatGPT was used to clarify selected R syntax, Google Trends concepts, and parts of the assignment instructions. I executed the code, reviewed the results, and made the final decisions about the comparison and interpretation.
