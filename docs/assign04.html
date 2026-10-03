@@ -218,6 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#web-data-acquisition-plan" id="toc-web-data-acquisition-plan" class="nav-link" data-scroll-target="#web-data-acquisition-plan">Web Data Acquisition Plan</a></li>
   </ul></li>
+  <li><a href="#ai-use-acknowledgment" id="toc-ai-use-acknowledgment" class="nav-link" data-scroll-target="#ai-use-acknowledgment">AI Use Acknowledgment</a></li>
   </ul>
 </nav>
     </div>
@@ -608,7 +609,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="what-changed-when-the-target-changed" class="level3">
 <h3 class="anchored" data-anchor-id="what-changed-when-the-target-changed">What Changed When the Target Changed?</h3>
-<p>Changing the target page required me to inspect the new table structure again rather than assuming that the same table number, column names, and formatting would remain valid. Wikipedia pages do not share a single fixed schema, so code written for one table may fail or return incorrect columns when used on another page.</p>
+<p>Changing the target page meant that the original table index, column names, and table structure could no longer be assumed to work. I had to inspect the new page and identify the appropriate table and country-related column again because Wikipedia pages do not share a single fixed schema.</p>
 </section>
 </section>
 <section id="c.-clean-the-foreign-exchange-reserves-data" class="level2">
@@ -1052,7 +1053,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # ℹ 2 more variables: difference &lt;dbl&gt;, percent_difference &lt;dbl&gt;</code></pre>
 </div>
 </div>
-<p>The Wikipedia and World Bank reserve values differ substantially for several countries. One important reason is that the two sources do not always represent the same reporting period. The World Bank data used here are from 2024, while the Wikipedia table contains country-specific reporting dates ranging from 2024 to 2026. Therefore, some of the observed differences likely reflect changes in reserve holdings over time, in addition to differences in source updates and reporting practices.</p>
+<p>The Wikipedia and World Bank reserve values differ substantially for several countries. For example, the comparison shows particularly large percentage differences for countries such as South Sudan, Gabon, North Macedonia, and Mozambique. One important reason is that the two sources do not always represent the same reporting period. The World Bank data used here are from 2024, while the Wikipedia table contains country-specific reporting dates ranging from 2024 to 2026. Therefore, some of the observed differences likely reflect changes in reserve holdings over time, in addition to differences in source updates and reporting practices.</p>
 </section>
 <section id="when-is-scraping-the-right-tool" class="level3">
 <h3 class="anchored" data-anchor-id="when-is-scraping-the-right-tool">When Is Scraping the Right Tool?</h3>
@@ -1063,15 +1064,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="data-plan">4. Data Plan</h2>
 <section id="web-data-acquisition-plan" class="level3">
 <h3 class="anchored" data-anchor-id="web-data-acquisition-plan">Web Data Acquisition Plan</h3>
-<p>For my research, I am interested in crime analysis, policing, public safety, environmental criminology, crime mapping, and GIS. One potential source is the City of Dallas Open Data and Police Public Data system, which provides public access to police offense and incident information. I would prefer this official source because it comes directly from the City of Dallas and Dallas Police Department and is more appropriate for analyzing local crime patterns and locations than a third-party website.</p>
-<p>Before collecting data, I would check the site’s <code>robots.txt</code> file and Terms of Service and determine whether the needed data are available through an API, downloadable file, or other structured service. If an API or structured download provides the necessary information, I would use it rather than scraping the webpage. Web scraping would be used only when relevant public information is not available through a structured alternative.</p>
-<p>For a project examining crime patterns and neighborhood change, I would collect incident-level crime records over multiple years and connect them to geographic units such as police beats, census tracts, or neighborhoods. I would limit requests to the variables and time periods needed, use reasonable request intervals, and cache the raw data locally to avoid repeated requests.</p>
-<p>Because web-based data systems can change, I would monitor field names, record counts, missing values, date ranges, and sample observations after collection. I would also preserve the raw data and record the collection date so that changes in the source can be documented and the data-production process can be reproduced.</p>
+<p>For my research, I am interested in crime analysis, policing, public safety, environmental criminology, crime mapping, and GIS. One potential source is the City of Dallas Open Data and Police Public Data system, which provides public access to police offense and incident information. I would prefer this official source because the data are published by the City of Dallas and Dallas Police Department and are more appropriate for analyzing local crime patterns and locations than a third-party website.</p>
+<p>Before collecting data, I would check the applicable robots.txt file for the specific endpoint and comply with any restrictions it specifies. The City of Dallas makes public data available for exploration and analysis through its Open Data system, while its general website disclaimer restricts commercial use without written permission. The City also provides structured access through GIS REST services, including police geographic layers that support formats such as JSON and GeoJSON and pagination. Therefore, when the necessary variables are available through an API, REST service, or downloadable dataset, I would use those structured sources rather than scrape webpages directly. Web scraping would only be used when relevant public information is available on a webpage but not through a structured alternative.</p>
+<p>For a project examining crime patterns and neighborhood change, I would collect incident-level crime records over multiple years and connect them to geographic units such as police beats, census tracts, or neighborhoods. I would limit requests to the variables and time periods needed, use pagination and reasonable request intervals when necessary, and cache the raw data locally to avoid repeated requests to the server.</p>
+<p>Because web-based data systems can change over time, I would monitor field names, record counts, missing values, date ranges, and sample observations after collection. I would also preserve the original raw data and record the collection date so that changes in the source can be documented and the data-production process can be reproduced.</p>
+</section>
+</section>
+<section id="ai-use-acknowledgment" class="level2">
+<h2 class="anchored" data-anchor-id="ai-use-acknowledgment">AI Use Acknowledgment</h2>
+<p>ChatGPT was used to assist with R coding, troubleshooting, and clarification of assignment requirements. It was also used to help interpret scraping outputs, refine data-cleaning steps, and organize the comparison between the Wikipedia and World Bank data. I tested the suggested code in RStudio, reviewed the outputs, and made the final decisions about the analysis and written explanations.</p>
 
 
 <!-- -->
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1725,7 +1730,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb44-225"><a href="#cb44-225" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-226"><a href="#cb44-226" aria-hidden="true" tabindex="-1"></a><span class="fu">### What Changed When the Target Changed?</span></span>
 <span id="cb44-227"><a href="#cb44-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-228"><a href="#cb44-228" aria-hidden="true" tabindex="-1"></a>Changing the target page required me to inspect the new table structure again rather than assuming that the same table number, column names, and formatting would remain valid. Wikipedia pages do not share a single fixed schema, so code written for one table may fail or return incorrect columns when used on another page.</span>
+<span id="cb44-228"><a href="#cb44-228" aria-hidden="true" tabindex="-1"></a>Changing the target page meant that the original table index, column names, and table structure could no longer be assumed to work. I had to inspect the new page and identify the appropriate table and country-related column again because Wikipedia pages do not share a single fixed schema.</span>
 <span id="cb44-229"><a href="#cb44-229" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-230"><a href="#cb44-230" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2c. Clean the Foreign-Exchange Reserves Data</span></span>
 <span id="cb44-231"><a href="#cb44-231" aria-hidden="true" tabindex="-1"></a></span>
@@ -1907,7 +1912,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb44-427"><a href="#cb44-427" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>)</span>
 <span id="cb44-428"><a href="#cb44-428" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb44-429"><a href="#cb44-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-430"><a href="#cb44-430" aria-hidden="true" tabindex="-1"></a>The Wikipedia and World Bank reserve values differ substantially for several countries. One important reason is that the two sources do not always represent the same reporting period. The World Bank data used here are from 2024, while the Wikipedia table contains country-specific reporting dates ranging from 2024 to 2026. Therefore, some of the observed differences likely reflect changes in reserve holdings over time, in addition to differences in source updates and reporting practices.</span>
+<span id="cb44-430"><a href="#cb44-430" aria-hidden="true" tabindex="-1"></a>The Wikipedia and World Bank reserve values differ substantially for several countries. For example, the comparison shows particularly large percentage differences for countries such as South Sudan, Gabon, North Macedonia, and Mozambique. One important reason is that the two sources do not always represent the same reporting period. The World Bank data used here are from 2024, while the Wikipedia table contains country-specific reporting dates ranging from 2024 to 2026. Therefore, some of the observed differences likely reflect changes in reserve holdings over time, in addition to differences in source updates and reporting practices.</span>
 <span id="cb44-431"><a href="#cb44-431" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-432"><a href="#cb44-432" aria-hidden="true" tabindex="-1"></a><span class="fu">### When Is Scraping the Right Tool?</span></span>
 <span id="cb44-433"><a href="#cb44-433" aria-hidden="true" tabindex="-1"></a></span>
@@ -1917,13 +1922,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb44-437"><a href="#cb44-437" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-438"><a href="#cb44-438" aria-hidden="true" tabindex="-1"></a><span class="fu">### Web Data Acquisition Plan</span></span>
 <span id="cb44-439"><a href="#cb44-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-440"><a href="#cb44-440" aria-hidden="true" tabindex="-1"></a>For my research, I am interested in crime analysis, policing, public safety, environmental criminology, crime mapping, and GIS. One potential source is the City of Dallas Open Data and Police Public Data system, which provides public access to police offense and incident information. I would prefer this official source because it comes directly from the City of Dallas and Dallas Police Department and is more appropriate for analyzing local crime patterns and locations than a third-party website.</span>
+<span id="cb44-440"><a href="#cb44-440" aria-hidden="true" tabindex="-1"></a>For my research, I am interested in crime analysis, policing, public safety, environmental criminology, crime mapping, and GIS. One potential source is the City of Dallas Open Data and Police Public Data system, which provides public access to police offense and incident information. I would prefer this official source because the data are published by the City of Dallas and Dallas Police Department and are more appropriate for analyzing local crime patterns and locations than a third-party website.</span>
 <span id="cb44-441"><a href="#cb44-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-442"><a href="#cb44-442" aria-hidden="true" tabindex="-1"></a>Before collecting data, I would check the site's <span class="in">`robots.txt`</span> file and Terms of Service and determine whether the needed data are available through an API, downloadable file, or other structured service. If an API or structured download provides the necessary information, I would use it rather than scraping the webpage. Web scraping would be used only when relevant public information is not available through a structured alternative.</span>
+<span id="cb44-442"><a href="#cb44-442" aria-hidden="true" tabindex="-1"></a>Before collecting data, I would check the applicable robots.txt file for the specific endpoint and comply with any restrictions it specifies. The City of Dallas makes public data available for exploration and analysis through its Open Data system, while its general website disclaimer restricts commercial use without written permission. The City also provides structured access through GIS REST services, including police geographic layers that support formats such as JSON and GeoJSON and pagination. Therefore, when the necessary variables are available through an API, REST service, or downloadable dataset, I would use those structured sources rather than scrape webpages directly. Web scraping would only be used when relevant public information is available on a webpage but not through a structured alternative.</span>
 <span id="cb44-443"><a href="#cb44-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-444"><a href="#cb44-444" aria-hidden="true" tabindex="-1"></a>For a project examining crime patterns and neighborhood change, I would collect incident-level crime records over multiple years and connect them to geographic units such as police beats, census tracts, or neighborhoods. I would limit requests to the variables and time periods needed, use reasonable request intervals, and cache the raw data locally to avoid repeated requests.</span>
+<span id="cb44-444"><a href="#cb44-444" aria-hidden="true" tabindex="-1"></a>For a project examining crime patterns and neighborhood change, I would collect incident-level crime records over multiple years and connect them to geographic units such as police beats, census tracts, or neighborhoods. I would limit requests to the variables and time periods needed, use pagination and reasonable request intervals when necessary, and cache the raw data locally to avoid repeated requests to the server.</span>
 <span id="cb44-445"><a href="#cb44-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-446"><a href="#cb44-446" aria-hidden="true" tabindex="-1"></a>Because web-based data systems can change, I would monitor field names, record counts, missing values, date ranges, and sample observations after collection. I would also preserve the raw data and record the collection date so that changes in the source can be documented and the data-production process can be reproduced.</span>
+<span id="cb44-446"><a href="#cb44-446" aria-hidden="true" tabindex="-1"></a>Because web-based data systems can change over time, I would monitor field names, record counts, missing values, date ranges, and sample observations after collection. I would also preserve the original raw data and record the collection date so that changes in the source can be documented and the data-production process can be reproduced.</span>
+<span id="cb44-447"><a href="#cb44-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-448"><a href="#cb44-448" aria-hidden="true" tabindex="-1"></a><span class="fu">## AI Use Acknowledgment</span></span>
+<span id="cb44-449"><a href="#cb44-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-450"><a href="#cb44-450" aria-hidden="true" tabindex="-1"></a>ChatGPT was used to assist with R coding, troubleshooting, and clarification of assignment requirements. It was also used to help interpret scraping outputs, refine data-cleaning steps, and organize the comparison between the Wikipedia and World Bank data. I tested the suggested code in RStudio, reviewed the outputs, and made the final decisions about the analysis and written explanations.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
