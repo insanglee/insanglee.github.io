@@ -379,7 +379,7 @@ forex_compare2 |>
   head(20)
 ```
 
-The Wikipedia and World Bank reserve values differ substantially for several countries. For example, the comparison shows particularly large percentage differences for countries such as South Sudan, Gabon, North Macedonia, and Mozambique. One important reason is that the two sources do not always represent the same reporting period. The World Bank data used here are from 2024, while the Wikipedia table contains country-specific reporting dates ranging from 2024 to 2026. Therefore, some of the observed differences likely reflect changes in reserve holdings over time, in addition to differences in source updates and reporting practices.
+The Wikipedia and World Bank reserve values differ substantially for several countries. For example, the largest percentage differences appear for South Sudan, Gabon, North Macedonia, and Mozambique. Some differences may reflect reporting vintages because the World Bank values are from 2024, whereas the Wikipedia table contains country-specific dates ranging from 2024 to 2026. However, the extremely large differences for some countries also suggest differences in source coverage, reporting conventions, or data quality across the Wikipedia entries.
 
 ### When Is Scraping the Right Tool?
 
