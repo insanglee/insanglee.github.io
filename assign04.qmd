@@ -1,402 +1,493 @@
 ---
-title: "Assignment 4: Webscraping 1"
-author: "Insang Lee"
-format:
-  html:
-    code-fold: true
-    code-tools: true
-execute:
-  warning: false
-  message: false
+title: "Assignment 4: 48-Hour Chart Hackathon"
+author: Insang Lee, Minyeong Yoon 
+format: html
 ---
 
 ## Setup
 
 ```{r}
-library(rvest)
-library(dplyr)
-library(stringr)
-library(purrr)
-library(readr)
-library(janitor)
-library(lubridate)
-library(robotstxt)
-library(WDI)
-```
+#| warning: false
+#| message: false
 
-## 0. Ask Permission First
+library(readxl) 
+library(tidyverse) 
+library(patchwork) 
+library(dplyr) 
+library(ggplot2) 
+library(gt) 
+library(gtExtras) 
 
-Before scraping the Wikipedia page, I checked whether the target path is permitted by the site's robots.txt rules.
-
-```{r}
-wiki_url <- "https://en.wikipedia.org/wiki/List_of_countries_by_foreign_exchange_reserves"
-
-paths_allowed(wiki_url)
-```
-
-The result indicates that the target path is permitted under the site's robots.txt rules.
-
-## 1. Warm Up: Books to Scrape
-
-I first practiced web scraping on Books to Scrape, a website designed specifically for scraping practice.
-
-### Scrape One Page
-
-```{r}
-books_url <- "https://books.toscrape.com/catalogue/page-1.html"
-
-books_page <- read_html(books_url)
-
-books_one_page <- tibble(
-  title = books_page |>
-    html_elements("article.product_pod h3 a") |>
-    html_attr("title"),
-  
-  price = books_page |>
-    html_elements(".price_color") |>
-    html_text2() |>
-    parse_number(),
-  
-  rating = books_page |>
-    html_elements(".star-rating") |>
-    html_attr("class") |>
-    str_remove("star-rating ")
+hpi <- read_excel(
+  "Happy-Planet-Index-2006-2025-public-data-set.xlsx",
+  sheet = "All Data",
+  skip = 1
 )
 
-books_one_page
-```
-
-### Scrape Five Pages
-
-```{r}
-scrape_books_page <- function(page_number) {
-  
-  url <- paste0(
-    "https://books.toscrape.com/catalogue/page-",
-    page_number,
-    ".html"
-  )
-  
-  page <- read_html(url)
-  
-  tibble(
-    title = page |>
-      html_elements("article.product_pod h3 a") |>
-      html_attr("title"),
-    
-    price = page |>
-      html_elements(".price_color") |>
-      html_text2() |>
-      parse_number(),
-    
-    rating = page |>
-      html_elements(".star-rating") |>
-      html_attr("class") |>
-      str_remove("star-rating "),
-    
-    page = page_number
-  )
-}
-
-books <- map_dfr(1:5, scrape_books_page)
-
-books
+hpi_2025 <- hpi %>%
+  filter(Year == 2025)
 ```
 
 ```{r}
-dim(books)
+#| include: false
+
+names(hpi)
+nrow(hpi_2025)
+unique(hpi_2025$Year)
+summary(hpi_2025)
 ```
 
-The five scraped pages were combined into one dataframe containing book titles, prices, and ratings.
+## Chart 1: Variable-Width Column
 
-## 2. Scrape the Wikipedia Foreign-Exchange Reserves Table
-
-```{r}
-wiki_page <- read_html(wiki_url)
-
-wiki_tables <- wiki_page |>
-  html_elements("table") |>
-  html_table(fill = TRUE, convert = FALSE)
-
-length(wiki_tables)
-```
-
-The page contains multiple HTML tables. I inspected the tables to identify the foreign-exchange reserves table.
+The 2025 HPI data were summarized by continent. The width of each column represents total population, while the height represents mean HPI across countries within each continent.
 
 ```{r}
-map(wiki_tables, names)
-```
-
-```{r}
-map(wiki_tables, dim)
-```
-
-### Select the Foreign-Exchange Reserves Table
-
-The following code looks for a table containing a country-related column.
-
-```{r}
-country_table_index <- which(
-  map_lgl(
-    wiki_tables,
-    ~ any(str_detect(
-      names(.x),
-      regex("country|economy", ignore_case = TRUE)
-    ))
-  )
-)
-
-country_table_index
-```
-
-```{r}
-forex_raw <- wiki_tables[[country_table_index[1]]]
-
-forex_raw
-```
-
-## 2b. Scrape a Different Wikipedia Table
-
-For the second example, I chose Wikipedia's list of countries and dependencies by population.
-
-```{r}
-population_url <- "https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population"
-
-paths_allowed(population_url)
-```
-
-```{r}
-population_page <- read_html(population_url)
-
-population_tables <- population_page |>
-  html_elements("table") |>
-  html_table(fill = TRUE)
-
-map(population_tables, names)
-```
-
-```{r}
-population_table_index <- which(
-  map_lgl(
-    population_tables,
-    ~ any(str_detect(
-      names(.x),
-      regex("country|location", ignore_case = TRUE)
-    ))
-  )
-)
-
-population_table_index
-```
-
-```{r}
-population_raw <- population_tables[[population_table_index[1]]]
-
-population_raw
-```
-
-### What Changed When the Target Changed?
-
-Changing the target page meant that the original table index, column names, and table structure could no longer be assumed to work. I had to inspect the new page and identify the appropriate table and country-related column again because Wikipedia pages do not share a single fixed schema.
-
-## 2c. Clean the Foreign-Exchange Reserves Data
-
-First, I clean the column names.
-
-```{r}
-forex_clean <- forex_raw |>
-  clean_names()
-
-names(forex_clean)
-```
-
-Next, I remove footnote markers and extra spaces from character variables.
-
-```{r}
-forex_clean <- forex_clean |>
+hpi_continent <- hpi_2025 %>%
+  group_by(Continent) %>%
+  summarise(
+    population = sum(Population, na.rm = TRUE),
+    mean_hpi = mean(HPI, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
   mutate(
-    across(
-      where(is.character),
-      ~ .x |>
-        str_replace_all("\\[[0-9]+\\]", "") |>
-        str_replace_all("\u2009", " ") |>
-        str_squish()
+    continent_name = case_when(
+      Continent == 1 ~ "Latin America",
+      Continent == 2 ~ "N America & Oceania",
+      Continent == 3 ~ "Western Europe",
+      Continent == 4 ~ "Middle East & N. Africa",
+      Continent == 5 ~ "Africa",
+      Continent == 6 ~ "South Asia",
+      Continent == 7 ~ "Eastern Europe & Central Asia",
+      Continent == 8 ~ "East Asia"
     )
-  )
-```
-
-The scraped table contains repeated header rows, so I remove them.
-
-```{r}
-forex_clean <- forex_clean |>
-  filter(
-    country_as_recognized_by_the_un !=
-      "Country(as recognized by the UN)"
-  )
-```
-
-### Remove Total or World Rows
-
-```{r}
-forex_clean <- forex_clean |>
-  filter(
-    !if_any(
-      everything(),
-      ~ str_detect(
-        as.character(.x),
-        regex("^(Total|World)$", ignore_case = TRUE)
-      )
-    )
-  )
-```
-
-### Clean the Date Variable
-
-The `last_reporteddate` variable was imported as character text, so I convert it to a standard date format.
-
-```{r}
-forex_clean <- forex_clean |>
+  ) %>%
+  arrange(desc(mean_hpi)) %>%
   mutate(
-    last_reporteddate = as.Date(
-      parse_date_time(
-        last_reporteddate,
-        orders = c("d B Y", "d b Y")
-      )
+    xmax = cumsum(population),
+    xmin = lag(xmax, default = 0),
+    xmid = (xmin + xmax) / 2,
+    continent_name = factor(
+      continent_name,
+      levels = continent_name
     )
   )
-
-forex_clean |>
-  select(
-    country_as_recognized_by_the_un,
-    last_reporteddate
-  ) |>
-  head(20)
-```
-
-### Final Cleaned Dataframe
-
-I retain the variables needed for the comparison.
-
-```{r}
-forex_final <- forex_clean |>
-  transmute(
-    country = country_as_recognized_by_the_un,
-    reserves_usd_millions =
-      parse_number(foreign_exchange_reserves),
-    last_reporteddate
-  )
-
-forex_final
-```
-
-## 3. Fetch the Same Quantity from the World Bank API
-
-The World Bank publishes total reserves, including gold, in current U.S. dollars under indicator `FI.RES.TOTL.CD`.
-
-```{r}
-wdi_reserves <- WDI(
-  country = "all",
-  indicator = "FI.RES.TOTL.CD",
-  start = 2024,
-  end = 2024,
-  extra = TRUE
-)
-
-wdi_reserves <- wdi_reserves |>
-  select(
-    country,
-    iso2c,
-    iso3c,
-    year,
-    reserves = FI.RES.TOTL.CD
-  ) |>
-  filter(
-    !is.na(reserves),
-    iso2c != ""
-  )
-
-wdi_reserves
 ```
 
 ```{r}
-dim(wdi_reserves)
+#| include: false
+
+hpi_continent %>%
+  select(continent_name, population, mean_hpi, xmin, xmax)
 ```
 
-## Compare Wikipedia and World Bank Data
-
-The two sources report conceptually similar reserve information, but they may not match exactly because they can differ in reporting dates, source updates, and country coverage.
-
 ```{r}
-forex_compare <- forex_final |>
-  transmute(
-    country = str_remove(country, "\\s\\*$"),
-    wiki_reserves = reserves_usd_millions * 1e6,
-    wikipedia_date = last_reporteddate
-  )
-```
+#| fig-width: 7
+#| fig-height: 4.8
 
-### Compare the Two Sources
+ggplot(hpi_continent) +
+  geom_rect(
+    aes(
+      xmin = xmin,
+      xmax = xmax,
+      ymin = 0,
+      ymax = mean_hpi,
+      fill = continent_name
+    ),
+    color = "white",
+    linewidth = 0.4
+  ) +
 
-To compare the two sources, I match country names and join the Wikipedia reserve values to the 2024 World Bank data.
+  geom_text(
+    aes(
+      x = xmid,
+      y = mean_hpi + 1.2,
+      label = sprintf("%.1f", mean_hpi)
+    ),
+    size = 2.6
+  ) +
 
-```{r}
-forex_compare2 <- forex_compare |>
-  mutate(
-    country = case_when(
-      country == "South Korea" ~ "Korea, Rep.",
-      country == "Russia" ~ "Russian Federation",
-      country == "Turkey" ~ "Turkiye",
-      country == "Hong Kong" ~ "Hong Kong SAR, China",
-      TRUE ~ country
+  scale_fill_manual(
+    values = c(
+      "#0072B2",
+      "#E69F00",
+      "#009E73",
+      "#CC79A7",
+      "#D55E00",
+      "#56B4E9",
+      "#F0E442",
+      "#999999"
     )
+  ) +
+
+  scale_x_continuous(
+    labels = scales::label_number(
+      scale = 1e-6,
+      suffix = "B",
+      accuracy = 0.1
+    ),
+    expand = c(0, 0)
+  ) +
+
+  scale_y_continuous(
+    limits = c(0, 64),
+    breaks = seq(0, 60, 10),
+    expand = c(0, 0)
+  ) +
+
+  labs(
+    title = "Latin America Has the Highest Mean HPI in 2025",
+    subtitle = "Column width represents population; height represents mean HPI",
+    x = "Population (billions)",
+    y = "Mean HPI",
+    fill = NULL,
+    caption = "Source: Happy Planet Index"
+  ) +
+
+  guides(
+    fill = guide_legend(
+      ncol = 1,
+      keywidth = grid::unit(0.38, "cm"), 
+      keyheight = grid::unit(0.28, "cm") 
+    )
+  ) +
+
+  theme_minimal() +
+
+  theme(
+    plot.title = element_text(
+      size = 13,
+      face = "bold",
+      hjust = 0,
+      margin = margin(b = 3)
+    ),
+
+    plot.subtitle = element_text(
+      size = 8,
+      margin = margin(b = 7)
+    ),
+
+    axis.title = element_text(size = 9.5),
+    axis.text = element_text(size = 8.5),
+
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+
+    legend.position = "right",
+    legend.justification = "center",
+    legend.text = element_text(size = 7.8),
+    legend.spacing.y = grid::unit(0.07, "cm"),
+    legend.margin = margin(l = 7),
+
+    plot.caption = element_text(
+      size = 7.5,
+      hjust = 1,
+      margin = margin(t = 4)
+    ),
+
+    plot.margin = margin(
+      t = 5,
+      r = 5,
+      b = 4,
+      l = 5
+    )
+  )
+```
+
+## Chart 2: Table with embedded charts
+
+The 2025 HPI data were used to identify top 15 countries based on the HPI scores. The chart represents HPI with life expectancy, life satisfaction, and ecological footprint scores.
+
+```{r}
+top15 <- hpi_2025 |>
+  filter(!is.na(HPI)) |>
+  arrange(desc(HPI), Country) |>
+  slice_head(n = 15) |>
+  mutate(rank = row_number()) |>
+  select(rank, country = Country, hpi = HPI, life_expectancy = `Life Expectancy`, life_satisfaction = `Life Satisfaction`, footprint = `Ecological Footprint`) 
+
+hpi_bar <- function(values) { 
+  vapply(values, function(value){ 
+    sprintf(
+      paste0(
+        
+      ), 
+      value, "grey10", value
+    )
+  }, character(1))
+} 
+```
+
+```{r}
+plot2 <- top15 |>
+  gt() |>
+  gt_plt_bar(
+    column = hpi,
+    color = "mediumpurple4",
+    scale_type = "number",
+    accuracy = 0.1,
+    keep_column = FALSE
   ) |>
-  left_join(
-    wdi_reserves |>
-      select(
-        country,
-        world_bank_reserves = reserves,
-        world_bank_year = year
+  cols_label(
+    rank = "Rank",
+    country = "Country",
+    hpi = "HPI",
+    life_expectancy = "Life expectancy (years)",
+    life_satisfaction = "Life satisfaction (0–10)",
+    footprint = "Ecological footprint (gha/person)"
+  ) |>
+  fmt_number(
+    columns = c(life_expectancy, life_satisfaction, footprint),
+    decimals = 1
+  ) |>
+  tab_header(
+    title = "Costa Rica leads 2025 Happy Planet Index",
+    subtitle = "Top 15 countries and their sustainable wellbeing indicators"
+  ) |>
+  tab_source_note(
+    source_note = "Source: Happy Planet Index public dataset, 2006–2025. Data year: 2025."
+  )
+
+plot2
+```
+
+## Chart 3: Bar Chart
+
+The 2025 HPI data were used to identify the 20 countries with the highest scores and the 20 countries with the lowest scores. Countries are sorted by HPI within each group.
+
+```{r}
+hpi_ranked <- hpi_2025 %>%
+  filter(!is.na(HPI))
+
+top20 <- hpi_ranked %>%
+  slice_max(
+    order_by = HPI,
+    n = 20,
+    with_ties = FALSE
+  )
+
+bottom20 <- hpi_ranked %>%
+  slice_min(
+    order_by = HPI,
+    n = 20,
+    with_ties = FALSE
+  )
+```
+
+```{r}
+#| include: false
+
+nrow(top20)
+nrow(bottom20)
+
+top20 %>%
+  select(Country, HPI) %>%
+  arrange(desc(HPI))
+
+bottom20 %>%
+  select(Country, HPI) %>%
+  arrange(desc(HPI))
+```
+
+```{r}
+#| fig-width: 12
+#| fig-height: 7
+#| fig-align: center
+
+p_top <- ggplot(
+  top20,
+  aes(
+    x = HPI,
+    y = forcats::fct_reorder(Country, HPI)
+  )
+) +
+  geom_col(
+    fill = "#0072B2",
+    width = 0.72
+  ) +
+  geom_text(
+    aes(
+      label = sprintf("%.1f", HPI)
+    ),
+    hjust = -0.15,
+    size = 2.5
+  ) +
+  scale_x_continuous(
+    limits = c(0, 72),
+    breaks = seq(0, 70, 10),
+    expand = c(0, 0)
+  ) +
+  labs(
+    title = "Top 20",
+    x = "Happy Planet Index",
+    y = NULL
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(
+      size = 11,
+      face = "bold",
+      margin = margin(b = 5)
+    ),
+    axis.title.x = element_text(size = 9.5),
+    axis.text = element_text(size = 8),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank()
+  )
+
+p_bottom <- ggplot(
+  bottom20,
+  aes(
+    x = HPI,
+    y = forcats::fct_reorder(Country, HPI)
+  )
+) +
+  geom_col(
+    fill = "#D55E00",
+    width = 0.72
+  ) +
+  geom_text(
+    aes(
+      label = sprintf("%.1f", HPI)
+    ),
+    hjust = -0.15,
+    size = 2.5
+  ) +
+  scale_x_continuous(
+    limits = c(0, 72),
+    breaks = seq(0, 70, 10),
+    expand = c(0, 0)
+  ) +
+  labs(
+    title = "Bottom 20",
+    x = "Happy Planet Index",
+    y = NULL
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(
+      size = 11,
+      face = "bold",
+      margin = margin(b = 5)
+    ),
+    axis.title.x = element_text(size = 9.5),
+    axis.text = element_text(size = 8),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank()
+  )
+
+p_top + p_bottom +
+  plot_annotation(
+    title = "A Clear HPI Gap Separates the Top and Bottom 20 Countries in 2025",
+    subtitle = "The lowest score in the Top 20 is 57.6, compared with 41.8 at the top of the Bottom 20",
+    caption = "Source: Happy Planet Index",
+    theme = theme(
+      plot.title = element_text(
+        size = 14,
+        face = "bold",
+        margin = margin(b = 3)
       ),
-    by = "country"
-  ) |>
-  mutate(
-    difference = wiki_reserves - world_bank_reserves,
-    percent_difference =
-      100 * difference / world_bank_reserves
+      plot.subtitle = element_text(
+        size = 9,
+        margin = margin(b = 7)
+      ),
+      plot.caption = element_text(
+        size = 7.5,
+        hjust = 1,
+        margin = margin(t = 5)
+      )
+    )
   )
-
-forex_compare2 |>
-  select(
-    country,
-    wiki_reserves,
-    wikipedia_date,
-    world_bank_reserves,
-    world_bank_year,
-    difference,
-    percent_difference
-  ) |>
-  arrange(desc(abs(percent_difference))) |>
-  head(20)
 ```
 
-The Wikipedia and World Bank reserve values differ substantially for several countries. For example, the largest percentage differences appear for South Sudan, Gabon, North Macedonia, and Mozambique. Some differences may reflect reporting vintages because the World Bank values are from 2024, whereas the Wikipedia table contains country-specific dates ranging from 2024 to 2026. However, the extremely large differences for some countries also suggest differences in source coverage, reporting conventions, or data quality across the Wikipedia entries.
+## Chart 4: Column chart
 
-### When Is Scraping the Right Tool?
+The 2025 HPI data were used to compare HPI scores across continent level. Latin America showed the highest scores of HPI in 2025 and Africa shows the lowest score. Countries with missing HPI scores are excluded.
 
-Web scraping is appropriate when the information needed for research is publicly available on a website but is not available through a structured API, downloadable dataset, or other reliable machine-readable source. When an official API or structured dataset exists, it is generally preferable because its schema and data-generation process are more stable and reproducible than scraping a changing webpage.
+```{r}
+region_summary <- hpi_2025 |>
+  filter(!is.na(HPI)) |>
+  group_by(Continent) |>
+  summarise(
+    mean_hpi = mean(HPI),
+    n_countries = n(),
+    .groups = "drop"
+  ) |>
+  mutate(
+    region = case_when(
+      Continent == 1 ~ "Latin America",
+      Continent == 2 ~ "N America & Oceania",
+      Continent == 3 ~ "Western Europe",
+      Continent == 4 ~ "Middle East & N. Africa",
+      Continent == 5 ~ "Africa",
+      Continent == 6 ~ "South Asia",
+      Continent == 7 ~ "Eastern Europe & Central Asia",
+      Continent == 8 ~ "East Asia"
+    )
+  ) |>
+  arrange(desc(mean_hpi)) |>
+  mutate(
+    region = factor(region, levels = region)
+  )
+```
 
-## 4. Data Plan
+```{r}
+plot4 <- ggplot(
+  region_summary,
+  aes(x = region, y = mean_hpi)
+) +
+  geom_col(
+  aes(fill = region == "Latin America"),
+  width = 0.7,
+  position = position_dodge(width = 0.8)
+) +
+scale_fill_manual(
+  values = c(
+    "TRUE" = "mediumpurple3",
+    "FALSE" = "thistle1"
+  ),
+  guide = "none"
+) +
+  geom_text(
+    aes(label = sprintf("%.1f", mean_hpi)),
+    vjust = -0.4,
+    size = 4
+  ) +
+  scale_x_discrete(
+    labels = function(x) vapply(
+      x,
+      function(label) paste(strwrap(label, width = 16), collapse = "\n"),
+      character(1)
+    )
+  ) +
+  scale_y_continuous(
+    limits = c(0, 100),
+    breaks = seq(0, 100, 10),
+    expand = expansion(mult = c(0, 0))
+  ) +
+  labs(
+    title = "Latin America has the highest average HPI in 2025",
+    subtitle = "Each country receives equal weight in the regional average",
+    x = "Region",
+    y = "Mean HPI score",
+    caption = paste(
+      "Source: Happy Planet Index public dataset, 2006–2025."
+    )
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold"),
+    axis.text.x = element_text(size = 7.5),
+    plot.caption = element_text(hjust = 0)
+  )
 
-### Web Data Acquisition Plan
+plot4 
+```
 
-For my research, I am interested in crime analysis, policing, public safety, environmental criminology, crime mapping, and GIS. One potential source is the City of Dallas Open Data and Police Public Data system, which provides public access to police offense and incident information. I would prefer this official source because the data are published by the City of Dallas and Dallas Police Department and are more appropriate for analyzing local crime patterns and locations than a third-party website.
+## Supporting Documentation
 
-Before collecting data, I would check the applicable robots.txt file for the specific endpoint and comply with any restrictions it specifies. The City of Dallas makes public data available for exploration and analysis through its Open Data system, while its general website disclaimer restricts commercial use without written permission. The City also provides structured access through GIS REST services, including police geographic layers that support formats such as JSON and GeoJSON and pagination. Therefore, when the necessary variables are available through an API, REST service, or downloadable dataset, I would use those structured sources rather than scrape webpages directly. Web scraping would only be used when relevant public information is available on a webpage but not through a structured alternative.
-
-For a project examining crime patterns and neighborhood change, I would collect incident-level crime records over multiple years and connect them to geographic units such as police beats, census tracts, or neighborhoods. I would limit requests to the variables and time periods needed, use pagination and reasonable request intervals when necessary, and cache the raw data locally to avoid repeated requests to the server.
-
-Because web-based data systems can change over time, I would monitor field names, record counts, missing values, date ranges, and sample observations after collection. I would also preserve the original raw data and record the collection date so that changes in the source can be documented and the data-production process can be reproduced.
-
-## AI Use Acknowledgment
-
-ChatGPT was used to assist with R coding, troubleshooting, and clarification of assignment requirements. It was also used to help interpret scraping outputs, refine data-cleaning steps, and organize the comparison between the Wikipedia and World Bank data. I tested the suggested code in RStudio, reviewed the outputs, and made the final decisions about the analysis and written explanations.
+- [README](README.md)
+- [AI Prompts and Revisions](prompts.md)
+- [Synergy Report](synergyreport.md)
+- [Session Information](sessionInfo.txt)
