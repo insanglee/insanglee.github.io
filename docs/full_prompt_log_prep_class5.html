@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>EPPS 6356 – Insang Lee</title>
+<title>AI Full Prompt Log – Insang Lee</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -151,7 +151,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#assignments" id="toc-assignments" class="nav-link active" data-scroll-target="#assignments">Assignments</a></li>
+  <li><a href="#full-prompt-log" id="toc-full-prompt-log" class="nav-link active" data-scroll-target="#full-prompt-log">Full Prompt Log</a>
+  <ul class="collapse">
+  <li><a href="#prompt-1" id="toc-prompt-1" class="nav-link" data-scroll-target="#prompt-1">Prompt 1</a></li>
+  <li><a href="#prompt-2" id="toc-prompt-2" class="nav-link" data-scroll-target="#prompt-2">Prompt 2</a></li>
+  <li><a href="#prompt-3" id="toc-prompt-3" class="nav-link" data-scroll-target="#prompt-3">Prompt 3</a></li>
+  <li><a href="#prompt-4" id="toc-prompt-4" class="nav-link" data-scroll-target="#prompt-4">Prompt 4</a></li>
+  <li><a href="#prompt-5" id="toc-prompt-5" class="nav-link" data-scroll-target="#prompt-5">Prompt 5</a></li>
+  <li><a href="#prompt-6" id="toc-prompt-6" class="nav-link" data-scroll-target="#prompt-6">Prompt 6</a></li>
+  <li><a href="#prompt-7" id="toc-prompt-7" class="nav-link" data-scroll-target="#prompt-7">Prompt 7</a></li>
+  <li><a href="#prompt-8" id="toc-prompt-8" class="nav-link" data-scroll-target="#prompt-8">Prompt 8</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -160,7 +170,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">EPPS 6356</h1>
+<h1 class="title">AI Full Prompt Log</h1>
 </div>
 
 
@@ -177,16 +187,70 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="assignments" class="level2">
-<h2 class="anchored" data-anchor-id="assignments">Assignments</h2>
-<ul>
-<li><a href="./epps6356_assign01.html">Assignment 1</a></li>
-<li><a href="./epps6356_assign02.html">Assignment 2</a></li>
-<li><a href="./epps6356_assign03.html">Assignment 3</a></li>
-<li><a href="./prep_class5_write_and_post.html">Prepare for Class 5: Write and Post</a></li>
-</ul>
+<section id="full-prompt-log" class="level2">
+<h2 class="anchored" data-anchor-id="full-prompt-log">Full Prompt Log</h2>
+<section id="prompt-1" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-1">Prompt 1</h3>
+<p>Please review the following assignment I wrote and let me know if there are any grammatical errors, incorrect expressions, or statements whose meanings are inaccurate.</p>
+<p>Big Data Analytics Pitfalls Google Flu Trends (GFT) was the system to rapidly estimate influenza outbreaks by using Google search data. In the early study, frequency of search queries shows high correlation with CDC influenza-like illness data, so it shows possibility to estimate influenza activity one or two weeks earlier than official report (Ginsberg et al., 2009). However, later GFT reveals the problem that largely overestimate the real influenza standards.</p>
+<p>Lazer et al.&nbsp;(2014) argue that its causes are big data hubris and algorithm dynamics. Big data hubris are the overconfident attitude that believes large amounts of data can replace with traditional data collection and analysis. However, still there are problems of measurement validity and reliability even though there are a lot of data (Lazer et al., 2014).</p>
+<p>Algorithm dynamics means the phenomenon where the data-generating process itself changes as search algorithms and user behavior have changed over time. If the search results or recommendation systems are changed, the peoples’ search way can be changed, so it is difficult to assume the model which works well in the past, shows continuously same performance. Also, the core search terms and analytical process are not fully opened, so it was difficult that other researchers accurately replicate the original analysis (Lazer et al., 2014).</p>
+<p>Through this reading, I could learn that a large amount of data alone does not guarantee a better analysis, and it is important to understand how data are generated and measured.</p>
+<p>Overfitting and Overparameterization Overfitting is the phenomenon that the model is excessively tailored to specific data rather than general patterns, leading in poor performance on new data. Overparameterization is the situation that using too many variables or candidate predictors compared to observations. The two concepts are related, and the risk of overfitting can increase as more candidates are considered.</p>
+<p>GFT compared 50 million search terms to 1,152 CDC observations. Among these candidates, if we select the search term that show high correlation, the variable that shows spurious patterns coincidentally can be included even though it is not directly related to actual influenza. In fact, the search term which is not directly related to influenza as high school basketball show high corrections (Lazer et al., 2014).</p>
+<p>Therefore, it should be judged the model is succussed just showing high corrections and good model fit in training data. It is important to validate whether performances is maintained in new data. GFT shows the larger data or more variables are not always meaning better prediction.</p>
+<p>Wickham Talk: Data Visualization and Data Science In Wickham’s talk, many techniques and methods are introduced, such as the grammar of graphics, tidy data, tidyverse, ggplot2, data reshaping, faceting, animation, overplotting, functions and iterations, and reproducible reports. Especially, Wickham emphasizes that if we organize data in a tidy structure and make visualizations based on the principles of the grammar of graphics, we can make the analysis process more consistent and reproducible.</p>
+<p>Moreover, Wickham distinguishes exploratory visualization and polished visualization. In exploratory stage, identifying patters or problems are important, and in final visualization, it is important to communicate results clearly to others. I agree that visualization and modeling is not subtitle but complementary relationship. Visualization can show the patterns a model may miss, and model can more systematically summarize or validate relationship.</p>
+<p>However, using good does are not automatically create good visualization. Interpretation can be differ depending by the selection on variables, scales, colors, and coordinate system, it is still researcher’s role to judge which visualization fit to research question and audience.</p>
+</section>
+<section id="prompt-2" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-2">Prompt 2</h3>
+<p>Please also check the citations I currently included. Let me know if any citation is incorrectly placed, if any citation should be added, or if any existing citation should be revised.</p>
+</section>
+<section id="prompt-3" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-3">Prompt 3</h3>
+<p>I copied the following citations from my university library. Can I use them as they are?</p>
+<p>Ginsberg, J., Mohebbi, M. H., Patel, R. S., Brammer, L., Smolinski, M. S., &amp; Brilliant, L. (2009). Detecting influenza epidemics using search engine query data. Nature, 457(7232), 1012–1014. https://doi.org/10.1038/nature07634</p>
+<p>Lazer, D., Kennedy, R., King, G., &amp; Vespignani, A. (2014). The Parable of Google Flu: Traps in Big Data Analysis. Science (American Association for the Advancement of Science), 343(6176), 1203–1205. https://doi.org/10.1126/science.1248506</p>
+<p>I also watched the following YouTube video. Please check how I should list it in the references. https://www.youtube.com/watch?v=9YTNYT1maa4</p>
+</section>
+<section id="prompt-4" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-4">Prompt 4</h3>
+<p>[Assignment guideline file attached.]</p>
+<p>Please review the assignment guideline and compare it with what I wrote. Check whether my draft includes everything required by the assignment, whether anything is missing or incorrect, and whether the content itself is accurate.</p>
+</section>
+<section id="prompt-5" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-5">Prompt 5</h3>
+<p>Can I just submit it as it is now?</p>
+</section>
+<section id="prompt-6" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-6">Prompt 6</h3>
+<p>This is the final version I plan to submit. Please do one final check.</p>
+<p>Big Data Analytics Pitfalls Google Flu Trends (GFT) was a system designed to rapidly estimate influenza outbreaks by using Google search data. In the early study, the frequency of search queries showed a high correlation with CDC influenza-like illness data, so it showed the possibility of estimating influenza activity one or two weeks earlier than official reports (Ginsberg et al., 2009). However, later GFT revealed a problem of largely overestimating actual influenza levels.</p>
+<p>Lazer et al.&nbsp;(2014) argue that two of the causes were big data hubris and algorithm dynamics. Big data hubris is an overconfident attitude that assumes large amounts of data can replace traditional data collection and analysis. However, problems with measurement validity and reliability still remain even when there is a large amount of data (Lazer et al., 2014).<br>
+Algorithm dynamics means the phenomenon where the data-generating process itself changes as search algorithms and user behavior change over time. If search results or recommendation systems change, the way people search can also change, so it is difficult to assume that a model that worked well in the past will continuously show the same performance. Also, the core search terms and analytical process were not fully disclosed, so it was difficult for other researchers to accurately replicate the original analysis (Lazer et al., 2014).</p>
+<p>Through this reading, I learned that a large amount of data alone does not guarantee better analysis, and that it is important to understand how data are generated and measured.</p>
+<p>Overfitting and Overparameterization Overfitting is the phenomenon in which a model is excessively tailored to specific data rather than general patterns, leading to poor performance on new data. Overparameterization is the situation of using too many variables or candidate predictors compared to the number of observations. The two concepts are related, and the risk of overfitting can increase as more candidates are considered.</p>
+<p>GFT compared 50 million search terms to 1,152 CDC observations. Among these candidates, if we select search terms that show high correlations, variables that show spurious patterns by chance can be included even though they are not directly related to actual influenza. In fact, a search term that was not directly related to influenza, such as “high school basketball,” showed a high correlation (Lazer et al., 2014).</p>
+<p>Therefore, a model should not be judged as successful just because it shows high correlations and a good model fit in the training data. It is important to validate whether performance is maintained in new data. GFT shows that larger amounts of data or more variables do not always mean better prediction. Wickham Talk: Data Visualization and Data Science</p>
+<p>In Wickham’s talk, many techniques and methods are introduced, such as the grammar of graphics, tidy data, tidyverse, ggplot2, data reshaping, faceting, animation, overplotting, functions and iterations, and reproducible reports. In particular, his discussion shows that if we organize data in a tidy structure and make visualizations based on the principles of the grammar of graphics, we can make the analysis process more consistent and reproducible.</p>
+<p>Moreover, Wickham distinguishes between exploratory visualization and polished visualization. In the exploratory stage, identifying patterns or problems is important, and in the final visualization, it is important to communicate results clearly to others. I agree that visualization and modeling are not substitutes, but have a complementary relationship. Visualization can show patterns that a model may miss, and a model can more systematically summarize or validate relationships.</p>
+<p>However, using good tools does not automatically create a good visualization. Interpretation can differ depending on the selection of variables, scales, colors, and coordinate systems. Therefore, it is still the researcher’s role to judge which visualization fits the research question and audience.</p>
+<p>References</p>
+<p>Ginsberg, J., Mohebbi, M. H., Patel, R. S., Brammer, L., Smolinski, M. S., &amp; Brilliant, L. (2009). Detecting influenza epidemics using search engine query data. Nature, 457(7232), 1012–1014. https://doi.org/10.1038/nature07634</p>
+<p>Lazer, D., Kennedy, R., King, G., &amp; Vespignani, A. (2014). The Parable of Google Flu: Traps in Big Data Analysis. Science (American Association for the Advancement of Science), 343(6176), 1203–1205. https://doi.org/10.1126/science.1248506</p>
+<p>Wickham, H. (n.d.). Data visualization and data science [Video]. YouTube. https://www.youtube.com/watch?v=9YTNYT1maa4</p>
+</section>
+<section id="prompt-7" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-7">Prompt 7</h3>
+<p>Based on our entire conversation about this assignment, create an English version of the full prompts I used and write an AI Use Disclosure for the assignment.</p>
+</section>
+<section id="prompt-8" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-8">Prompt 8</h3>
+<p>The assignment guidelines require me to submit the full prompts exactly, so please create the full prompt log in English rather than summarizing the prompts.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

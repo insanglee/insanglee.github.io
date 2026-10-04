@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>EPPS 6356 – Insang Lee</title>
+<title>Prepare for Class 5: Write and Post – Insang Lee</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -151,7 +151,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#assignments" id="toc-assignments" class="nav-link active" data-scroll-target="#assignments">Assignments</a></li>
+  <li><a href="#big-data-analytics-pitfalls" id="toc-big-data-analytics-pitfalls" class="nav-link active" data-scroll-target="#big-data-analytics-pitfalls">Big Data Analytics Pitfalls</a></li>
+  <li><a href="#overfitting-and-overparameterization" id="toc-overfitting-and-overparameterization" class="nav-link" data-scroll-target="#overfitting-and-overparameterization">Overfitting and Overparameterization</a></li>
+  <li><a href="#wickham-talk-data-visualization-and-data-science" id="toc-wickham-talk-data-visualization-and-data-science" class="nav-link" data-scroll-target="#wickham-talk-data-visualization-and-data-science">Wickham Talk: Data Visualization and Data Science</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#ai-use-disclosure" id="toc-ai-use-disclosure" class="nav-link" data-scroll-target="#ai-use-disclosure">AI Use Disclosure</a></li>
   </ul>
 </nav>
     </div>
@@ -160,7 +164,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">EPPS 6356</h1>
+<h1 class="title">Prepare for Class 5: Write and Post</h1>
 </div>
 
 
@@ -177,14 +181,35 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="assignments" class="level2">
-<h2 class="anchored" data-anchor-id="assignments">Assignments</h2>
-<ul>
-<li><a href="./epps6356_assign01.html">Assignment 1</a></li>
-<li><a href="./epps6356_assign02.html">Assignment 2</a></li>
-<li><a href="./epps6356_assign03.html">Assignment 3</a></li>
-<li><a href="./prep_class5_write_and_post.html">Prepare for Class 5: Write and Post</a></li>
-</ul>
+<section id="big-data-analytics-pitfalls" class="level2">
+<h2 class="anchored" data-anchor-id="big-data-analytics-pitfalls">Big Data Analytics Pitfalls</h2>
+<p>Google Flu Trends (GFT) was a system designed to rapidly estimate influenza outbreaks by using Google search data. In the early study, the frequency of search queries showed a high correlation with CDC influenza-like illness data, so it showed the possibility of estimating influenza activity one or two weeks earlier than official reports (Ginsberg et al., 2009). However, later GFT revealed a problem of largely overestimating actual influenza levels.</p>
+<p>Lazer et al.&nbsp;(2014) argue that two of the causes were big data hubris and algorithm dynamics. Big data hubris is an overconfident attitude that assumes large amounts of data can replace traditional data collection and analysis. However, problems with measurement validity and reliability still remain even when there is a large amount of data (Lazer et al., 2014).</p>
+<p>Algorithm dynamics means the phenomenon where the data-generating process itself changes as search algorithms and user behavior change over time. If search results or recommendation systems change, the way people search can also change, so it is difficult to assume that a model that worked well in the past will continuously show the same performance. Also, the core search terms and analytical process were not fully disclosed, so it was difficult for other researchers to accurately replicate the original analysis (Lazer et al., 2014).</p>
+<p>Through this reading, I learned that a large amount of data alone does not guarantee better analysis, and that it is important to understand how data are generated and measured.</p>
+</section>
+<section id="overfitting-and-overparameterization" class="level2">
+<h2 class="anchored" data-anchor-id="overfitting-and-overparameterization">Overfitting and Overparameterization</h2>
+<p>Overfitting is the phenomenon in which a model is excessively tailored to specific data rather than general patterns, leading to poor performance on new data. Overparameterization is the situation of using too many variables or candidate predictors compared to the number of observations. The two concepts are related, and the risk of overfitting can increase as more candidates are considered.</p>
+<p>GFT compared 50 million search terms to 1,152 CDC observations. Among these candidates, if we select search terms that show high correlations, variables that show spurious patterns by chance can be included even though they are not directly related to actual influenza. In fact, a search term that was not directly related to influenza, such as “high school basketball,” showed a high correlation (Lazer et al., 2014).</p>
+<p>Therefore, a model should not be judged as successful just because it shows high correlations and a good model fit in the training data. It is important to validate whether performance is maintained in new data. GFT shows that larger amounts of data or more variables do not always mean better prediction.</p>
+</section>
+<section id="wickham-talk-data-visualization-and-data-science" class="level2">
+<h2 class="anchored" data-anchor-id="wickham-talk-data-visualization-and-data-science">Wickham Talk: Data Visualization and Data Science</h2>
+<p>In Wickham’s talk, many techniques and methods are introduced, such as the grammar of graphics, tidy data, tidyverse, ggplot2, data reshaping, faceting, animation, overplotting, functions and iterations, and reproducible reports. In particular, his discussion shows that if we organize data in a tidy structure and make visualizations based on the principles of the grammar of graphics, we can make the analysis process more consistent and reproducible.</p>
+<p>Moreover, Wickham distinguishes between exploratory visualization and polished visualization. In the exploratory stage, identifying patterns or problems is important, and in the final visualization, it is important to communicate results clearly to others. I agree that visualization and modeling are not substitutes, but have a complementary relationship. Visualization can show patterns that a model may miss, and a model can more systematically summarize or validate relationships.</p>
+<p>However, using good tools does not automatically create a good visualization. Interpretation can differ depending on the selection of variables, scales, colors, and coordinate systems. Therefore, it is still the researcher’s role to judge which visualization fits the research question and audience.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Ginsberg, J., Mohebbi, M. H., Patel, R. S., Brammer, L., Smolinski, M. S., &amp; Brilliant, L. (2009). Detecting influenza epidemics using search engine query data. <em>Nature, 457</em>(7232), 1012–1014. <a href="https://doi.org/10.1038/nature07634" class="uri">https://doi.org/10.1038/nature07634</a></p>
+<p>Lazer, D., Kennedy, R., King, G., &amp; Vespignani, A. (2014). The Parable of Google Flu: Traps in Big Data Analysis. <em>Science (American Association for the Advancement of Science), 343</em>(6176), 1203–1205. <a href="https://doi.org/10.1126/science.1248506" class="uri">https://doi.org/10.1126/science.1248506</a></p>
+<p>Wickham, H. (n.d.). <em>Data visualization and data science</em> [Video]. YouTube. <a href="https://www.youtube.com/watch?v=9YTNYT1maa4" class="uri">https://www.youtube.com/watch?v=9YTNYT1maa4</a></p>
+</section>
+<section id="ai-use-disclosure" class="level2">
+<h2 class="anchored" data-anchor-id="ai-use-disclosure">AI Use Disclosure</h2>
+<p>I used ChatGPT (OpenAI, GPT-5.6 Sol) to review the English grammar and wording of my draft. I wrote the content myself and used AI to check whether any statements were unclear or factually incorrect. I made the final decisions about all revisions and kept the final version in my own words.</p>
+<p>See the full prompts used here: <a href="full_prompt_log_prep_class5.html">Full Prompt Log</a></p>
 
 
 </section>

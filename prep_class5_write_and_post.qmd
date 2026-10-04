@@ -1,0 +1,45 @@
+---
+title: "Prepare for Class 5: Write and Post"
+format: html
+editor: visual
+---
+
+## Big Data Analytics Pitfalls
+
+Google Flu Trends (GFT) was a system designed to rapidly estimate influenza outbreaks by using Google search data. In the early study, the frequency of search queries showed a high correlation with CDC influenza-like illness data, so it showed the possibility of estimating influenza activity one or two weeks earlier than official reports (Ginsberg et al., 2009). However, later GFT revealed a problem of largely overestimating actual influenza levels.
+
+Lazer et al. (2014) argue that two of the causes were big data hubris and algorithm dynamics. Big data hubris is an overconfident attitude that assumes large amounts of data can replace traditional data collection and analysis. However, problems with measurement validity and reliability still remain even when there is a large amount of data (Lazer et al., 2014).
+
+Algorithm dynamics means the phenomenon where the data-generating process itself changes as search algorithms and user behavior change over time. If search results or recommendation systems change, the way people search can also change, so it is difficult to assume that a model that worked well in the past will continuously show the same performance. Also, the core search terms and analytical process were not fully disclosed, so it was difficult for other researchers to accurately replicate the original analysis (Lazer et al., 2014).
+
+Through this reading, I learned that a large amount of data alone does not guarantee better analysis, and that it is important to understand how data are generated and measured.
+
+## Overfitting and Overparameterization
+
+Overfitting is the phenomenon in which a model is excessively tailored to specific data rather than general patterns, leading to poor performance on new data. Overparameterization is the situation of using too many variables or candidate predictors compared to the number of observations. The two concepts are related, and the risk of overfitting can increase as more candidates are considered.
+
+GFT compared 50 million search terms to 1,152 CDC observations. Among these candidates, if we select search terms that show high correlations, variables that show spurious patterns by chance can be included even though they are not directly related to actual influenza. In fact, a search term that was not directly related to influenza, such as “high school basketball,” showed a high correlation (Lazer et al., 2014).
+
+Therefore, a model should not be judged as successful just because it shows high correlations and a good model fit in the training data. It is important to validate whether performance is maintained in new data. GFT shows that larger amounts of data or more variables do not always mean better prediction.
+
+## Wickham Talk: Data Visualization and Data Science
+
+In Wickham’s talk, many techniques and methods are introduced, such as the grammar of graphics, tidy data, tidyverse, ggplot2, data reshaping, faceting, animation, overplotting, functions and iterations, and reproducible reports. In particular, his discussion shows that if we organize data in a tidy structure and make visualizations based on the principles of the grammar of graphics, we can make the analysis process more consistent and reproducible.
+
+Moreover, Wickham distinguishes between exploratory visualization and polished visualization. In the exploratory stage, identifying patterns or problems is important, and in the final visualization, it is important to communicate results clearly to others. I agree that visualization and modeling are not substitutes, but have a complementary relationship. Visualization can show patterns that a model may miss, and a model can more systematically summarize or validate relationships.
+
+However, using good tools does not automatically create a good visualization. Interpretation can differ depending on the selection of variables, scales, colors, and coordinate systems. Therefore, it is still the researcher’s role to judge which visualization fits the research question and audience.
+
+## References
+
+Ginsberg, J., Mohebbi, M. H., Patel, R. S., Brammer, L., Smolinski, M. S., & Brilliant, L. (2009). Detecting influenza epidemics using search engine query data. *Nature, 457*(7232), 1012–1014. <https://doi.org/10.1038/nature07634>
+
+Lazer, D., Kennedy, R., King, G., & Vespignani, A. (2014). The Parable of Google Flu: Traps in Big Data Analysis. *Science (American Association for the Advancement of Science), 343*(6176), 1203–1205. <https://doi.org/10.1126/science.1248506>
+
+Wickham, H. (n.d.). *Data visualization and data science* [Video]. YouTube. <https://www.youtube.com/watch?v=9YTNYT1maa4>
+
+## AI Use Disclosure
+
+I used ChatGPT (OpenAI, GPT-5.6 Sol) to review the English grammar and wording of my draft. I wrote the content myself and used AI to check whether any statements were unclear or factually incorrect. I made the final decisions about all revisions and kept the final version in my own words.
+
+See the full prompts used here: [Full Prompt Log](full_prompt_log_prep_class5.html)
