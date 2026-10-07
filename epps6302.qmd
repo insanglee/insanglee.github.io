@@ -9,3 +9,4 @@ title: "EPPS 6302"
 - [Assignment 3](assign03.html)
 - [Assignment 4](assign04.html)
 - [Web Scraping Workshop](workshop_scraping.html)
+- [Assignment 5](assign05.html)

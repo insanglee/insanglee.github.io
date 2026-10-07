@@ -11,3 +11,5 @@
 .env
 *_secret*
 *.pem
+
+govinfo_pdfs/

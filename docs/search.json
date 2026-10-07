@@ -466,14 +466,14 @@
     "href": "epps6302.html",
     "title": "EPPS 6302",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nAssignment 4\nWeb Scraping Workshop"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nAssignment 4\nWeb Scraping Workshop\nAssignment 5"
   },
   {
     "objectID": "epps6302.html#assignments",
     "href": "epps6302.html#assignments",
     "title": "EPPS 6302",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nAssignment 4\nWeb Scraping Workshop"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nAssignment 4\nWeb Scraping Workshop\nAssignment 5"
   },
   {
     "objectID": "epps6356_assign01.html",
@@ -642,5 +642,54 @@
     "title": "Workshop Web Scraping",
     "section": "AI Use Appendix",
     "text": "AI Use Appendix\nChatGPT was used to clarify selected R code, troubleshoot errors, and clarify parts of the workshop instructions. I executed the code, reviewed the outputs, and made the final decisions about the content and explanations."
+  },
+  {
+    "objectID": "assign05.html",
+    "href": "assign05.html",
+    "title": "Assignment 5",
+    "section": "",
+    "text": "I searched the GovInfo Congressional Hearings collection using the Committee field for “Foreign Relations” and sorted the results from newest to oldest. I exported the search results as a CSV file and retained the ten most recent records for comparison with the API results.\nSearch query:\ncollection:(CHRG) AND publishdate:range(,2026-10-07) AND committee:(Foreign Relations)\n\nlibrary(tidyverse)\n\nmanual_search &lt;- read_csv(\"govinfo_manual_search.csv\")\n\nmanual_top10 &lt;- manual_search |&gt;\n  select(\n    packageId,\n    title,\n    publishdate,\n    detailsLink,\n    pdfLink\n  ) |&gt;\n  slice_head(n = 10)\n\nmanual_top10\n\n# A tibble: 10 × 5\n   packageId         title                       publishdate detailsLink pdfLink\n   &lt;chr&gt;             &lt;chr&gt;                       &lt;date&gt;      &lt;chr&gt;       &lt;chr&gt;  \n 1 CHRG-119shrg63909 Arms Control and Transform… 2026-03-24  https://ww… https:…\n 2 CHRG-119shrg63707 A Pathway to European Ener… 2026-02-04  https://ww… https:…\n 3 CHRG-119shrg64059 Countering Terrorism in No… 2026-02-03  https://ww… https:…\n 4 CHRG-119shrg63168 Maritime Security in Afric… 2025-12-10  https://ww… https:…\n 5 CHRG-119shrg62398 Combating the People's Rep… 2025-10-07  https://ww… https:…\n 6 CHRG-119shrg62961 The Future of U.S. Black S… 2025-09-30  https://ww… https:…\n 7 CHRG-119shrg61656 The Status of Democracy an… 2025-07-22  https://ww… https:…\n 8 CHRG-119shrg61565 NATO Summit 2025: An Asses… 2025-06-18  https://ww… https:…\n 9 CHRG-119shrg60820 East Africa & the Horn: At… 2025-05-13  https://ww… https:…\n10 CHRG-119shrg60819 Shared Threats: Indo Pacif… 2025-03-26  https://ww… https:…"
+  },
+  {
+    "objectID": "assign05.html#manual-search-and-export",
+    "href": "assign05.html#manual-search-and-export",
+    "title": "Assignment 5",
+    "section": "",
+    "text": "I searched the GovInfo Congressional Hearings collection using the Committee field for “Foreign Relations” and sorted the results from newest to oldest. I exported the search results as a CSV file and retained the ten most recent records for comparison with the API results.\nSearch query:\ncollection:(CHRG) AND publishdate:range(,2026-10-07) AND committee:(Foreign Relations)\n\nlibrary(tidyverse)\n\nmanual_search &lt;- read_csv(\"govinfo_manual_search.csv\")\n\nmanual_top10 &lt;- manual_search |&gt;\n  select(\n    packageId,\n    title,\n    publishdate,\n    detailsLink,\n    pdfLink\n  ) |&gt;\n  slice_head(n = 10)\n\nmanual_top10\n\n# A tibble: 10 × 5\n   packageId         title                       publishdate detailsLink pdfLink\n   &lt;chr&gt;             &lt;chr&gt;                       &lt;date&gt;      &lt;chr&gt;       &lt;chr&gt;  \n 1 CHRG-119shrg63909 Arms Control and Transform… 2026-03-24  https://ww… https:…\n 2 CHRG-119shrg63707 A Pathway to European Ener… 2026-02-04  https://ww… https:…\n 3 CHRG-119shrg64059 Countering Terrorism in No… 2026-02-03  https://ww… https:…\n 4 CHRG-119shrg63168 Maritime Security in Afric… 2025-12-10  https://ww… https:…\n 5 CHRG-119shrg62398 Combating the People's Rep… 2025-10-07  https://ww… https:…\n 6 CHRG-119shrg62961 The Future of U.S. Black S… 2025-09-30  https://ww… https:…\n 7 CHRG-119shrg61656 The Status of Democracy an… 2025-07-22  https://ww… https:…\n 8 CHRG-119shrg61565 NATO Summit 2025: An Asses… 2025-06-18  https://ww… https:…\n 9 CHRG-119shrg60820 East Africa & the Horn: At… 2025-05-13  https://ww… https:…\n10 CHRG-119shrg60819 Shared Threats: Indo Pacif… 2025-03-26  https://ww… https:…"
+  },
+  {
+    "objectID": "assign05.html#govinfo-api",
+    "href": "assign05.html#govinfo-api",
+    "title": "Assignment 5",
+    "section": "2. GovInfo API",
+    "text": "2. GovInfo API\nI used the GovInfo Search API to retrieve Congressional Hearings related to the Committee on Foreign Relations. The API request sorted the results by publication date in descending order.\n\nlibrary(httr2)\n\nbody &lt;- list(\n  query = 'collection:(CHRG) AND \"Committee on Foreign Relations\"',\n  pageSize = 100,\n  offsetMark = \"*\",\n  sorts = list(\n    list(\n      field = \"publishdate\",\n      sortOrder = \"DESC\"\n    )\n  )\n)\n\nfound &lt;- request(\"https://api.govinfo.gov/search\") |&gt;\n  req_url_query(api_key = Sys.getenv(\"GOVINFO_API_KEY\")) |&gt;\n  req_body_json(body) |&gt;\n  req_perform() |&gt;\n  resp_body_json()\n\n\napi_top10 &lt;- tibble(\n  title = map_chr(found$results[1:10], \"title\"),\n  packageId = map_chr(found$results[1:10], \"packageId\"),\n  dateIssued = map_chr(found$results[1:10], \"dateIssued\"),\n  resultLink = map_chr(found$results[1:10], \"resultLink\")\n)\n\napi_top10\n\n# A tibble: 10 × 4\n   title                                         packageId dateIssued resultLink\n   &lt;chr&gt;                                         &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;     \n 1 Arms Control and Transforming International … CHRG-119… 2026-03-24 https://a…\n 2 A Pathway to European Energy Security         CHRG-119… 2026-02-04 https://a…\n 3 Countering Terrorism in North Africa: Opport… CHRG-119… 2026-02-03 https://a…\n 4 NATO Summit 2025: An Assessment of Transatla… CHRG-119… 2025-06-18 https://a…\n 5 East Africa & the Horn: At a Turning Point o… CHRG-119… 2025-05-13 https://a…\n 6 Shared Threats: Indo Pacific Alliances and B… CHRG-119… 2025-03-26 https://a…\n 7 PRC Influence and the Status of Taiwan's Dip… CHRG-119… 2025-03-26 https://a…\n 8 Advancing American Interests in the Western … CHRG-119… 2025-03-05 https://a…\n 9 Interdicting Illicit Drug Trafficking: A Vie… CHRG-119… 2025-02-26 https://a…\n10 After Assad: Navigating Syria Policy          CHRG-119… 2025-02-13 https://a…"
+  },
+  {
+    "objectID": "assign05.html#comparison-of-the-most-recent-10-hearings",
+    "href": "assign05.html#comparison-of-the-most-recent-10-hearings",
+    "title": "Assignment 5",
+    "section": "3. Comparison of the Most Recent 10 Hearings",
+    "text": "3. Comparison of the Most Recent 10 Hearings\n\ncomparison &lt;- manual_top10 |&gt;\n  select(packageId, manual_title = title, manual_publishdate = publishdate) |&gt;\n  full_join(\n    api_top10 |&gt;\n      select(packageId, api_title = title, api_dateIssued = dateIssued),\n    by = \"packageId\"\n  ) |&gt;\n  mutate(\n    match = !is.na(manual_title) & !is.na(api_title)\n  )\n\ncomparison\n\n# A tibble: 14 × 6\n   packageId      manual_title manual_publishdate api_title api_dateIssued match\n   &lt;chr&gt;          &lt;chr&gt;        &lt;date&gt;             &lt;chr&gt;     &lt;chr&gt;          &lt;lgl&gt;\n 1 CHRG-119shrg6… Arms Contro… 2026-03-24         Arms Con… 2026-03-24     TRUE \n 2 CHRG-119shrg6… A Pathway t… 2026-02-04         A Pathwa… 2026-02-04     TRUE \n 3 CHRG-119shrg6… Countering … 2026-02-03         Counteri… 2026-02-03     TRUE \n 4 CHRG-119shrg6… Maritime Se… 2025-12-10         &lt;NA&gt;      &lt;NA&gt;           FALSE\n 5 CHRG-119shrg6… Combating t… 2025-10-07         &lt;NA&gt;      &lt;NA&gt;           FALSE\n 6 CHRG-119shrg6… The Future … 2025-09-30         &lt;NA&gt;      &lt;NA&gt;           FALSE\n 7 CHRG-119shrg6… The Status … 2025-07-22         &lt;NA&gt;      &lt;NA&gt;           FALSE\n 8 CHRG-119shrg6… NATO Summit… 2025-06-18         NATO Sum… 2025-06-18     TRUE \n 9 CHRG-119shrg6… East Africa… 2025-05-13         East Afr… 2025-05-13     TRUE \n10 CHRG-119shrg6… Shared Thre… 2025-03-26         Shared T… 2025-03-26     TRUE \n11 CHRG-119shrg6… &lt;NA&gt;         NA                 PRC Infl… 2025-03-26     FALSE\n12 CHRG-119shrg6… &lt;NA&gt;         NA                 Advancin… 2025-03-05     FALSE\n13 CHRG-119shrg6… &lt;NA&gt;         NA                 Interdic… 2025-02-26     FALSE\n14 CHRG-119shrg5… &lt;NA&gt;         NA                 After As… 2025-02-13     FALSE\n\n\n\ncomparison |&gt;\n  count(match)\n\n# A tibble: 2 × 2\n  match     n\n  &lt;lgl&gt; &lt;int&gt;\n1 FALSE     8\n2 TRUE      6\n\ncomparison |&gt;\n  filter(!match)\n\n# A tibble: 8 × 6\n  packageId       manual_title manual_publishdate api_title api_dateIssued match\n  &lt;chr&gt;           &lt;chr&gt;        &lt;date&gt;             &lt;chr&gt;     &lt;chr&gt;          &lt;lgl&gt;\n1 CHRG-119shrg63… Maritime Se… 2025-12-10         &lt;NA&gt;      &lt;NA&gt;           FALSE\n2 CHRG-119shrg62… Combating t… 2025-10-07         &lt;NA&gt;      &lt;NA&gt;           FALSE\n3 CHRG-119shrg62… The Future … 2025-09-30         &lt;NA&gt;      &lt;NA&gt;           FALSE\n4 CHRG-119shrg61… The Status … 2025-07-22         &lt;NA&gt;      &lt;NA&gt;           FALSE\n5 CHRG-119shrg60… &lt;NA&gt;         NA                 PRC Infl… 2025-03-26     FALSE\n6 CHRG-119shrg60… &lt;NA&gt;         NA                 Advancin… 2025-03-05     FALSE\n7 CHRG-119shrg61… &lt;NA&gt;         NA                 Interdic… 2025-02-26     FALSE\n8 CHRG-119shrg59… &lt;NA&gt;         NA                 After As… 2025-02-13     FALSE\n\n\nThe two methods did not return exactly the same ten hearings. Six hearings appeared in both lists, while four hearings from the manual search were not included in the API top ten and four API results were not included in the manual-search top ten. This difference likely reflects the different search criteria: the manual search used the Committee field with “Foreign Relations,” while the API query searched for the phrase “Committee on Foreign Relations” within the Congressional Hearings collection.\n\nDownload Log\n\ncat(readLines(\"govinfo_download_log.txt\"), sep = \"\\n\")\n\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg63909/pdf/CHRG-119shrg63909.pdf\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg63707/pdf/CHRG-119shrg63707.pdf\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg64059/pdf/CHRG-119shrg64059.pdf\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg63168/pdf/CHRG-119shrg63168.pdf\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg62398/pdf/CHRG-119shrg62398.pdf\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg62961/pdf/CHRG-119shrg62961.pdf\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg61656/pdf/CHRG-119shrg61656.pdf\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg61565/pdf/CHRG-119shrg61565.pdf\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg60820/pdf/CHRG-119shrg60820.pdf\nSuccessfully downloaded: https://www.govinfo.gov/content/pkg/CHRG-119shrg60819/pdf/CHRG-119shrg60819.pdf"
+  },
+  {
+    "objectID": "assign05.html#document-assessment",
+    "href": "assign05.html#document-assessment",
+    "title": "Assignment 5",
+    "section": "4. Document Assessment",
+    "text": "4. Document Assessment\nThe downloaded PDFs are readable, but they are not immediately ready for quantitative analysis. To turn the ten hearings into a table or text corpus, I would first need to extract the text from each PDF, clean repeated headers, page numbers, and formatting artifacts, and then organize the documents using identifiers such as title, date, and package ID.\nThe process could be improved by using the text or metadata formats provided by GovInfo instead of relying only on PDFs. The API can provide structured metadata and links to formats such as plain text, which would reduce the amount of manual text extraction and make it easier to build a consistent dataset across documents."
+  },
+  {
+    "objectID": "assign05.html#api-reflection",
+    "href": "assign05.html#api-reflection",
+    "title": "Assignment 5",
+    "section": "5. API Reflection",
+    "text": "5. API Reflection\nThe API provided structured, machine-readable results with consistent metadata and direct links to downloadable document formats. Compared with the search page and last week’s web scraping, it made the data collection process more reproducible and easier to automate."
+  },
+  {
+    "objectID": "assign05.html#ai-use-appendix",
+    "href": "assign05.html#ai-use-appendix",
+    "title": "Assignment 5",
+    "section": "AI Use Appendix",
+    "text": "AI Use Appendix\nChatGPT was used to clarify parts of the assignment instructions and troubleshoot selected R code. I executed the code, reviewed the outputs, and made the final decisions about the analysis and written explanations."
   }
 ]
