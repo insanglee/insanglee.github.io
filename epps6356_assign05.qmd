@@ -353,6 +353,8 @@ Both systems were straightforward for making the boxplot. ggplot2 made it easy t
 ### Scatterplot
 
 ```{r}
+#| message: false
+
 p_scatter <- ggplot(
   mtcars,
   aes(
