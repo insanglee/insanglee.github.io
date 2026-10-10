@@ -1,0 +1,644 @@
+---
+title: "Assignment 5"
+author: "Insang Lee"
+format: html
+---
+
+## Setup
+
+For this assignment, I use the built-in `mtcars` dataset.
+
+```{r}
+data(mtcars)
+```
+
+## Part 1: Base Graphics
+
+For Part 1, I use only base R graphics functions.
+
+```{r}
+# Save current graphics settings and set a simple common style
+op <- par(
+  family = "sans",
+  cex = 0.9,
+  las = 1,
+  mar = c(5, 5, 4, 2)
+)
+```
+
+### Histogram
+
+The histogram shows the distribution of fuel efficiency.
+
+```{r}
+hist(
+  mtcars$mpg,
+  main = "Distribution of Fuel Efficiency",
+  xlab = "Miles per Gallon (mpg)",
+  ylab = "Frequency",
+  col = "lightblue",
+  border = "white"
+)
+
+mtext(
+  "Source: R mtcars dataset",
+  side = 1,
+  line = 4,
+  adj = 1,
+  cex = 0.7
+)
+```
+
+### Vertical Bar Chart
+
+The bar chart shows the number of cars in each cylinder category.
+
+```{r}
+cyl_counts <- table(mtcars$cyl)
+
+barplot(
+  cyl_counts,
+  main = "Number of Cars by Cylinder",
+  xlab = "Number of Cylinders",
+  ylab = "Number of Cars",
+  col = "lightblue"
+)
+
+mtext(
+  "Source: R mtcars dataset",
+  side = 1,
+  line = 4,
+  adj = 1,
+  cex = 0.7
+)
+```
+
+### Horizontal Bar Chart
+
+The horizontal bar chart shows the same cylinder counts in a different orientation.
+
+```{r}
+barplot(
+  cyl_counts,
+  horiz = TRUE,
+  main = "Number of Cars by Cylinder",
+  xlab = "Number of Cars",
+  ylab = "Number of Cylinders",
+  col = "lightblue"
+)
+
+mtext(
+  "Source: R mtcars dataset",
+  side = 1,
+  line = 4,
+  adj = 1,
+  cex = 0.7
+)
+```
+
+### Pie Chart
+
+The pie chart shows the proportion of cars in each cylinder category.
+
+```{r}
+pie_colors <- c("lightblue", "lightgray", "lightpink")
+
+pie(
+  cyl_counts,
+  main = "Share of Cars by Cylinder",
+  col = pie_colors,
+  labels = names(cyl_counts)
+)
+
+legend(
+  "topright",
+  legend = c("4 cylinders", "6 cylinders", "8 cylinders"),
+  fill = pie_colors,
+  bty = "n",
+  cex = 0.8
+)
+
+mtext(
+  "Source: R mtcars dataset",
+  side = 1,
+  line = 3,
+  adj = 1,
+  cex = 0.7
+)
+```
+
+### Boxplot
+
+The boxplot compares fuel efficiency across cylinder categories.
+
+```{r}
+boxplot(
+  mpg ~ factor(cyl),
+  data = mtcars,
+  main = "Fuel Efficiency by Cylinder",
+  xlab = "Number of Cylinders",
+  ylab = "Miles per Gallon (mpg)",
+  col = "lightblue"
+)
+
+abline(
+  h = mean(mtcars$mpg),
+  lty = 2,
+  lwd = 1
+)
+
+mtext(
+  "Source: R mtcars dataset",
+  side = 1,
+  line = 4,
+  adj = 1,
+  cex = 0.7
+)
+```
+
+### Scatterplot
+
+The scatterplot shows the relationship between vehicle weight and fuel efficiency.
+
+```{r}
+plot(
+  mtcars$wt,
+  mtcars$mpg,
+  main = "Vehicle Weight and Fuel Efficiency",
+  xlab = "Weight (1,000 lbs)",
+  ylab = "Miles per Gallon (mpg)",
+  pch = 16,
+  col = "steelblue"
+)
+
+abline(
+  lm(mpg ~ wt, data = mtcars),
+  lty = 2,
+  lwd = 2
+)
+
+mtext(
+  "Source: R mtcars dataset",
+  side = 1,
+  line = 4,
+  adj = 1,
+  cex = 0.7
+)
+
+# Restore previous graphics settings
+par(op)
+```
+
+## Part 2: ggplot2
+
+```{r}
+library(ggplot2)
+
+theme_mine <- function() {
+  theme_minimal(
+    base_size = 11,
+    base_family = "sans"
+  ) +
+    theme(
+      plot.title = element_text(face = "bold"),
+      panel.grid.minor = element_blank(),
+      plot.caption = element_text(hjust = 1)
+    )
+}
+```
+
+### Histogram
+
+```{r}
+p_hist <- ggplot(
+  mtcars,
+  aes(x = mpg)
+) +
+  geom_histogram(
+    binwidth = 5,
+    boundary = 10,
+    fill = "lightblue",
+    color = "white"
+  ) +
+  labs(
+    title = "Distribution of Fuel Efficiency",
+    x = "Miles per Gallon (mpg)",
+    y = "Frequency",
+    caption = "Source: R mtcars dataset"
+  ) +
+  theme_mine()
+
+p_hist
+```
+
+Base R was simple because `hist()` creates the histogram directly. ggplot2 required more code, but it made the chart elements easier to organize.
+
+### Vertical Bar Chart
+
+```{r}
+p_bar_vertical <- ggplot(
+  mtcars,
+  aes(x = factor(cyl))
+) +
+  geom_bar(
+    fill = "lightblue"
+  ) +
+  labs(
+    title = "Number of Cars by Cylinder",
+    x = "Number of Cylinders",
+    y = "Number of Cars",
+    caption = "Source: R mtcars dataset"
+  ) +
+  theme_mine()
+
+p_bar_vertical
+```
+
+Base R was simple after creating a frequency table. ggplot2 was also convenient because `geom_bar()` counts observations automatically.
+
+### Horizontal Bar Chart
+
+```{r}
+p_bar_horizontal <- ggplot(
+  mtcars,
+  aes(x = factor(cyl))
+) +
+  geom_bar(
+    fill = "lightblue"
+  ) +
+  coord_flip() +
+  labs(
+    title = "Number of Cars by Cylinder",
+    x = "Number of Cylinders",
+    y = "Number of Cars",
+    caption = "Source: R mtcars dataset"
+  ) +
+  theme_mine()
+
+p_bar_horizontal
+```
+
+ggplot2 was easier for changing the orientation because `coord_flip()` converts the vertical chart to a horizontal chart. Base R uses the `horiz` argument inside `barplot()`.
+
+### Pie Chart
+
+```{r}
+pie_df <- as.data.frame(cyl_counts)
+names(pie_df) <- c("cyl", "count")
+
+p_pie <- ggplot(
+  pie_df,
+  aes(
+    x = "",
+    y = count,
+    fill = cyl
+  )
+) +
+  geom_col(
+    width = 1,
+    color = "white"
+  ) +
+  coord_polar(theta = "y") +
+  scale_fill_manual(
+    values = c(
+      "4" = "lightblue",
+      "6" = "lightgray",
+      "8" = "lightpink"
+    )
+  ) +
+  labs(
+    title = "Share of Cars by Cylinder",
+    fill = "Cylinders",
+    caption = "Source: R mtcars dataset"
+  ) +
+  theme_mine() +
+  theme(
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank()
+  )
+
+p_pie
+```
+
+Base R was easier for the pie chart because `pie()` creates it directly. In ggplot2, a bar chart is created first and then converted with polar coordinates.
+
+### Boxplot
+
+```{r}
+p_box <- ggplot(
+  mtcars,
+  aes(
+    x = factor(cyl),
+    y = mpg
+  )
+) +
+  geom_boxplot(
+    fill = "lightblue"
+  ) +
+  labs(
+    title = "Fuel Efficiency by Cylinder",
+    x = "Number of Cylinders",
+    y = "Miles per Gallon (mpg)",
+    caption = "Source: R mtcars dataset"
+  ) +
+  theme_mine()
+
+p_box
+```
+
+Both systems were straightforward for making the boxplot. ggplot2 made it easy to keep the appearance consistent with the other charts.
+
+### Scatterplot
+
+```{r}
+p_scatter <- ggplot(
+  mtcars,
+  aes(
+    x = wt,
+    y = mpg
+  )
+) +
+  geom_point(
+    color = "steelblue"
+  ) +
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    linetype = 2
+  ) +
+  labs(
+    title = "Vehicle Weight and Fuel Efficiency",
+    x = "Weight (1,000 lbs)",
+    y = "Miles per Gallon (mpg)",
+    caption = "Source: R mtcars dataset"
+  ) +
+  theme_mine()
+
+p_scatter
+```
+
+Base R was very direct because `plot()` creates the scatterplot immediately. ggplot2 made it easy to add the regression line while keeping the same style.
+
+## Part 3: Output Formats
+
+I selected the histogram from Part 1 and its counterpart from Part 2 for the output format comparison.
+
+### Base R Histogram
+
+```{r}
+draw_base_hist <- function() {
+  op2 <- par(
+    family = "sans",
+    cex = 0.9,
+    las = 1,
+    mar = c(5, 5, 4, 2)
+  )
+
+  hist(
+    mtcars$mpg,
+    breaks = seq(10, 35, by = 5),
+    main = "Distribution of Fuel Efficiency",
+    xlab = "Miles per Gallon (mpg)",
+    ylab = "Frequency",
+    col = "lightblue",
+    border = "white"
+  )
+
+  mtext(
+    "Source: R mtcars dataset",
+    side = 1,
+    line = 4,
+    adj = 1,
+    cex = 0.7
+  )
+
+  par(op2)
+}
+```
+
+### Check Output Capabilities
+
+```{r}
+capabilities(c("png", "jpeg", "tiff", "cairo"))
+```
+
+### Base R Exports
+
+```{r}
+#| output: false
+#| warning: false
+#| message: false
+
+pdf(
+  "hist_base.pdf",
+  width = 6.5,
+  height = 4
+)
+draw_base_hist()
+dev.off()
+
+svg(
+  "hist_base.svg",
+  width = 6.5,
+  height = 4
+)
+draw_base_hist()
+dev.off()
+
+png(
+  "hist_base.png",
+  width = 6.5,
+  height = 4,
+  units = "in",
+  res = 300
+)
+draw_base_hist()
+dev.off()
+
+jpeg(
+  "hist_base.jpg",
+  width = 6.5,
+  height = 4,
+  units = "in",
+  res = 300
+)
+draw_base_hist()
+dev.off()
+
+tiff(
+  "hist_base.tiff",
+  width = 6.5,
+  height = 4,
+  units = "in",
+  res = 300
+)
+draw_base_hist()
+dev.off()
+
+bmp(
+  "hist_base.bmp",
+  width = 6.5,
+  height = 4,
+  units = "in",
+  res = 300
+)
+draw_base_hist()
+dev.off()
+```
+
+### ggplot2 Exports
+
+```{r}
+#| output: false
+#| warning: false
+#| message: false
+
+ggsave(
+  "hist_ggplot.pdf",
+  p_hist,
+  width = 6.5,
+  height = 4
+)
+
+ggsave(
+  "hist_ggplot.svg",
+  p_hist,
+  width = 6.5,
+  height = 4
+)
+
+ggsave(
+  "hist_ggplot.png",
+  p_hist,
+  width = 6.5,
+  height = 4,
+  dpi = 300
+)
+
+ggsave(
+  "hist_ggplot.jpg",
+  p_hist,
+  width = 6.5,
+  height = 4,
+  dpi = 300
+)
+
+ggsave(
+  "hist_ggplot.tiff",
+  p_hist,
+  width = 6.5,
+  height = 4,
+  dpi = 300
+)
+
+ggsave(
+  "hist_ggplot.bmp",
+  p_hist,
+  width = 6.5,
+  height = 4,
+  dpi = 300
+)
+```
+
+### File Size Comparison
+
+```{r}
+base_files <- c(
+  "hist_base.pdf",
+  "hist_base.svg",
+  "hist_base.png",
+  "hist_base.jpg",
+  "hist_base.tiff",
+  "hist_base.bmp"
+)
+
+ggplot_files <- c(
+  "hist_ggplot.pdf",
+  "hist_ggplot.svg",
+  "hist_ggplot.png",
+  "hist_ggplot.jpg",
+  "hist_ggplot.tiff",
+  "hist_ggplot.bmp"
+)
+
+format_table <- data.frame(
+  Format = c(
+    "PDF",
+    "SVG",
+    "PNG",
+    "JPG",
+    "TIFF",
+    "BMP"
+  ),
+  Type = c(
+    "Vector",
+    "Vector",
+    "Raster",
+    "Raster",
+    "Raster",
+    "Raster"
+  ),
+  Base_R_KB = round(
+    file.size(base_files) / 1024,
+    1
+  ),
+  ggplot2_KB = round(
+    file.size(ggplot_files) / 1024,
+    1
+  ),
+  Compression = c(
+    "Lossless",
+    "Lossless",
+    "Lossless",
+    "Lossy",
+    "Lossless",
+    "Lossless"
+  ),
+  Transparency = c(
+    "Yes",
+    "Yes",
+    "Yes",
+    "No",
+    "Yes",
+    "No"
+  )
+)
+
+format_table
+```
+
+### 400% Zoom Comparison
+
+I opened each exported file and compared the text and lines at 400% zoom.
+
+**PDF:** The text and lines remained sharp and clear at 400% zoom.
+
+**SVG:** The text and lines also remained sharp and clear at 400% zoom.
+
+**PNG:** The image remained fairly clear, but some pixelation was visible around the text and lines at 400% zoom.
+
+**JPG:** The text and lines appeared less sharp, with more noticeable pixelation at 400% zoom.
+
+**TIFF:** The image quality remained high, but some pixelation was visible at 400% zoom because it is a raster format.
+
+**BMP:** The text and lines also became pixelated at 400% zoom, although there were no noticeable compression artifacts.
+
+### Recommended Formats
+
+For a journal article, I would use PDF because it is a vector format and remains sharp when resized.
+
+For a web page, I would use SVG because it remains sharp at different screen sizes and works well for simple graphics.
+
+For a PowerPoint slide, I would use PNG because it is widely supported and provides good image quality.
+
+## Reflection
+
+Pie charts can be useful when there are only a few categories and the purpose is to show simple parts of a whole. Cleveland and McGill (1984) show that people compare positions and lengths more accurately than angles and areas. Because pie charts rely on angles and areas, they are not ideal when categories have similar values.
+
+In my pie chart, there are only three cylinder categories, so the general differences are easy to see. However, the bar chart allows more precise comparison among the categories. Therefore, I would use a pie chart only when the number of categories is small and exact comparisons are not the main purpose.
+
+## AI Use Disclosure
+
+I used ChatGPT (GPT-5.6 Sol) to clarify some assignment requirements and troubleshoot technical issues in Part 3. For Part 1, I primarily followed the course examples and used base R graphics functions. I ran and checked all code and made the final decisions about the charts and explanations.

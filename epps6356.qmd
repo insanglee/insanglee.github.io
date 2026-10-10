@@ -8,3 +8,4 @@ title: "EPPS 6356"
 - [Assignment 2](epps6356_assign02.qmd)
 - [Assignment 3](epps6356_assign03.qmd)
 - [Prepare for Class 5: Write and Post](prep_class5_write_and_post.qmd)
+- [Assignment 5](epps6356_assign05.qmd)
