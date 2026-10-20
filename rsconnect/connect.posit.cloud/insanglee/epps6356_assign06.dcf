@@ -1,0 +1,13 @@
+name: epps6356_assign06
+title: epps6356_assign06
+username: insanglee
+account: insanglee
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 01a157c2-8530-f741-9841-1e89655430bd
+bundleId:
+url: https://connect.posit.cloud/insanglee/content/01a157c2-8530-f741-9841-1e89655430bd
+version: 1
+asMultiple: FALSE
+asStatic: TRUE
+ignoredFiles: .nojekyll|about.html|anscombe_quartet.png|assign01.html|assign02_files/figure-html/unnamed-chunk-2-1.png|assign02.html|assign03_files/figure-html/unnamed-chunk-2-1.png|assign03.html|assign04_files/figure-html/unnamed-chunk-10-1.png|assign04_files/figure-html/unnamed-chunk-12-1.png|assign04_files/figure-html/unnamed-chunk-5-1.png|assign04_IS.html|assign04.html|assign05.html|assignment03_starter_files/figure-html/unnamed-chunk-7-1.png|assignment03_starter.html|crime_rate_chart.png|cv.html|cv.pdf|epps6302.html|epps6356_assign01.html|epps6356_assign02.html|epps6356_assign03_files/figure-html/unnamed-chunk-1-1.png|epps6356_assign03_files/figure-html/unnamed-chunk-2-1.png|epps6356_assign03_files/figure-html/unnamed-chunk-4-1.png|epps6356_assign03_files/figure-html/unnamed-chunk-5-1.png|epps6356_assign03_files/figure-html/unnamed-chunk-8-1.png|epps6356_assign03.html|epps6356_assign04_files/figure-html/unnamed-chunk-5-1.png|epps6356_assign04_files/figure-html/unnamed-chunk-8-1.png|epps6356_assign04.html|epps6356_assign05.html|fall_pink.png|full_prompt_log_prep_class5.html|index.html|murrell01_practice.R|prep_class5_write_and_post.html|prompts.md|README.md|research.html|search.json|sessionInfo.txt|styles.css|synergyreport.md|teaching.html|workshop_scraping.html|epps6356_assign02_files|epps6356_assign05_files|site_libs

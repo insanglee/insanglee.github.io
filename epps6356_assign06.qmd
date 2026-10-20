@@ -3,6 +3,12 @@ title: "Assignment 6: Shiny Applications"
 format: html
 ---
 
+## Part 1: Fonts in Shiny
+
+I tested both CSS-based font styling and a bslib-based theme with Google Lora.
+
+For a real project, I would use the bslib method because it is simpler to manage and keeps the app design more consistent. It also makes it easier to apply the same theme and fonts across the whole app, including plots.
+
 ## Happy Planet Index Explorer
 
 Use the country menu to select a country and the measure menu to explore the Happy Planet Index, life expectancy, life satisfaction, or ecological footprint. The year-range slider can be used to focus on a specific time period, and the Data Table tab shows the values used in the visualization.

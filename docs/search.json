@@ -746,14 +746,14 @@
     "href": "epps6356_assign06.html",
     "title": "Assignment 6: Shiny Applications",
     "section": "",
-    "text": "Use the country menu to select a country and the measure menu to explore the Happy Planet Index, life expectancy, life satisfaction, or ecological footprint. The year-range slider can be used to focus on a specific time period, and the Data Table tab shows the values used in the visualization."
+    "text": "I tested both CSS-based font styling and a bslib-based theme with Google Lora.\nFor a real project, I would use the bslib method because it is simpler to manage and keeps the app design more consistent. It also makes it easier to apply the same theme and fonts across the whole app, including plots."
   },
   {
     "objectID": "epps6356_assign06.html#happy-planet-index-explorer",
     "href": "epps6356_assign06.html#happy-planet-index-explorer",
     "title": "Assignment 6: Shiny Applications",
-    "section": "",
-    "text": "Use the country menu to select a country and the measure menu to explore the Happy Planet Index, life expectancy, life satisfaction, or ecological footprint. The year-range slider can be used to focus on a specific time period, and the Data Table tab shows the values used in the visualization."
+    "section": "Happy Planet Index Explorer",
+    "text": "Happy Planet Index Explorer\nUse the country menu to select a country and the measure menu to explore the Happy Planet Index, life expectancy, life satisfaction, or ecological footprint. The year-range slider can be used to focus on a specific time period, and the Data Table tab shows the values used in the visualization."
   },
   {
     "objectID": "epps6356_assign06.html#mtcars-explorer",
@@ -768,5 +768,12 @@
     "title": "Assignment 6: Shiny Applications",
     "section": "AI Use Disclosure",
     "text": "AI Use Disclosure\nI used ChatGPT for guidance on Shiny coding, troubleshooting, and wording. I tested the code in RStudio and made the final decisions about the app design and content."
+  },
+  {
+    "objectID": "epps6356_assign06.html#part-1-fonts-in-shiny",
+    "href": "epps6356_assign06.html#part-1-fonts-in-shiny",
+    "title": "Assignment 6: Shiny Applications",
+    "section": "",
+    "text": "I tested both CSS-based font styling and a bslib-based theme with Google Lora.\nFor a real project, I would use the bslib method because it is simpler to manage and keeps the app design more consistent. It also makes it easier to apply the same theme and fonts across the whole app, including plots."
   }
 ]
