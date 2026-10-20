@@ -207,14 +207,14 @@
     "href": "epps6356.html",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6"
   },
   {
     "objectID": "epps6356.html#assignments",
     "href": "epps6356.html#assignments",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6"
   },
   {
     "objectID": "cv.html",
@@ -740,5 +740,33 @@
     "title": "Assignment 5",
     "section": "AI Use Disclosure",
     "text": "AI Use Disclosure\nI used ChatGPT (GPT-5.6 Sol) to clarify some assignment requirements and troubleshoot technical issues in Part 3. For Part 1, I primarily followed the course examples and used base R graphics functions. I ran and checked all code and made the final decisions about the charts and explanations."
+  },
+  {
+    "objectID": "epps6356_assign06.html",
+    "href": "epps6356_assign06.html",
+    "title": "Assignment 6: Shiny Applications",
+    "section": "",
+    "text": "Use the country menu to select a country and the measure menu to explore the Happy Planet Index, life expectancy, life satisfaction, or ecological footprint. The year-range slider can be used to focus on a specific time period, and the Data Table tab shows the values used in the visualization."
+  },
+  {
+    "objectID": "epps6356_assign06.html#happy-planet-index-explorer",
+    "href": "epps6356_assign06.html#happy-planet-index-explorer",
+    "title": "Assignment 6: Shiny Applications",
+    "section": "",
+    "text": "Use the country menu to select a country and the measure menu to explore the Happy Planet Index, life expectancy, life satisfaction, or ecological footprint. The year-range slider can be used to focus on a specific time period, and the Data Table tab shows the values used in the visualization."
+  },
+  {
+    "objectID": "epps6356_assign06.html#mtcars-explorer",
+    "href": "epps6356_assign06.html#mtcars-explorer",
+    "title": "Assignment 6: Shiny Applications",
+    "section": "mtcars Explorer",
+    "text": "mtcars Explorer\nUse the X-axis menu to choose horsepower, weight, or displacement. The cylinder checkboxes can be used to include or exclude cars with 4, 6, or 8 cylinders, and the plot, summary, and table update together."
+  },
+  {
+    "objectID": "epps6356_assign06.html#ai-use-disclosure",
+    "href": "epps6356_assign06.html#ai-use-disclosure",
+    "title": "Assignment 6: Shiny Applications",
+    "section": "AI Use Disclosure",
+    "text": "AI Use Disclosure\nI used ChatGPT for guidance on Shiny coding, troubleshooting, and wording. I tested the code in RStudio and made the final decisions about the app design and content."
   }
 ]

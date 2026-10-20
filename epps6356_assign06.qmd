@@ -1,0 +1,30 @@
+---
+title: "Assignment 6: Shiny Applications"
+format: html
+---
+
+## Happy Planet Index Explorer
+
+Use the country menu to select a country and the measure menu to explore the Happy Planet Index, life expectancy, life satisfaction, or ecological footprint. The year-range slider can be used to focus on a specific time period, and the Data Table tab shows the values used in the visualization.
+
+<iframe
+  src="https://insanglee.shinyapps.io/own_data_app/"
+  width="100%"
+  height="700"
+  style="border:1px solid #ddd;">
+</iframe>
+
+## mtcars Explorer
+
+Use the X-axis menu to choose horsepower, weight, or displacement. The cylinder checkboxes can be used to include or exclude cars with 4, 6, or 8 cylinders, and the plot, summary, and table update together.
+
+<iframe
+  src="https://insanglee.shinyapps.io/mtcars_app/"
+  width="100%"
+  height="850"
+  style="border:1px solid #ddd;">
+</iframe>
+
+## AI Use Disclosure
+
+I used ChatGPT for guidance on Shiny coding, troubleshooting, and wording. I tested the code in RStudio and made the final decisions about the app design and content.
