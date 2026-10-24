@@ -207,14 +207,14 @@
     "href": "epps6356.html",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7"
   },
   {
     "objectID": "epps6356.html#assignments",
     "href": "epps6356.html#assignments",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7"
   },
   {
     "objectID": "cv.html",
@@ -775,5 +775,96 @@
     "title": "Assignment 6: Shiny Applications",
     "section": "",
     "text": "I tested both CSS-based font styling and a bslib-based theme with Google Lora.\nFor a real project, I would use the bslib method because it is simpler to manage and keeps the app design more consistent. It also makes it easier to apply the same theme and fonts across the whole app, including plots."
+  },
+  {
+    "objectID": "epps6356_assign07.html",
+    "href": "epps6356_assign07.html",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "",
+    "text": "This project uses the Happy Planet Index 2026 dataset to explore the relationship between economic wealth, subjective wellbeing, ecological impact, and sustainable wellbeing across countries.\nRather than treating GDP alone as an indicator of national wellbeing, we use three complementary visualizations to examine how GDP per capita relates to the Happy Planet Index (HPI), life satisfaction, and ecological footprint.\nThe interactive application contains three visualizations:\n\nChart 9: Interactive Scatter Plot — GDP per capita and Happy Planet Index\nChart 18: Interactive Bubble Chart — GDP per capita, life satisfaction, and ecological footprint\nContour Plot — distribution and concentration of countries across GDP per capita and HPI\n\nAll visualizations use 2025 observations from the Happy Planet Index 2026 public dataset."
+  },
+  {
+    "objectID": "epps6356_assign07.html#project-overview",
+    "href": "epps6356_assign07.html#project-overview",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "",
+    "text": "This project uses the Happy Planet Index 2026 dataset to explore the relationship between economic wealth, subjective wellbeing, ecological impact, and sustainable wellbeing across countries.\nRather than treating GDP alone as an indicator of national wellbeing, we use three complementary visualizations to examine how GDP per capita relates to the Happy Planet Index (HPI), life satisfaction, and ecological footprint.\nThe interactive application contains three visualizations:\n\nChart 9: Interactive Scatter Plot — GDP per capita and Happy Planet Index\nChart 18: Interactive Bubble Chart — GDP per capita, life satisfaction, and ecological footprint\nContour Plot — distribution and concentration of countries across GDP per capita and HPI\n\nAll visualizations use 2025 observations from the Happy Planet Index 2026 public dataset."
+  },
+  {
+    "objectID": "epps6356_assign07.html#research-question",
+    "href": "epps6356_assign07.html#research-question",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Research Question",
+    "text": "Research Question\n\nHow does economic wealth relate to sustainable wellbeing across countries?\nThe three visualizations examine this broader question from different perspectives.\n\nDoes higher GDP per capita correspond to a higher Happy Planet Index?\nHow do life satisfaction and ecological footprint vary across levels of economic wealth?\nWhere are countries concentrated within the joint distribution of GDP and HPI?\n\nTogether, these charts provide a multidimensional view of sustainable wellbeing that cannot be captured by GDP alone."
+  },
+  {
+    "objectID": "epps6356_assign07.html#data",
+    "href": "epps6356_assign07.html#data",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Data",
+    "text": "Data\nData source: Happy Planet Index 2026 public dataset.\nThe analysis uses country-level observations for 2025.\nKey variables include:\n\n\n\n\n\n\n\nVariable\nDescription\n\n\n\n\nGDP per capita\nGDP per capita in PPP-adjusted constant 2021 international dollars\n\n\nHappy Planet Index\nMeasure of sustainable wellbeing\n\n\nLife satisfaction\nSelf-reported life satisfaction\n\n\nEcological footprint\nEnvironmental resource use\n\n\nContinent\nGeographic region of each country\n\n\n\nFor the 2025 observations, the GDP measure uses the dataset variable reporting 2024 GDP per capita for the 2025 HPI observations."
+  },
+  {
+    "objectID": "epps6356_assign07.html#interactive-shiny-application",
+    "href": "epps6356_assign07.html#interactive-shiny-application",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Interactive Shiny Application",
+    "text": "Interactive Shiny Application\nThe application below was developed in R Shiny and published through Posit Connect Cloud.\nThe controls allow users to interactively explore differences across countries and compare patterns across the three visualizations.\n\n Open Shiny App in a New Window"
+  },
+  {
+    "objectID": "epps6356_assign07.html#chart-9-gdp-and-happy-planet-index",
+    "href": "epps6356_assign07.html#chart-9-gdp-and-happy-planet-index",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Chart 9: GDP and Happy Planet Index",
+    "text": "Chart 9: GDP and Happy Planet Index\n\nHow Does GDP Relate to HPI?\nThe first visualization is an interactive scatter plot corresponding to Chart 9 in Abela’s Chart Chooser.\nA scatter plot is appropriate because both GDP per capita and HPI are numeric variables, and the primary purpose is to examine their relationship across countries.\n\nX-axis: GDP per capita\nY-axis: Happy Planet Index\nColor: Continent\nObservation: Country\n\nGDP per capita is displayed on a logarithmic scale to make countries across very different income levels easier to compare.\nInteractive features include:\n\nGDP per capita range filter\nContinent filter\nCountry-name labels\nOptional trend line\nHover information\nPlotly zoom and pan controls\n\nThe visualization allows users to investigate whether greater economic wealth is consistently associated with higher levels of sustainable wellbeing and whether patterns differ across geographic regions."
+  },
+  {
+    "objectID": "epps6356_assign07.html#chart-18-wealth-wellbeing-and-ecological-footprint",
+    "href": "epps6356_assign07.html#chart-18-wealth-wellbeing-and-ecological-footprint",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Chart 18: Wealth, Wellbeing, and Ecological Footprint",
+    "text": "Chart 18: Wealth, Wellbeing, and Ecological Footprint\nThe second visualization is an interactive bubble chart corresponding to Chart 18 in Abela’s Chart Chooser.\nA bubble chart is appropriate because the visualization examines the relationship among three quantitative variables simultaneously.\n\nX-axis: GDP per capita\nY-axis: Life satisfaction\nBubble size / color: Ecological footprint\n\nEach bubble represents a country.\nThis visualization extends the GDP comparison by showing that countries with similar levels of economic wealth or life satisfaction may differ substantially in their ecological footprint.\nInteractive controls allow users to modify bubble size, GDP scaling, labels, and hover information."
+  },
+  {
+    "objectID": "epps6356_assign07.html#additional-visualization-contour-plot",
+    "href": "epps6356_assign07.html#additional-visualization-contour-plot",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Additional Visualization: Contour Plot",
+    "text": "Additional Visualization: Contour Plot\nThe third visualization is a contour plot examining the joint distribution of GDP per capita and the Happy Planet Index.\nUnlike the individual-country emphasis of the scatter plot, the contour visualization emphasizes where countries are concentrated within the GDP–HPI distribution.\nThe contour lines identify areas with greater concentrations of observations, while optional country points and a trend line provide additional context.\nInteractive controls allow users to adjust:\n\nNumber of contour levels\nLogarithmic GDP scaling\nCountry points\nCountry labels\nTrend line\n\nThis visualization complements the scatter and bubble charts by emphasizing the overall distributional structure of the data rather than only individual observations."
+  },
+  {
+    "objectID": "epps6356_assign07.html#shared-reactivity",
+    "href": "epps6356_assign07.html#shared-reactivity",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Shared Reactivity",
+    "text": "Shared Reactivity\nTo support direct comparison across visualizations, the Scatter Plot and Bubble Chart share the same GDP range filter.\nA single reactive dataset is generated from the selected GDP range and is supplied to both charts.\nTherefore, when the GDP range changes, both visualizations update using the same subset of countries.\nThis shared reactive structure ensures that comparisons between the Scatter and Bubble charts remain consistent."
+  },
+  {
+    "objectID": "epps6356_assign07.html#project-materials",
+    "href": "epps6356_assign07.html#project-materials",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Project Materials",
+    "text": "Project Materials\nThe materials used for this assignment are available below.\n\n GitHub Repository \n Synergy Report \n Presentation Slides \n AI Use Disclosure \n AI Prompts \n Posit Connect Cloud"
+  },
+  {
+    "objectID": "epps6356_assign07.html#team",
+    "href": "epps6356_assign07.html#team",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Team",
+    "text": "Team\n\nMinyeong Yoon\n\nProposed the overall project topic and visualization direction using the Happy Planet Index data.\nDeveloped the interactive Chart 18 Bubble Chart.\nDeveloped the additional Contour Plot.\nOrganized the overall Shiny application structure and integrated the three visualizations into a single application.\n\n\n\nInsang Lee\n\nDeveloped the interactive Chart 9 Scatter Plot examining GDP per capita and HPI.\nAdded continent filtering, country labels, hover information, and the optional trend line.\nHelped implement the shared GDP reactive filter used by the Scatter and Bubble charts.\nPrepared the presentation materials.\nCreated and organized the SYNERGY.md documentation.\n\nFor a detailed description of team contributions and integration, see the Synergy Report."
+  },
+  {
+    "objectID": "epps6356_assign07.html#ai-use-disclosure",
+    "href": "epps6356_assign07.html#ai-use-disclosure",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "AI Use Disclosure",
+    "text": "AI Use Disclosure\nGenerative AI was used to support code troubleshooting, Shiny app integration, wording, and organization. All final code, visualization choices, interpretations, and submission materials were reviewed and finalized by the team.\nA more detailed record of AI use and selected prompts is available here:\n\nAI Use Disclosure\nAI Prompts"
+  },
+  {
+    "objectID": "epps6356_assign07.html#source",
+    "href": "epps6356_assign07.html#source",
+    "title": "Assignment 7: Hackathon 2.0",
+    "section": "Source",
+    "text": "Source\nHappy Planet Index. Happy Planet Index 2026 Public Dataset.\nAll visualizations and interpretations presented on this page were created by the project team using R and R Shiny."
   }
 ]
