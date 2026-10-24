@@ -18,17 +18,17 @@ Generative AI was used to support R coding, debugging, Shiny application develop
 
 AI-generated suggestions were reviewed against the actual R output, assignment instructions, and team decisions. The final code, visualization choices, interpretations, and submission materials were reviewed and finalized by the team.
 
----
+------------------------------------------------------------------------
 
 # Insang Lee
 
-**Contribution:** Chart 9 — Interactive Scatter Plot: GDP per Capita vs. Happy Planet Index  
-**Tool:** ChatGPT  
-**Date:** October 23, 2026  
-**Dataset:** Happy Planet Index 2026 edition, using 2025 observations  
+**Contribution:** Chart 9 — Interactive Scatter Plot: GDP per Capita vs. Happy Planet Index\
+**Tool:** ChatGPT\
+**Date:** October 23, 2026\
+**Dataset:** Happy Planet Index 2026 edition, using 2025 observations\
 **Software:** R, ggplot2, Shiny, and Plotly
 
----
+------------------------------------------------------------------------
 
 ## Assignment Requirements and Chart Selection
 
@@ -62,7 +62,7 @@ Is it possible to add those explanations as comments?
 
 I reviewed the assignment requirements and initially considered GDP per capita and wellbeing-related measures for Chart 9. I also added explanatory comments to the R code so that each step would be easier to understand, modify, and document.
 
----
+------------------------------------------------------------------------
 
 ## Data Preparation and Troubleshooting
 
@@ -94,7 +94,7 @@ I modified the code, and the scatter plot now appears, but I am still getting a 
 
 I checked variable names, missing values, and GDP observations that could not be displayed on a logarithmic scale. I revised the data preparation steps to exclude missing or non-positive GDP values.
 
----
+------------------------------------------------------------------------
 
 ## Revising the Research Question and Variables
 
@@ -128,7 +128,7 @@ Does the revised scatter plot look appropriate now? Please review its design and
 
 **Original Prompt**
 
-[Updated chart screenshot]
+\[Updated chart screenshot\]
 
 **English Description**
 
@@ -142,7 +142,7 @@ This allowed the chart to focus directly on whether higher economic wealth is as
 
 I retained GDP per capita on the x-axis, continent-based coloring, the logarithmic GDP scale, and the 2025 HPI observations.
 
----
+------------------------------------------------------------------------
 
 ## Improving the Static Scatter Plot
 
@@ -178,7 +178,7 @@ Does the updated figure look good enough for the final presentation? Please chec
 
 **Original Prompt**
 
-[Image of the exported scatter plot]
+\[Image of the exported scatter plot\]
 
 **English Description**
 
@@ -244,7 +244,7 @@ I improved the static chart through several iterations based on the rendered out
 
 I revised the GDP axis formatting, title placement, legend arrangement, figure dimensions, and text sizes. I also used `ggsave()` to export a high-resolution image for the presentation.
 
----
+------------------------------------------------------------------------
 
 ## Converting Chart 9 into an Interactive Shiny Application
 
@@ -290,7 +290,7 @@ I converted the original ggplot2 scatter plot into an interactive Shiny applicat
 
 I added a GDP range slider, continent selection, optional country labels, and hover tooltips. I also refined the chart title, dimensions, and margins.
 
----
+------------------------------------------------------------------------
 
 ## Coordinating the Visual Design with the Team
 
@@ -312,7 +312,7 @@ How can we make the colors, fonts, and overall design more similar across the ch
 
 I compared my Chart 9 design with the other team charts and worked toward a more consistent visual style, including fonts, title sizing, spacing, and coordinated colors.
 
----
+------------------------------------------------------------------------
 
 ## Adding an Optional LOESS Trend Line
 
@@ -360,7 +360,7 @@ I added a `Show trend line` checkbox and configured the smoothing layer to displ
 
 I also revised the trend-line color so that it remained visually distinct from the continent categories.
 
----
+------------------------------------------------------------------------
 
 ## Checking Assignment Requirements and Shared Reactivity
 
@@ -404,7 +404,7 @@ I reviewed the complete application against the assignment requirements and iden
 
 The Scatter and Bubble charts were connected through a shared GDP range filter, while the Contour chart retained its independent controls.
 
----
+------------------------------------------------------------------------
 
 ## Preparing the AI Prompt Documentation
 
@@ -422,7 +422,7 @@ Include an English translation of each prompt and briefly explain in English wha
 
 Please format the result so that I can submit it as my AI prompt documentation.
 
----
+------------------------------------------------------------------------
 
 ## Summary of Insang's AI-Assisted Work
 
@@ -432,16 +432,16 @@ The final Chart 9 retained the GDP–HPI relationship, logarithmic GDP scale, co
 
 All AI suggestions were reviewed against the actual R output and revised as needed.
 
----
+------------------------------------------------------------------------
 
 # Minyeong Yoon
 
-**Contribution:** Chart 18 Bubble Chart, Contour Plot, and Shiny Application Integration  
-**Tool:** ChatGPT  
-**Dataset:** Happy Planet Index 2026 edition, using 2025 observations  
+**Contribution:** Chart 18 Bubble Chart, Contour Plot, and Shiny Application Integration\
+**Tool:** ChatGPT\
+**Dataset:** Happy Planet Index 2026 edition, using 2025 observations\
 **Software:** R, ggplot2, Shiny, Plotly, and related packages
 
----
+------------------------------------------------------------------------
 
 ## Building the Bubble Chart
 
@@ -457,7 +457,7 @@ I added GDP per capita to the data preparation code, but `gdp` is returning `NA`
 
 I received the following error. How can I fix it?
 
-```text
+``` text
 Error in plotlyOutput("bubble_chart", height = "600px") :
   could not find function "plotlyOutput"
 ```
@@ -490,7 +490,7 @@ Could you reorganize the complete code? I do not know where to put the individua
 
 The Bubble Chart code was reorganized and debugged so that the required variables could be loaded correctly and the Shiny inputs could be used without the earlier filtering errors.
 
----
+------------------------------------------------------------------------
 
 ## Styling the Bubble Chart
 
@@ -520,7 +520,7 @@ I reduced the bubble size, and I think the chart looks better now.
 
 The Bubble Chart styling was refined by adjusting the font, bubble borders, bubble sizes, and color gradient to improve readability and visual consistency.
 
----
+------------------------------------------------------------------------
 
 ## Exploring a Contour Chart
 
@@ -570,7 +570,7 @@ The initial Contour Plot concept was revised after reviewing the output.
 
 The final version uses GDP per capita on the X-axis and HPI on the Y-axis, with density contours showing where countries are concentrated within the joint GDP–HPI distribution.
 
----
+------------------------------------------------------------------------
 
 ## Downloading Charts
 
@@ -588,7 +588,7 @@ I placed `renderPlot()` and `downloadHandler()` inside `contour_plot <- reactive
 
 A PNG download function was added to the Contour Plot so that the visualization could be exported directly from the Shiny application.
 
----
+------------------------------------------------------------------------
 
 ## Combining the Three Apps for Submission
 
@@ -614,7 +614,7 @@ The three separately developed visualizations were organized into a single Shiny
 
 The final application uses separate navigation tabs for the Scatter, Bubble, and Contour visualizations while retaining chart-specific controls.
 
----
+------------------------------------------------------------------------
 
 ## Improving the Contour PNG Export
 
@@ -630,7 +630,7 @@ The exported Contour Plot was reviewed separately from the browser display becau
 
 The export settings were adjusted to improve readability in the saved image.
 
----
+------------------------------------------------------------------------
 
 ## Preparing the Prompt Document
 
@@ -640,7 +640,7 @@ Please create `prompt.qmd` from everything I asked in this conversation.
 
 The document should be in English and does not need to include the times of my questions or your responses.
 
----
+------------------------------------------------------------------------
 
 ## Summary of Minyeong's AI-Assisted Work
 
@@ -648,27 +648,19 @@ AI assistance supported the development and debugging of the Bubble Chart, devel
 
 Minyeong reviewed the visual outputs throughout the process and revised the code, variable choices, styling, and application structure based on the rendered results.
 
----
+------------------------------------------------------------------------
 
 # Team Integration
 
 The two team members developed different components of the application and then combined them into a single Shiny dashboard.
 
-**Insang Lee**
-- Developed Chart 9: Interactive Scatter Plot
-- Implemented continent filtering, country labels, hover information, and the optional LOESS trend line
-- Helped implement the shared GDP reactive filter
-- Prepared presentation materials and team documentation
+**Insang Lee** - Developed Chart 9: Interactive Scatter Plot - Implemented continent filtering, country labels, hover information, and the optional LOESS trend line - Helped implement the shared GDP reactive filter - Prepared presentation materials and team documentation
 
-**Minyeong Yoon**
-- Proposed the overall Happy Planet Index visualization direction
-- Developed Chart 18: Interactive Bubble Chart
-- Developed the Contour Plot
-- Organized and integrated the overall Shiny application
+**Minyeong Yoon** - Proposed the overall Happy Planet Index visualization direction - Developed Chart 18: Interactive Bubble Chart - Developed the Contour Plot - Organized and integrated the overall Shiny application
 
 A shared GDP range filter was used by the Scatter and Bubble charts so that both charts can display the same filtered subset of countries. The Contour Plot remains independent because its purpose and controls are different.
 
----
+------------------------------------------------------------------------
 
 # Final AI Use Statement
 
