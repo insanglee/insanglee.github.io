@@ -1139,5 +1139,138 @@
     "title": "AI Prompts and Revisions",
     "section": "Summary of Minyeong’s AI-Assisted Work",
     "text": "Summary of Minyeong’s AI-Assisted Work\nAI assistance supported the development and debugging of the Bubble Chart, development and interpretation of the Contour Plot, chart styling, PNG export, and integration of the team’s three visualizations into a single Shiny application.\nMinyeong reviewed the visual outputs throughout the process and revised the code, variable choices, styling, and application structure based on the rendered results."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html",
+    "href": "epps6356_assign07_ai_prompts.html",
+    "title": "AI Prompts and Revisions",
+    "section": "",
+    "text": "Generative AI was used to support R coding, debugging, Shiny application development, visualization design, wording, organization, and integration of the team application.\nAI-generated suggestions were reviewed against the actual R output, assignment instructions, and team decisions. The final code, visualization choices, interpretations, and submission materials were reviewed and finalized by the team."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#assignment-requirements-and-chart-selection",
+    "href": "epps6356_assign07_ai_prompts.html#assignment-requirements-and-chart-selection",
+    "title": "AI Prompts and Revisions",
+    "section": "Assignment Requirements and Chart Selection",
+    "text": "Assignment Requirements and Chart Selection\n\nPrompt 1 — Reviewing the Assignment and Selecting Variables\nOriginal Prompt (Korean)\nEPPS 6356 Assignment 7 할껀데, 우리 팀은 Happy Planet Index 데이터를 사용하기로 했고 나는 Chart 9를 담당하기 함. 과제 요구사항을 확인해서 Chart 9에 어떤 변수들을 사용하는 게 적절할지 추천해주고, R에서 ggplot2를 이용해 어떻게 만들면 되는지 코드를 알려줘. 그리고 왜 그 변수와 그래프 구성을 추천하는지도 설명해줘.\nEnglish Translation\nI am working on EPPS 6356 Assignment 7. Our team decided to use the Happy Planet Index dataset, and I am responsible for Chart 9.\nPlease review the assignment requirements and recommend appropriate variables for Chart 9. Also, provide R code using ggplot2 and explain why you recommend those variables and the chart design.\nAttachment: Assignment 7 instructions (PDF)\n\n\nPrompt 2 — Adding Comments to the R Code\nOriginal Prompt (Korean)\n좋은데 이거 코드에서도 이게 뭔지 왜하는지 등 설명이 간단히 적혀있어서 내가 바로 확인가능하면 더 좋을거 같은데 그렇게 표기가 가능한가?\nEnglish Translation\nThis looks good, but I think it would be better if the code itself included brief explanations of what each section does and why it is necessary, so I can understand it directly while reviewing the code.\nIs it possible to add those explanations as comments?\n\n\nWhat I Revised After AI Assistance\nI reviewed the assignment requirements and initially considered GDP per capita and wellbeing-related measures for Chart 9. I also added explanatory comments to the R code so that each step would be easier to understand, modify, and document."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#data-preparation-and-troubleshooting",
+    "href": "epps6356_assign07_ai_prompts.html#data-preparation-and-troubleshooting",
+    "title": "AI Prompts and Revisions",
+    "section": "Data Preparation and Troubleshooting",
+    "text": "Data Preparation and Troubleshooting\n\nPrompt 3 — Troubleshooting an Empty Scatter Plot\nOriginal Prompt (Korean)\n하다 보니 이런 오류가 뜨네? 왜 그런가? 어떤 수정이 가능해?\nEnglish Translation\nWhile running the code, I encountered this error or warning. Why is it happening, and what changes can I make to fix it?\nAttachment: Screenshot of the RStudio warning and empty scatter plot\n\n\nPrompt 4 — Troubleshooting the Remaining Warning\nOriginal Prompt (Korean)\n수정해봤는데 이렇게 되는데 또 경고가 뜨네.\nEnglish Translation\nI modified the code, and the scatter plot now appears, but I am still getting a warning message. What is causing it, and how can I resolve it?\nAttachment: Screenshot of the updated plot and warning message\n\n\nWhat I Revised After AI Assistance\nI checked variable names, missing values, and GDP observations that could not be displayed on a logarithmic scale. I revised the data preparation steps to exclude missing or non-positive GDP values."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#revising-the-research-question-and-variables",
+    "href": "epps6356_assign07_ai_prompts.html#revising-the-research-question-and-variables",
+    "title": "AI Prompts and Revisions",
+    "section": "Revising the Research Question and Variables",
+    "text": "Revising the Research Question and Variables\n\nPrompt 5 — Changing the Scatter Plot to GDP and HPI\nOriginal Prompt (Korean)\n민영이랑 상의해보니 Chart 9는 GDP per capita와 HPI의 관계를 보는 scatter plot으로 바꾸는 게 더 좋을 것 같아. 지금까지 만든 코드에서 어떻게 수정하면 좋을까? 2025년 데이터를 쓰고, continent별 색상 구분과 GDP 로그 스케일은 유지하고 싶어. 그리고 왜 이 구성이 더 적절한지도 간단히 설명해줘.\nEnglish Translation\nAfter discussing the chart with Minyeong, we think it would be better to use a scatter plot showing the relationship between GDP per capita and the Happy Planet Index (HPI).\nHow should I modify the existing code? I want to use the 2025 observations while keeping the continent-based colors and the logarithmic GDP scale.\nPlease also briefly explain why this variable combination is more appropriate.\n\n\nPrompt 6 — Reviewing the Revised Scatter Plot\nOriginal Prompt (Korean)\n이렇게 괜찮나?\nEnglish Translation\nDoes the revised scatter plot look appropriate now? Please review its design and whether it meets the assignment requirements.\nAttachment: Screenshot of the revised GDP–HPI scatter plot\n\n\nPrompt 7 — Reviewing Another Plot Output\nOriginal Prompt\n[Updated chart screenshot]\nEnglish Description\nI shared another screenshot of the scatter plot to check whether the previous changes had been applied correctly and whether any additional adjustments were necessary.\n\n\nWhat I Revised After AI Assistance\nAfter discussing the research question with my teammate, I replaced life expectancy with HPI as the y-axis variable.\nThis allowed the chart to focus directly on whether higher economic wealth is associated with higher sustainable wellbeing.\nI retained GDP per capita on the x-axis, continent-based coloring, the logarithmic GDP scale, and the 2025 HPI observations."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#improving-the-static-scatter-plot",
+    "href": "epps6356_assign07_ai_prompts.html#improving-the-static-scatter-plot",
+    "title": "AI Prompts and Revisions",
+    "section": "Improving the Static Scatter Plot",
+    "text": "Improving the Static Scatter Plot\n\nPrompt 8 — Improving Chart Appearance and Exporting an Image\nOriginal Prompt (Korean)\n지금 Chart 9를 GDP per capita와 HPI의 관계를 보는 scatter plot으로 수정해서 그래프가 정상적으로 나왔어. 이걸 최종 제출과 PPT에 사용하기 좋게 조금 더 깔끔하게 다듬고 싶은데, 현재 코드에서 어떤 부분을 수정하면 좋을까? 특히 x축 숫자 표시, 긴 continent 범례가 잘리지 않도록 하는 방법, 그리고 PPT에 넣을 수 있도록 그래프를 이미지로 저장하는 코드도 같이 알려줘. 기존 코드의 목적이나 구조는 최대한 유지해줘.\nEnglish Translation\nI successfully revised Chart 9 into a scatter plot showing the relationship between GDP per capita and HPI.\nI would like to improve its appearance for the final submission and PowerPoint presentation.\nWhich parts of the current code should I modify? In particular, please explain how to format the x-axis numbers, prevent long continent names in the legend from being cut off, and save the graph as an image for PowerPoint.\nPlease preserve the original purpose and structure of the code as much as possible.\n\n\nPrompt 9 — Reviewing the Updated Figure\nOriginal Prompt (Korean)\n괜찮나?\nEnglish Translation\nDoes the updated figure look good enough for the final presentation? Please check whether the formatting changes were applied correctly.\nAttachment: Screenshot of the updated ggplot\n\n\nPrompt 10 — Fixing the Clipped Title and Legend\nOriginal Prompt\n[Image of the exported scatter plot]\nEnglish Description\nI shared the exported PNG image to check the final appearance. The screenshot showed that the chart title and some continent legend labels were clipped.\n\n\nPrompt 11 — Requesting Further Layout Corrections\nOriginal Prompt (Korean)\n제목이랑 레전드가 좀 짤리는데 수정해야할 것 같아.\nEnglish Translation\nThe title and legend are partially cut off, so I think the layout needs to be revised. How can I fix them without changing the chart itself?\n\n\nPrompt 12 — Troubleshooting the Legend Again\nOriginal Prompt (Korean)\n레전드가 아직 짤려보여.\nEnglish Translation\nThe continent legend still appears to be cut off. How can I adjust the legend layout so that all region names are fully visible?\nAttachment: Screenshot showing the remaining legend clipping\n\n\nPrompt 13 — Requesting the Complete Revised Code\nOriginal Prompt (Korean)\n여기서 전체 변경으로 알려줘봐.\nEnglish Translation\nPlease provide the complete revised R code rather than individual code fragments, incorporating all the changes needed to fix the title and legend layout.\n\n\nPrompt 14 — Reviewing the Final Exported Image\nOriginal Prompt (Korean)\n됐나?\nEnglish Translation\nDoes the final exported image look correct now? Please check whether the title, legend, axes, and chart layout are properly displayed.\nAttachment: Final exported Chart 9 PNG\n\n\nPrompt 15 — Reviewing the Complete Static Chart Code\nOriginal Prompt (Korean)\n이게 전체코드인데 과제 요구사항 등에 다 맞게 된지 최종점검해줘.\nEnglish Translation\nThis is the complete R code for Chart 9. Please conduct a final review and check whether it meets the assignment requirements and whether anything is missing or incorrect.\n\n\nWhat I Revised After AI Assistance\nI improved the static chart through several iterations based on the rendered output.\nI revised the GDP axis formatting, title placement, legend arrangement, figure dimensions, and text sizes. I also used ggsave() to export a high-resolution image for the presentation."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#converting-chart-9-into-an-interactive-shiny-application",
+    "href": "epps6356_assign07_ai_prompts.html#converting-chart-9-into-an-interactive-shiny-application",
+    "title": "AI Prompts and Revisions",
+    "section": "Converting Chart 9 into an Interactive Shiny Application",
+    "text": "Converting Chart 9 into an Interactive Shiny Application\n\nPrompt 16 — Adding Shiny and Plotly Interactivity\nOriginal Prompt (Korean)\n여기서 Chart 9 scatter plot 코드를 Shiny + Plotly를 이용한 interactive 버전으로 바꾸고 싶은데, 어떻게 코드를 추가하면 될까?\n구체적으로는 GDP range slider, continent filter, country name checkbox, hover 기능을 추가하고 싶고 기존 GDP-HPI 관계와 continent 색상 구분은 유지하고 싶어. 구체적으로 코드 추천해주고 왜 추천하는지도 설명해줘.\nEnglish Translation\nI want to convert my existing Chart 9 scatter plot into an interactive version using Shiny and Plotly.\nSpecifically, I want to add a GDP range slider, a continent filter, a checkbox to show or hide country names, and hover tooltips.\nI want to preserve the original GDP–HPI relationship and continent-based colors.\nPlease recommend specific code and explain why you recommend each feature.\n\n\nPrompt 17 — Improving the Interactive Chart Layout\nOriginal Prompt (Korean)\n이렇게 나오는데 제목이 짤리기 때문에 두 줄로 바꾸거나 수정이 좀 필요할 것 같고 그래프도 중간으로 와야 할 것 같은데 어떻게 생각해?\n또 다른 문제는 없나?\nEnglish Translation\nThe interactive chart now appears as shown in the screenshot, but the title is cut off, so I think it needs to be split into two lines or otherwise adjusted.\nI also think the graph should be more centered. What do you think?\nAre there any other problems with the current layout or functionality?\nAttachment: Screenshot of the interactive Shiny application\n\n\nWhat I Revised After AI Assistance\nI converted the original ggplot2 scatter plot into an interactive Shiny application using Plotly.\nI added a GDP range slider, continent selection, optional country labels, and hover tooltips. I also refined the chart title, dimensions, and margins."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#coordinating-the-visual-design-with-the-team",
+    "href": "epps6356_assign07_ai_prompts.html#coordinating-the-visual-design-with-the-team",
+    "title": "AI Prompts and Revisions",
+    "section": "Coordinating the Visual Design with the Team",
+    "text": "Coordinating the Visual Design with the Team\n\nPrompt 18 — Unifying the Team’s Chart Designs\nOriginal Prompt (Korean)\n민영이 다음에 이어서 한 과제들인데 좀 통일되게 해야 할 것 같아. 색깔이나 글꼴 등 비슷하게 바꾸고 싶은데 어떻게 바꾸면 될까?\nEnglish Translation\nThese are the additional parts of the assignment that Minyeong worked on. I think our charts should have a more consistent visual appearance.\nHow can we make the colors, fonts, and overall design more similar across the charts?\nAttachments: Teammate’s Shiny application R files\n\n\nWhat I Revised After AI Assistance\nI compared my Chart 9 design with the other team charts and worked toward a more consistent visual style, including fonts, title sizing, spacing, and coordinated colors."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#adding-an-optional-loess-trend-line",
+    "href": "epps6356_assign07_ai_prompts.html#adding-an-optional-loess-trend-line",
+    "title": "AI Prompts and Revisions",
+    "section": "Adding an Optional LOESS Trend Line",
+    "text": "Adding an Optional LOESS Trend Line\n\nPrompt 19 — Adding a Trend Line Checkbox\nOriginal Prompt (Korean)\n지금 interactive Chart 9 scatter plot에 사용자가 선택해서 볼 수 있는 trend line 기능을 추가하고 싶은데, 그냥 있는 건 아니고 Show trend line 체크박스를 만들고, 체크했을 때 전체 GDP-HPI 관계를 보여주는 LOESS 추세선이 하나만 나타나도록 도와줘.\nEnglish Translation\nI want to add an optional trend line to my interactive Chart 9 scatter plot.\nInstead of displaying the trend line by default, I want to add a Show trend line checkbox.\nWhen the checkbox is selected, only one overall LOESS trend line should appear, showing the GDP–HPI relationship across the selected countries rather than separate trend lines for each continent.\n\n\nPrompt 20 — Troubleshooting Warning Messages\nOriginal Prompt (Korean)\n이런 오류가 뜨는데.\nEnglish Translation\nI am getting these warning or error messages after modifying the application. What is causing them, and how can I resolve them?\nAttachment: Screenshot of RStudio warning messages\n\n\nPrompt 21 — Changing the Trend Line Color\nOriginal Prompt (Korean)\n좋은데 지금 추세선 색깔을 팀 색깔로 변경하고 싶은데 어떤 색깔 추천해?\nEnglish Translation\nThe trend line works, but I want to change its color to match our team’s visual style.\nWhich color would you recommend for the trend line, considering the existing continent colors and the colors used in the other team charts?\n\n\nWhat I Revised After AI Assistance\nI added a Show trend line checkbox and configured the smoothing layer to display one overall LOESS trend line rather than separate lines by continent.\nI also revised the trend-line color so that it remained visually distinct from the continent categories."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#checking-assignment-requirements-and-shared-reactivity",
+    "href": "epps6356_assign07_ai_prompts.html#checking-assignment-requirements-and-shared-reactivity",
+    "title": "AI Prompts and Revisions",
+    "section": "Checking Assignment Requirements and Shared Reactivity",
+    "text": "Checking Assignment Requirements and Shared Reactivity\n\nPrompt 22 — Reviewing Missing Assignment Requirements\nOriginal Prompt (Korean)\n지금 전체 코드를 보면 과제에서 요구하는 사항 중에 충족이 안 되는 게 있는 것 같아.\nEnglish Translation\nLooking at the complete team application code, I think some of the assignment requirements may not have been satisfied.\nPlease review the code against the Assignment 7 instructions and identify any missing or incomplete requirements.\n\n\nPrompt 23 — Keeping the Contour Plot Independent\nOriginal Prompt (Korean)\nreactive() 이거 contour에는 안 뜨게 하고 싶은데 어떻게 할 수 있어?\nEnglish Translation\nI want the shared reactive() data filtering to apply to the scatter plot and bubble chart, but not to the contour plot.\nHow can I structure the code so that the contour plot remains independent while the other two charts share the same reactive data?\n\n\nPrompt 24 — Final Code Review\nOriginal Prompt (Korean)\n최종 코드인데 괜찮은지 최종확인해줘.\nEnglish Translation\nThis is my final version of the code. Please review it carefully and check whether it works as intended and meets the Assignment 7 requirements.\n\n\nWhat I Revised After AI Assistance\nI reviewed the complete application against the assignment requirements and identified the requirement for at least two charts to use the same reactive dataset.\nThe Scatter and Bubble charts were connected through a shared GDP range filter, while the Contour chart retained its independent controls."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#preparing-the-ai-prompt-documentation",
+    "href": "epps6356_assign07_ai_prompts.html#preparing-the-ai-prompt-documentation",
+    "title": "AI Prompts and Revisions",
+    "section": "Preparing the AI Prompt Documentation",
+    "text": "Preparing the AI Prompt Documentation\n\nPrompt 25 — Preparing the AI Prompt Record\nOriginal Prompt (Korean)\n지금까지 내가 말한 거 다 모아서 영어 번역 넣어줘. AI prompt 만들어서 제출하려고, 각 부분마다 수정사항들 영어로 간단히 설명해주고.\nEnglish Translation\nPlease collect all the prompts I have used so far and organize them into an AI prompt record for submission.\nInclude an English translation of each prompt and briefly explain in English what I revised or corrected in each section after using AI suggestions.\nPlease format the result so that I can submit it as my AI prompt documentation."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#summary-of-insangs-ai-assisted-work",
+    "href": "epps6356_assign07_ai_prompts.html#summary-of-insangs-ai-assisted-work",
+    "title": "AI Prompts and Revisions",
+    "section": "Summary of Insang’s AI-Assisted Work",
+    "text": "Summary of Insang’s AI-Assisted Work\nAI assistance supported the interpretation of assignment requirements, variable selection, R coding, debugging, visualization design, Shiny and Plotly interactivity, visual integration, and final code review.\nThe final Chart 9 retained the GDP–HPI relationship, logarithmic GDP scale, continent-based colors, interactive filtering, hover information, optional country labels, and an optional LOESS trend line.\nAll AI suggestions were reviewed against the actual R output and revised as needed."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#building-the-bubble-chart",
+    "href": "epps6356_assign07_ai_prompts.html#building-the-bubble-chart",
+    "title": "AI Prompts and Revisions",
+    "section": "Building the Bubble Chart",
+    "text": "Building the Bubble Chart\n\nPrompt 1\nHow should I write code to create a bubble chart in Shiny using the 2025 Happy Planet Index data? Please show me the code structure.\n\n\nPrompt 2\nI added GDP per capita to the data preparation code, but gdp is returning NA. Why is this happening?\n\n\nPrompt 3\nI received the following error. How can I fix it?\nError in plotlyOutput(\"bubble_chart\", height = \"600px\") :\n  could not find function \"plotlyOutput\"\n\n\nPrompt 4\nWhat is Plotly used for? Can I create the chart without it?\n\n\nPrompt 5\nAn error appears in the Shiny app. Can you help me identify the problem?\nAttachment: Screenshot\n\n\nPrompt 6\nI am now using a revised server function. It filters countries by GDP, plots GDP on the X-axis and ecological footprint on the Y-axis, and represents life satisfaction through bubble area. Can you review this version in relation to the error?\n\n\nPrompt 7\nWhen I run the app, I receive Excel import warnings about columns V and W, automatic names for blank columns, and a filtering error for gdp &gt;= input$gdp[1].\nThe error says the condition must be of size 134 or 1, not size 0. There are also jsonlite warnings about named vectors. How can I resolve these messages?\n\n\nPrompt 8\nCould you reorganize the complete code? I do not know where to put the individual changes.\n\n\nWhat Was Revised After AI Assistance\nThe Bubble Chart code was reorganized and debugged so that the required variables could be loaded correctly and the Shiny inputs could be used without the earlier filtering errors."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#styling-the-bubble-chart",
+    "href": "epps6356_assign07_ai_prompts.html#styling-the-bubble-chart",
+    "title": "AI Prompts and Revisions",
+    "section": "Styling the Bubble Chart",
+    "text": "Styling the Bubble Chart\n\nPrompt 9\nThe app works now. How can I change the font and add a border around each circle?\n\n\nPrompt 10\nI would like to use a Google Font with Medium 500 weight.\n\n\nPrompt 11\nShould I use a color gradient? I would like a purple-to-blue gradient.\n\n\nPrompt 12\nCan I use color names instead of numeric color codes?\n\n\nPrompt 13\nI reduced the bubble size, and I think the chart looks better now.\nAttachment: Screenshot\n\n\nWhat Was Revised After AI Assistance\nThe Bubble Chart styling was refined by adjusting the font, bubble borders, bubble sizes, and color gradient to improve readability and visual consistency."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#exploring-a-contour-chart",
+    "href": "epps6356_assign07_ai_prompts.html#exploring-a-contour-chart",
+    "title": "AI Prompts and Revisions",
+    "section": "Exploring a Contour Chart",
+    "text": "Exploring a Contour Chart\n\nPrompt 14\nHow should I write code to create a contour chart in Shiny using the 2025 HPI data? Please show me the code structure.\n\n\nPrompt 15\nThe contour chart came out like this, but I find it difficult to interpret. Is this correct?\nAttachment: Screenshot\n\n\nPrompt 16\nI wanted to examine the potentially weak relationships between GDP and the indicators used in HPI: ecological footprint, wellbeing, and life expectancy.\n\n\nPrompt 17\nWhich parts of the code should I change to reflect that purpose?\n\n\nPrompt 18\nI used the revised code for three side-by-side charts, but I received an object-not-found error. Can you check my code?\nMy data preparation includes country, gdp, footprint, and satisfaction, while the server also refers to life_expectancy.\n\n\nPrompt 19\nIs this the right chart, or should I instead put GDP and HPI on the X- and Y-axes and show the number of countries through contours?\nAttachment: Screenshot\n\n\nPrompt 20\nWhat would the code look like for GDP on the X-axis, HPI on the Y-axis, and density contours showing where countries cluster?\n\n\nPrompt 21\nThis version seems to make more sense. What do you think?\nAttachment: Screenshot\n\n\nWhat Was Revised After AI Assistance\nThe initial Contour Plot concept was revised after reviewing the output.\nThe final version uses GDP per capita on the X-axis and HPI on the Y-axis, with density contours showing where countries are concentrated within the joint GDP–HPI distribution."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#downloading-charts",
+    "href": "epps6356_assign07_ai_prompts.html#downloading-charts",
+    "title": "AI Prompts and Revisions",
+    "section": "Downloading Charts",
+    "text": "Downloading Charts\n\nPrompt 22\nWhy do some Shiny charts allow me to download a PNG directly while others do not?\n\n\nPrompt 23\nI do not understand the third step for adding the PNG download feature. Is the following arrangement correct?\nI placed renderPlot() and downloadHandler() inside contour_plot &lt;- reactive({...}), before the chart-building code, and added res = 96 at the end of that reactive expression.\n\n\nWhat Was Revised After AI Assistance\nA PNG download function was added to the Contour Plot so that the visualization could be exported directly from the Shiny application."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#combining-the-three-apps-for-submission",
+    "href": "epps6356_assign07_ai_prompts.html#combining-the-three-apps-for-submission",
+    "title": "AI Prompts and Revisions",
+    "section": "Combining the Three Apps for Submission",
+    "text": "Combining the Three Apps for Submission\n\nPrompt 24\nI need to submit the files now. How should I combine the three app.R files?\n\n\nPrompt 25\nCan I integrate them simply by copying and pasting the code?\n\n\nPrompt 26\nHere are my three files:\n\nepps6356_assign07_chart18_bubble.R\nepps6356_assign07_contour.R\nepps6356_assign07_chart9_scatter.R\n\n\n\nWhat Was Revised After AI Assistance\nThe three separately developed visualizations were organized into a single Shiny application.\nThe final application uses separate navigation tabs for the Scatter, Bubble, and Contour visualizations while retaining chart-specific controls."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#improving-the-contour-png-export",
+    "href": "epps6356_assign07_ai_prompts.html#improving-the-contour-png-export",
+    "title": "AI Prompts and Revisions",
+    "section": "Improving the Contour PNG Export",
+    "text": "Improving the Contour PNG Export\n\nPrompt 27\nCan the contour PNG be exported more attractively? The title looks much smaller than it does in the Shiny app. Is that expected?\nAttachment: PNG export\n\n\nWhat Was Revised After AI Assistance\nThe exported Contour Plot was reviewed separately from the browser display because exported graphics may use different physical dimensions and text scaling.\nThe export settings were adjusted to improve readability in the saved image."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#preparing-the-prompt-document",
+    "href": "epps6356_assign07_ai_prompts.html#preparing-the-prompt-document",
+    "title": "AI Prompts and Revisions",
+    "section": "Preparing the Prompt Document",
+    "text": "Preparing the Prompt Document\n\nPrompt 28\nPlease create prompt.qmd from everything I asked in this conversation.\nThe document should be in English and does not need to include the times of my questions or your responses."
+  },
+  {
+    "objectID": "epps6356_assign07_ai_prompts.html#summary-of-minyeongs-ai-assisted-work",
+    "href": "epps6356_assign07_ai_prompts.html#summary-of-minyeongs-ai-assisted-work",
+    "title": "AI Prompts and Revisions",
+    "section": "Summary of Minyeong’s AI-Assisted Work",
+    "text": "Summary of Minyeong’s AI-Assisted Work\nAI assistance supported the development and debugging of the Bubble Chart, development and interpretation of the Contour Plot, chart styling, PNG export, and integration of the team’s three visualizations into a single Shiny application.\nMinyeong reviewed the visual outputs throughout the process and revised the code, variable choices, styling, and application structure based on the rendered results."
   }
 ]
