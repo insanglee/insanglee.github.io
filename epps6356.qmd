@@ -11,3 +11,4 @@ title: "EPPS 6356"
 - [Assignment 5](epps6356_assign05.qmd)
 - [Assignment 6](epps6356_assign06.qmd)
 - [Assignment 7](epps6356_assign07.qmd)
+- [Assignment 8](epps6356_assign08.qmd)

@@ -1,0 +1,496 @@
+---
+title: "NYC Subway Ridership and Arrest Dashboard"
+author: "Insang Lee"
+format:
+  dashboard:
+    theme: cosmo
+    nav-buttons: [github]
+    orientation: rows
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(lubridate)
+library(plotly)
+library(DT)
+library(scales)
+
+# ============================================================
+# EPPS 6356 Assignment 8
+# Dashboard Prototype
+# Insang Lee
+# ============================================================
+
+dashboard_data <- read_csv(
+  "subway_arrests_dashboard_2024.csv",
+  show_col_types = FALSE
+)
+
+dashboard_data <- dashboard_data |>
+  mutate(
+    month = as.Date(month)
+  )
+
+# ============================================================
+# Monthly summary
+# ============================================================
+
+monthly_summary <- dashboard_data |>
+  group_by(month) |>
+  summarise(
+    monthly_ridership = sum(
+      monthly_ridership,
+      na.rm = TRUE
+    ),
+    arrest_count = sum(
+      arrest_count,
+      na.rm = TRUE
+    ),
+    arrests_per_100k =
+      arrest_count /
+      monthly_ridership *
+      100000,
+    .groups = "drop"
+  )
+
+# ============================================================
+# Station summary
+# ============================================================
+
+station_summary <- dashboard_data |>
+  group_by(
+    station_complex_id,
+    station_complex,
+    borough
+  ) |>
+  summarise(
+    total_ridership = sum(
+      monthly_ridership,
+      na.rm = TRUE
+    ),
+    total_arrests = sum(
+      arrest_count,
+      na.rm = TRUE
+    ),
+    arrests_per_100k =
+      total_arrests /
+      total_ridership *
+      100000,
+    .groups = "drop"
+  )
+
+# ============================================================
+# Dashboard value boxes
+# ============================================================
+
+total_ridership <- sum(
+  dashboard_data$monthly_ridership,
+  na.rm = TRUE
+)
+
+total_arrests <- sum(
+  dashboard_data$arrest_count,
+  na.rm = TRUE
+)
+
+overall_rate <-
+  total_arrests /
+  total_ridership *
+  100000
+```
+
+# Overview
+
+## Row
+
+```{r}
+#| content: valuebox
+#| title: "Total Ridership"
+#| icon: train-front
+
+list(
+  value = label_number(
+    scale_cut = cut_short_scale()
+  )(total_ridership),
+  color = "primary"
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Arrests Near Selected Stations"
+#| icon: clipboard-data
+
+list(
+  value = comma(total_arrests),
+  color = "secondary"
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Arrests per 100,000 Riders"
+#| icon: bar-chart
+
+list(
+  value = round(overall_rate, 2),
+  color = "info"
+)
+```
+
+## Row
+
+### Ridership Peaks in October
+
+```{r}
+#| label: monthly-ridership
+#| fig-height: 5
+
+p_ridership <- ggplot(
+  monthly_summary,
+  aes(
+    x = month,
+    y = monthly_ridership,
+    group = 1,
+    text = paste0(
+      "Month: ",
+      format(month, "%B %Y"),
+      "<br>Ridership: ",
+      comma(monthly_ridership)
+    )
+  )
+) +
+  geom_line(
+    linewidth = 1
+  ) +
+  geom_point(
+    size = 2.5
+  ) +
+  scale_x_date(
+    date_breaks = "1 month",
+    date_labels = "%b"
+  ) +
+  scale_y_continuous(
+    labels = label_number(
+      scale_cut = cut_short_scale()
+    )
+  ) +
+  labs(
+    x = "Month",
+    y = "Monthly Ridership",
+    caption = "Source: MTA Subway Hourly Ridership Data, 2024"
+  ) +
+  theme_minimal(base_size = 12)
+
+ggplotly(
+  p_ridership,
+  tooltip = "text"
+) |>
+  layout(
+    hovermode = "x unified",
+    xaxis = list(
+      rangeslider = list(
+        visible = TRUE
+      )
+    )
+  )
+```
+
+### Arrests Vary Across 2024, Peaking in May
+
+```{r}
+#| label: monthly-arrests
+#| fig-height: 5
+
+p_arrests <- ggplot(
+  monthly_summary,
+  aes(
+    x = month,
+    y = arrest_count,
+    group = 1,
+    text = paste0(
+      "Month: ",
+      format(month, "%B %Y"),
+      "<br>Arrests: ",
+      comma(arrest_count)
+    )
+  )
+) +
+  geom_line(
+    linewidth = 1
+  ) +
+  geom_point(
+    size = 2.5
+  ) +
+  scale_x_date(
+    date_breaks = "1 month",
+    date_labels = "%b"
+  ) +
+  labs(
+    x = "Month",
+    y = "Number of Arrests",
+    caption = "Source: NYPD Arrests Data, 2024; arrests within 500 meters of selected stations"
+  ) +
+  theme_minimal(base_size = 12)
+
+ggplotly(
+  p_arrests,
+  tooltip = "text"
+) |>
+  layout(
+    hovermode = "x unified"
+  )
+```
+
+# Station Comparison
+
+## Row
+
+### Higher Ridership Does Not Always Mean a Higher Arrest Rate
+
+```{r}
+#| label: station-scatter
+#| fig-height: 6
+
+p_scatter <- ggplot(
+  station_summary,
+  aes(
+    x = total_ridership,
+    y = arrests_per_100k,
+    color = borough,
+    text = paste0(
+      "Station: ",
+      station_complex,
+      "<br>Borough: ",
+      borough,
+      "<br>Total ridership: ",
+      comma(total_ridership),
+      "<br>Total arrests: ",
+      comma(total_arrests),
+      "<br>Arrests per 100,000 riders: ",
+      round(arrests_per_100k, 2)
+    )
+  )
+) +
+  geom_point(
+    size = 4.5,
+    alpha = 0.8
+  ) +
+  scale_x_continuous(
+    labels = label_number(
+      scale_cut = cut_short_scale()
+    )
+  ) +
+  labs(
+    x = "Total Ridership, 2024",
+    y = "Arrests per 100,000 Riders",
+    color = "Borough",
+    caption = "Sources: MTA Subway Hourly Ridership Data and NYPD Arrests Data, 2024"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "bottom"
+  )
+
+ggplotly(
+  p_scatter,
+  tooltip = "text"
+)
+```
+
+### Passenger Volume Changes How Arrest Counts Are Interpreted
+
+```{r}
+#| label: station-bubble
+#| fig-height: 6
+
+p_bubble <- ggplot(
+  station_summary,
+  aes(
+    x = total_arrests,
+    y = arrests_per_100k,
+    size = total_ridership,
+    color = borough,
+    text = paste0(
+      "Station: ",
+      station_complex,
+      "<br>Borough: ",
+      borough,
+      "<br>Total arrests: ",
+      comma(total_arrests),
+      "<br>Total ridership: ",
+      comma(total_ridership),
+      "<br>Arrests per 100,000 riders: ",
+      round(arrests_per_100k, 2)
+    )
+  )
+) +
+  geom_point(
+    alpha = 0.75
+  ) +
+  scale_size_continuous(
+    range = c(5, 18),
+    labels = label_number(
+      scale_cut = cut_short_scale()
+    ),
+    name = "2024 Ridership"
+  ) +
+  labs(
+    x = "Total Arrests",
+    y = "Arrests per 100,000 Riders",
+    color = "Borough",
+    caption = "Sources: MTA Subway Hourly Ridership Data and NYPD Arrests Data, 2024"
+  ) +
+  guides(
+    color = guide_legend(
+      title = "Borough"
+    ),
+    size = guide_legend(
+      title = "2024 Ridership"
+    )
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "bottom"
+  )
+
+ggplotly(
+  p_bubble,
+  tooltip = "text"
+)
+```
+
+# Data
+
+## Row
+
+### Ridership and Arrest Measures Across the Nine Selected Stations
+
+```{r}
+#| label: station-table
+
+station_summary |>
+  arrange(
+    desc(total_ridership)
+  ) |>
+  mutate(
+    total_ridership =
+      comma(total_ridership),
+    total_arrests =
+      comma(total_arrests),
+    arrests_per_100k =
+      round(arrests_per_100k, 2)
+  ) |>
+  rename(
+    Station = station_complex,
+    Borough = borough,
+    `Total Ridership` = total_ridership,
+    `Total Arrests` = total_arrests,
+    `Arrests per 100,000 Riders` =
+      arrests_per_100k
+  ) |>
+  select(
+    Station,
+    Borough,
+    `Total Ridership`,
+    `Total Arrests`,
+    `Arrests per 100,000 Riders`
+  ) |>
+  datatable(
+    filter = "top",
+    options = list(
+      pageLength = 10,
+      scrollX = TRUE
+    ),
+    rownames = FALSE
+  )
+```
+
+# About
+
+**Assignment 8 Dashboard Prototype: NYC Subway Ridership and Arrest Patterns**
+
+This dashboard was created for **EPPS 6356 Assignment 8**, which asks students to develop a working dashboard prototype and a plan for the final team project.
+
+The purpose of this prototype is to test the dashboard structure, visualizations, and interactive features using a manageable subset of the planned final-project data before expanding the analysis to a larger dataset.
+
+**Research Question**
+
+How do subway ridership and arrest patterns vary across stations and over time, and how do patterns change after accounting for passenger volume?
+
+**Data Sources**
+
+- MTA Subway Hourly Ridership Data
+- NYPD Arrests Data
+
+The MTA data provide information on subway ridership, station complexes, boroughs, and station locations. The NYPD data provide information on arrest dates, offense types, boroughs, and arrest locations.
+
+**Prototype Scope**
+
+For Assignment 8, the dashboard uses **2024 data for nine high-ridership subway station complexes** in Manhattan, Queens, and Brooklyn.
+
+A smaller group of stations is used in this prototype to make the first version of the dashboard manageable. The final project is planned to expand the analysis to the full subway network and the **2020–2024** period.
+
+**Unit of Analysis**
+
+**Station × month**
+
+Monthly subway ridership and arrest measures are calculated for each selected station complex.
+
+**Arrest Measure**
+
+NYPD arrests were assigned to the **nearest selected subway station** when the arrest occurred within **500 meters** of that station.
+
+This approach allows arrest activity near subway stations to be compared with passenger volume. The 500-meter distance rule is used for the Assignment 8 prototype and may be refined in the final project.
+
+**Key Measures**
+
+- Monthly subway ridership
+- Monthly arrest count
+- Arrests per 100,000 riders
+- Station complex
+- Borough
+- Month
+
+The ridership-adjusted arrest rate is calculated as:
+
+**Arrests per 100,000 riders = (Monthly arrests / Monthly ridership) × 100,000**
+
+This measure helps distinguish stations with high arrest counts because they serve many passengers from stations with relatively high arrest activity after passenger volume is taken into account.
+
+**Visualizations**
+
+The dashboard uses three chart types from **Abela's Chart Suggestions—A Thought-Starter**:
+
+- **Chart #6 — Line Chart:** monthly change over time
+- **Chart #9 — Scatter Chart:** relationship between ridership and arrest rate
+- **Chart #18 — Bubble Chart:** relationship among arrest counts, arrest rates, and passenger volume
+
+The dashboard also includes value boxes and an interactive station-level data table to summarize and compare the selected stations.
+
+**Interaction**
+
+Users can:
+
+- Hover over chart elements to view additional information
+- Use the time-series range selector to focus on specific periods
+- Search and sort the station-level data table
+- Compare raw arrest counts with ridership-adjusted arrest rates across stations
+
+Additional filters and reactive features may be added as the dashboard is expanded in the next stage of the project.
+
+**AI Use Disclosure**
+
+ChatGPT was used to assist with R coding, troubleshooting, and clarification of assignment requirements. I tested the suggested code in RStudio, reviewed the outputs, and made the final decisions about the dashboard design, data preparation, and content.
+
+**Assignment 8 Files**
+
+- [Dashboard Prototype](epps6356_assign08.html)
+- [Final Project Plan — PLAN.md](PLAN.md)
+- [GitHub Repository](https://github.com/insanglee/insanglee.github.io)

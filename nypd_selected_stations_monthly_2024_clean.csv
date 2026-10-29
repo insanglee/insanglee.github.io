@@ -1,0 +1,109 @@
+station_complex_id,station_complex,month,arrest_count
+318,"34 St-Penn Station (1,2,3)",2024-01-01,114
+318,"34 St-Penn Station (1,2,3)",2024-02-01,111
+318,"34 St-Penn Station (1,2,3)",2024-03-01,120
+318,"34 St-Penn Station (1,2,3)",2024-04-01,163
+318,"34 St-Penn Station (1,2,3)",2024-05-01,150
+318,"34 St-Penn Station (1,2,3)",2024-06-01,141
+318,"34 St-Penn Station (1,2,3)",2024-07-01,123
+318,"34 St-Penn Station (1,2,3)",2024-08-01,123
+318,"34 St-Penn Station (1,2,3)",2024-09-01,126
+318,"34 St-Penn Station (1,2,3)",2024-10-01,104
+318,"34 St-Penn Station (1,2,3)",2024-11-01,168
+318,"34 St-Penn Station (1,2,3)",2024-12-01,152
+447,Flushing-Main St (7),2024-01-01,147
+447,Flushing-Main St (7),2024-02-01,208
+447,Flushing-Main St (7),2024-03-01,189
+447,Flushing-Main St (7),2024-04-01,166
+447,Flushing-Main St (7),2024-05-01,214
+447,Flushing-Main St (7),2024-06-01,207
+447,Flushing-Main St (7),2024-07-01,159
+447,Flushing-Main St (7),2024-08-01,217
+447,Flushing-Main St (7),2024-09-01,148
+447,Flushing-Main St (7),2024-10-01,180
+447,Flushing-Main St (7),2024-11-01,143
+447,Flushing-Main St (7),2024-12-01,153
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-01-01,128
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-02-01,103
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-03-01,96
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-04-01,83
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-05-01,126
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-06-01,71
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-07-01,108
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-08-01,123
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-09-01,95
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-10-01,112
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-11-01,101
+602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",2024-12-01,93
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-01-01,182
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-02-01,167
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-03-01,195
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-04-01,222
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-05-01,235
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-06-01,225
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-07-01,167
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-08-01,184
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-09-01,145
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-10-01,198
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-11-01,179
+607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",2024-12-01,175
+610,"Grand Central-42 St (S,4,5,6,7)",2024-01-01,90
+610,"Grand Central-42 St (S,4,5,6,7)",2024-02-01,69
+610,"Grand Central-42 St (S,4,5,6,7)",2024-03-01,107
+610,"Grand Central-42 St (S,4,5,6,7)",2024-04-01,95
+610,"Grand Central-42 St (S,4,5,6,7)",2024-05-01,103
+610,"Grand Central-42 St (S,4,5,6,7)",2024-06-01,73
+610,"Grand Central-42 St (S,4,5,6,7)",2024-07-01,61
+610,"Grand Central-42 St (S,4,5,6,7)",2024-08-01,52
+610,"Grand Central-42 St (S,4,5,6,7)",2024-09-01,52
+610,"Grand Central-42 St (S,4,5,6,7)",2024-10-01,84
+610,"Grand Central-42 St (S,4,5,6,7)",2024-11-01,71
+610,"Grand Central-42 St (S,4,5,6,7)",2024-12-01,63
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-01-01,262
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-02-01,254
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-03-01,397
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-04-01,238
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-05-01,323
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-06-01,228
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-07-01,355
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-08-01,385
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-09-01,254
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-10-01,268
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-11-01,259
+611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",2024-12-01,238
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-01-01,92
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-02-01,70
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-03-01,85
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-04-01,51
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-05-01,61
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-06-01,79
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-07-01,87
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-08-01,78
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-09-01,77
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-10-01,68
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-11-01,77
+616,"74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)",2024-12-01,62
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-01-01,70
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-02-01,39
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-03-01,70
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-04-01,68
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-05-01,84
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-06-01,65
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-07-01,62
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-08-01,49
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-09-01,78
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-10-01,73
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-11-01,103
+617,"Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)",2024-12-01,88
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-01-01,117
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-02-01,58
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-03-01,45
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-04-01,62
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-05-01,43
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-06-01,34
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-07-01,37
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-08-01,50
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-09-01,42
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-10-01,46
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-11-01,48
+628,"Fulton St (A,C,J,Z,2,3,4,5)",2024-12-01,37
