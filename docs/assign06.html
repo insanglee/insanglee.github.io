@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Insang Lee">
+
+<title>Assignment 6: Text Analytics with quanteda – Insang Lee</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-445b8638c3d06994fee0907d791121c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Insang Lee</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./research.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
+        <li>
+    <a class="dropdown-item" href="./epps6302.html">
+ <span class="dropdown-text">EPPS 6302</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./epps6356.html">
+ <span class="dropdown-text">EPPS 6356</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./cv.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/insanglee"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:Insang.Lee@utdallas.edu"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#part-1.-public-text-tweets-from-the-2021-bidenxi-summit" id="toc-part-1.-public-text-tweets-from-the-2021-bidenxi-summit" class="nav-link active" data-scroll-target="#part-1.-public-text-tweets-from-the-2021-bidenxi-summit">Part 1. Public text: tweets from the 2021 Biden–Xi summit</a>
+  <ul class="collapse">
+  <li><a href="#frequent-words" id="toc-frequent-words" class="nav-link" data-scroll-target="#frequent-words">Frequent words</a></li>
+  <li><a href="#hashtag-network" id="toc-hashtag-network" class="nav-link" data-scroll-target="#hashtag-network">Hashtag network</a></li>
+  <li><a href="#mention-network" id="toc-mention-network" class="nav-link" data-scroll-target="#mention-network">Mention network</a></li>
+  <li><a href="#latent-semantic-analysis" id="toc-latent-semantic-analysis" class="nav-link" data-scroll-target="#latent-semantic-analysis">Latent Semantic Analysis</a></li>
+  </ul></li>
+  <li><a href="#part-2.-government-text-compilation-of-presidential-documents" id="toc-part-2.-government-text-compilation-of-presidential-documents" class="nav-link" data-scroll-target="#part-2.-government-text-compilation-of-presidential-documents">Part 2. Government text: Compilation of Presidential Documents</a>
+  <ul class="collapse">
+  <li><a href="#retrieve-the-document-text" id="toc-retrieve-the-document-text" class="nav-link" data-scroll-target="#retrieve-the-document-text">Retrieve the document text</a></li>
+  <li><a href="#build-the-cpd-corpus" id="toc-build-the-cpd-corpus" class="nav-link" data-scroll-target="#build-the-cpd-corpus">Build the CPD corpus</a></li>
+  <li><a href="#xi-jinping-in-context" id="toc-xi-jinping-in-context" class="nav-link" data-scroll-target="#xi-jinping-in-context">“Xi Jinping” in context</a></li>
+  <li><a href="#bidentrump-keyness" id="toc-bidentrump-keyness" class="nav-link" data-scroll-target="#bidentrump-keyness">Biden–Trump keyness</a></li>
+  </ul></li>
+  <li><a href="#part-3.-u.s.-presidential-inaugural-addresses-1945-onward" id="toc-part-3.-u.s.-presidential-inaugural-addresses-1945-onward" class="nav-link" data-scroll-target="#part-3.-u.s.-presidential-inaugural-addresses-1945-onward">Part 3. U.S. presidential inaugural addresses, 1945 onward</a>
+  <ul class="collapse">
+  <li><a href="#length-lexical-diversity-and-readability" id="toc-length-lexical-diversity-and-readability" class="nav-link" data-scroll-target="#length-lexical-diversity-and-readability">Length, lexical diversity, and readability</a></li>
+  <li><a href="#cosine-similarity-among-inaugural-addresses" id="toc-cosine-similarity-among-inaugural-addresses" class="nav-link" data-scroll-target="#cosine-similarity-among-inaugural-addresses">Cosine similarity among inaugural addresses</a></li>
+  <li><a href="#keyness-by-party" id="toc-keyness-by-party" class="nav-link" data-scroll-target="#keyness-by-party">Keyness by party</a></li>
+  <li><a href="#is-the-2025-address-included" id="toc-is-the-2025-address-included" class="nav-link" data-scroll-target="#is-the-2025-address-included">Is the 2025 address included?</a></li>
+  </ul></li>
+  <li><a href="#part-4.-wordfish" id="toc-part-4.-wordfish" class="nav-link" data-scroll-target="#part-4.-wordfish">Part 4. Wordfish</a></li>
+  <li><a href="#short-report" id="toc-short-report" class="nav-link" data-scroll-target="#short-report">Short report</a></li>
+  <li><a href="#data-note-for-the-cpd-collection" id="toc-data-note-for-the-cpd-collection" class="nav-link" data-scroll-target="#data-note-for-the-cpd-collection">Data note for the CPD collection</a></li>
+  <li><a href="#ai-use-disclosure" id="toc-ai-use-disclosure" class="nav-link" data-scroll-target="#ai-use-disclosure">AI Use Disclosure</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Assignment 6: Text Analytics with quanteda</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Insang Lee </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="part-1.-public-text-tweets-from-the-2021-bidenxi-summit" class="level1">
+<h1>Part 1. Public text: tweets from the 2021 Biden–Xi summit</h1>
+<p>The first corpus is an archived set of tweets collected during the November 2021 Biden–Xi summit. Because the API access that produced this dataset is no longer available in the same form, the corpus can be analyzed but cannot simply be recollected today. Its interpretation therefore depends on the original keyword strategy and collection window rather than representing all public opinion about the summit.</p>
+<p>The archived corpus contains <strong>14,520 tweets</strong> collected around the 2021 Biden–Xi summit.</p>
+<section id="frequent-words" class="level2">
+<h2 class="anchored" data-anchor-id="frequent-words">Frequent words</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/tweets-frequent-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The most frequent vocabulary is dominated by the two presidents, the summit itself, China, and terms connected with the virtual meeting. This provides a simple overview of what was most visible in the collected discussion, although frequency alone does not indicate whether a term was used positively or negatively.</p>
+</section>
+<section id="hashtag-network" class="level2">
+<h2 class="anchored" data-anchor-id="hashtag-network">Hashtag network</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/hashtag-network-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The hashtag network shows clusters of terms that appeared together. Central hashtags such as those referring to Biden, China, and Xi connect the summit to broader political and human-rights discussions.</p>
+</section>
+<section id="mention-network" class="level2">
+<h2 class="anchored" data-anchor-id="mention-network">Mention network</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/mention-network-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Unlike the hashtag network, the mention network is more fragmented. This indicates that frequently mentioned accounts did not form one single communication cluster in the archived dataset.</p>
+</section>
+<section id="latent-semantic-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="latent-semantic-analysis">Latent Semantic Analysis</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/tweet-lsa-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The LSA representation summarizes similarities in word use across thousands of tweets. The visible clusters suggest recurring patterns of language, although the latent dimensions themselves do not have an automatic substantive interpretation.</p>
+<p>Overall, the tweet corpus captures immediate public communication around the summit. It should not be treated as a representative sample of U.S. or global public opinion because the original query and collection period determined which tweets entered the dataset, participation on Twitter/X is selective, and highly active users can contribute disproportionately.</p>
+</section>
+</section>
+<section id="part-2.-government-text-compilation-of-presidential-documents" class="level1">
+<h1>Part 2. Government text: Compilation of Presidential Documents</h1>
+<p>The second corpus comes from the Compilation of Presidential Documents (CPD) in GovInfo. The earlier collection produced 343 search results for documents mentioning “Xi Jinping” from January 20, 2021 onward.</p>
+<p>The saved GovInfo search contains <strong>343 CPD records</strong>.</p>
+<section id="retrieve-the-document-text" class="level2">
+<h2 class="anchored" data-anchor-id="retrieve-the-document-text">Retrieve the document text</h2>
+<p>GovInfo provides predictable public HTML links for individual Daily Compilation documents. The document texts are stored locally in a private folder that is excluded from the public repository. Only the collection manifest and retrieval log are published.</p>
+<p><strong>343 of 343 documents</strong> were available as usable public HTML text.</p>
+<p>Public reproducibility files:</p>
+<ul>
+<li><a href="assignment06_cpd_manifest.csv">CPD collection manifest</a></li>
+<li><a href="assignment06_cpd_log.csv">CPD retrieval log</a></li>
+</ul>
+</section>
+<section id="build-the-cpd-corpus" class="level2">
+<h2 class="anchored" data-anchor-id="build-the-cpd-corpus">Build the CPD corpus</h2>
+<p>The analysis corpus contains <strong>343 documents</strong> with usable text.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Administration</th>
+<th style="text-align: right;">Documents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Biden</td>
+<td style="text-align: right;">183</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Trump</td>
+<td style="text-align: right;">160</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="xi-jinping-in-context" class="level2">
+<h2 class="anchored" data-anchor-id="xi-jinping-in-context">“Xi Jinping” in context</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 43%">
+<col style="width: 6%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Document</th>
+<th style="text-align: left;">Before</th>
+<th style="text-align: left;">Keyword</th>
+<th style="text-align: left;">After</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">DCPD-202600598</td>
+<td style="text-align: left;">deadly synthetic drugs . I have raised this directly with State Chairman</td>
+<td style="text-align: left;">Xi Jinping</td>
+<td style="text-align: left;">, and in 2025 , at my request , the PRC implemented</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DCPD-202600575</td>
+<td style="text-align: left;">China and us . Thank you very much , everybody . President</td>
+<td style="text-align: left;">Xi Jinping</td>
+<td style="text-align: left;">of China Q . On China , Mr . President . On</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DCPD-202600489</td>
+<td style="text-align: left;">he referred to Acting President Delcy Rodriguez Gomez of Venezuela ; President</td>
+<td style="text-align: left;">Xi Jinping</td>
+<td style="text-align: left;">of China ; President Vladimir Vladimirovich Putin of Russia ; Vice President</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DCPD-202600342</td>
+<td style="text-align: left;">J . Trump , 2026 Remarks Prior to a Tea With President</td>
+<td style="text-align: left;">Xi Jinping</td>
+<td style="text-align: left;">of China in Beijing , China May 15 , 2026 President Xi</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DCPD-202600341</td>
+<td style="text-align: left;">J . Trump , 2026 Remarks at a State Banquet With President</td>
+<td style="text-align: left;">Xi Jinping</td>
+<td style="text-align: left;">of China in Beijing , China May 14 , 2026 President Xi</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DCPD-202600341</td>
+<td style="text-align: left;">his remarks , he referred to Peng Liyuan , wife of President</td>
+<td style="text-align: left;">Xi Jinping</td>
+<td style="text-align: left;">of China . President Xi and a moderator spoke in Chinese ,</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DCPD-202600338</td>
+<td style="text-align: left;">J . Trump , 2026 Remarks Prior to a Meeting With President</td>
+<td style="text-align: left;">Xi Jinping</td>
+<td style="text-align: left;">of China in Beijing , China May 14 , 2026 President Xi</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DCPD-202600249</td>
+<td style="text-align: left;">are coming from—predominantly going to China , Mr . President . Have—has</td>
+<td style="text-align: left;">Xi Jinping</td>
+<td style="text-align: left;">reached out ? I know you’re going to be meeting with him</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The keyword-in-context examples show how references to Xi Jinping appear within official presidential language. Metadata-style subject listings and several administrative or index-like contexts were excluded from the displayed examples so that the table focuses more closely on substantive textual context.</p>
+</section>
+<section id="bidentrump-keyness" class="level2">
+<h2 class="anchored" data-anchor-id="bidentrump-keyness">Biden–Trump keyness</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/cpd-keyness-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The keyness comparison identifies vocabulary that is disproportionately associated with Trump-era versus Biden-era CPD documents in this corpus. Very short artifacts and the presidents’ own surnames were removed so that the comparison emphasizes more substantively useful differences in official language.</p>
+<p>The CPD corpus answers a different question from the tweets. It consists of official government texts selected first by inclusion in the Compilation of Presidential Documents and again by the GovInfo search for Xi Jinping. KWIC reveals how Xi is discussed in context, while keyness identifies vocabulary that is disproportionately associated with one administration relative to the other. These patterns describe official presidential communication in the collected corpus; they do not provide a neutral record of U.S.–China relations, private deliberations, or public opinion.</p>
+</section>
+</section>
+<section id="part-3.-u.s.-presidential-inaugural-addresses-1945-onward" class="level1">
+<h1>Part 3. U.S. presidential inaugural addresses, 1945 onward</h1>
+<p>The third corpus is generated by the institutional tradition of presidential inaugural addresses rather than by an API search or keyword-based collection window.</p>
+<p>The corpus contains <strong>21 inaugural addresses from 1945 through 2025</strong>.</p>
+<section id="length-lexical-diversity-and-readability" class="level2">
+<h2 class="anchored" data-anchor-id="length-lexical-diversity-and-readability">Length, lexical diversity, and readability</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/inaugural-length-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The length of inaugural addresses varies substantially across presidents and years rather than following a simple linear historical trend.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/inaugural-diversity-readability-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lexical diversity and readability capture different characteristics of presidential rhetoric. A speech can use a varied vocabulary without necessarily being easier to read, and vice versa.</p>
+</section>
+<section id="cosine-similarity-among-inaugural-addresses" class="level2">
+<h2 class="anchored" data-anchor-id="cosine-similarity-among-inaugural-addresses">Cosine similarity among inaugural addresses</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/inaugural-cosine-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The heatmap makes pairwise similarity easier to compare than a full numeric matrix. <strong>Lighter cells indicate higher cosine similarity, while darker cells indicate lower similarity.</strong></p>
+</section>
+<section id="keyness-by-party" class="level2">
+<h2 class="anchored" data-anchor-id="keyness-by-party">Keyness by party</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/inaugural-party-keyness-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Party keyness identifies vocabulary that occurs disproportionately in Democratic versus Republican inaugural addresses. These associations are descriptive features of this corpus and should not automatically be treated as direct measures of ideology.</p>
+</section>
+<section id="is-the-2025-address-included" class="level2">
+<h2 class="anchored" data-anchor-id="is-the-2025-address-included">Is the 2025 address included?</h2>
+<p>Yes. The installed inaugural corpus includes the <strong>2025 Trump inaugural address</strong>. No additional document is required.</p>
+</section>
+</section>
+<section id="part-4.-wordfish" class="level1">
+<h1>Part 4. Wordfish</h1>
+<p>Wordfish treats word counts as generated by a statistical model in which documents occupy positions on a latent dimension and words differ in how strongly they discriminate along that dimension.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assign06_files/figure-html/wordfish-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Address</th>
+<th style="text-align: right;">Year</th>
+<th style="text-align: left;">President</th>
+<th style="text-align: right;">Estimated position</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1949-Truman</td>
+<td style="text-align: right;">1949</td>
+<td style="text-align: left;">Truman</td>
+<td style="text-align: right;">-2.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1953-Eisenhower</td>
+<td style="text-align: right;">1953</td>
+<td style="text-align: left;">Eisenhower</td>
+<td style="text-align: right;">-1.79</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1957-Eisenhower</td>
+<td style="text-align: right;">1957</td>
+<td style="text-align: left;">Eisenhower</td>
+<td style="text-align: right;">-1.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2021-Biden</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: left;">Biden</td>
+<td style="text-align: right;">0.92</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2017-Trump</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">Trump</td>
+<td style="text-align: right;">1.32</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2025-Trump</td>
+<td style="text-align: right;">2025</td>
+<td style="text-align: left;">Trump</td>
+<td style="text-align: right;">1.49</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Wordfish estimates a latent textual dimension rather than an automatically labeled left–right ideological scale. In this corpus, the ordering appears to capture a substantial temporal or historical shift in inaugural rhetoric: earlier addresses, especially those from Truman and Eisenhower, are located toward the negative end, while recent addresses, including Biden and both Trump addresses, are located toward the positive end. Because presidents from different parties appear on the same side of the scale, the dimension does not appear to represent simple partisan ideology. Its substantive meaning would need to be validated by examining the words with the strongest discrimination parameters and comparing the estimated positions with external historical or independently coded measures. The direction argument is necessary because the sign of a one-dimensional latent scale is arbitrary: the same relative configuration could otherwise appear with all signs reversed. Fixing the direction makes the orientation reproducible but does not change the relative distances among documents.</p>
+</section>
+<section id="short-report" class="level1">
+<h1>Short report</h1>
+<p>The three corpora in this assignment illustrate why text analysis must be interpreted together with the process that generated the data. The archived summit tweets were produced by individual users and collected during a particular period around the November 2021 Biden–Xi meeting. Frequent-word counts summarize recurring vocabulary, hashtag and mention networks show which labels and accounts appeared together, and latent semantic analysis reduces high-dimensional word-use patterns to a smaller set of dimensions. These tools are useful for describing communication on the platform during the collection window. They cannot, however, be treated as a representative measure of U.S. or global public opinion. The original keyword query determined which tweets could enter the corpus, Twitter/X users are a selective population, and highly active accounts can contribute many more observations than ordinary users.</p>
+<p>The CPD corpus represents a very different data-generating process. These texts are official presidential documents included in the Compilation of Presidential Documents and then selected again by my GovInfo query for the exact phrase “Xi Jinping” from January 20, 2021 onward. The document texts were obtained from GovInfo’s public HTML renditions using the package identifiers retained in the collection manifest. KWIC is useful because it shows the words immediately surrounding each occurrence of Xi’s name rather than reducing those references to isolated counts. Keyness compares vocabulary that is relatively more characteristic of the Biden and Trump administrations within the retrieved corpus. These patterns support claims about differences in official presidential communication, but not about private policy deliberations, the complete content of U.S. foreign policy, or all government communication about China. Differences in the number and type of documents produced by each administration can also affect the comparison.</p>
+<p>The inaugural-address corpus is more structured because the documents are generated by a recurring political and ceremonial tradition rather than by a keyword search. Restricting the corpus to 1945 onward permits comparisons across modern presidents using several complementary measures. Document length describes the amount of text, lexical diversity captures variation in vocabulary, readability summarizes textual complexity, cosine similarity compares distributions of words across speeches, and party keyness identifies vocabulary used disproportionately in Democratic or Republican inaugural addresses. The similarity heatmap makes the pairwise comparisons visible without treating the entire numeric matrix as a substantive result. None of these measures by itself proves ideological differences because inaugural language also reflects historical context, individual style, and the ceremonial purpose of the speech.</p>
+<p>Wordfish provides a different kind of comparison. It is an unsupervised scaling model that uses word counts to estimate each document’s position on a latent textual dimension. The model assumes that document positions and word-specific parameters help generate observed word frequencies. In the estimated results, the dimension appears to reflect a substantial temporal or historical shift in inaugural rhetoric: earlier speeches such as Truman’s and Eisenhower’s appear toward one end, while recent speeches by Biden and Trump appear toward the other. Because presidents from both parties occupy similar regions of the scale, the dimension does not appear to represent a simple Democratic–Republican ideological divide. This interpretation would still require validation by examining highly discriminating words and comparing the estimated positions with external historical or independently coded measures. The direction setting is needed for identification because the sign of a one-dimensional latent scale is arbitrary.</p>
+<p>Overall, quanteda provides useful and reproducible tools for summarizing large text collections, but the interpretation of those summaries depends on how each corpus was produced. The tweets provide a window into platform-based public communication around a particular event, the CPD documents provide a window into selected official presidential communication, and the inaugural addresses provide a structured historical series of ceremonial rhetoric. Claims from each analysis should remain tied to those source populations and selection mechanisms.</p>
+</section>
+<section id="data-note-for-the-cpd-collection" class="level1">
+<h1>Data note for the CPD collection</h1>
+<p><strong>Source.</strong> GovInfo, Compilation of Presidential Documents.</p>
+<p><strong>Access.</strong> CPD records and document renditions are publicly accessible through GovInfo. The analysis uses the previously collected search manifest and GovInfo’s predictable public HTML document links. No API key or downloaded document text is published.</p>
+<p><strong>Query.</strong></p>
+<pre><code>collection:(CPD) AND "Xi Jinping" AND publishdate:range(2021-01-20,)</code></pre>
+<p><strong>Selection.</strong> The search retrieves CPD records mentioning the exact phrase “Xi Jinping” from January 20, 2021 onward. The earlier collection returned 343 records. The package identifier for each search result is retained in the manifest and used to retrieve the corresponding public HTML rendition.</p>
+<p><strong>Gaps and limitations.</strong> The collection includes only material indexed in CPD and only documents matched by the query. It can miss references that use other names or descriptions, documents outside CPD, and material not captured by GovInfo’s indexing process. Search results also depend on the database state at the time of collection. The public manifest and retrieval log document what was selected and successfully retrieved, while the document texts themselves remain in a private local folder.</p>
+</section>
+<section id="ai-use-disclosure" class="level1">
+<h1>AI Use Disclosure</h1>
+<p>Generative AI was used to support R coding and debugging, organization, and wording. I reviewed the assignment requirements, analysis workflow, interpretations, and final submission materials against the actual R output before submission.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -13,3 +13,4 @@
 *.pem
 
 govinfo_pdfs/
+data_private/

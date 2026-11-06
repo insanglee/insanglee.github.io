@@ -1,0 +1,12 @@
+{
+  "collection_period": "post-election",
+  "search_term": "US midterm election",
+  "published_after": "2026-11-04T00:00:00Z",
+  "collection_date": "2026-11-05",
+  "search_orders": ["relevance", "viewCount"],
+  "channels": ["NBC News", "CNN", "Al Jazeera English"],
+  "comments_per_video_max": 300,
+  "videos_per_channel": 3,
+  "delete_by": "2026-12-05",
+  "api_key_stored": false
+}

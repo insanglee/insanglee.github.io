@@ -1,0 +1,797 @@
+---
+title: "Assignment 7: YouTube Data Collection and Text Analysis"
+author: "Insang Lee"
+format:
+  html:
+    toc: true
+    toc-location: right
+    toc-title: "On this page"
+    toc-depth: 3
+    code-tools: false
+    theme: cosmo
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| include: false
+
+library(tidyverse)
+library(knitr)
+
+# Public folder for safe Assignment 7 files
+public_dir <- "docs/files/assignment07"
+
+dir.create(
+  public_dir,
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+# Copy only required safe collection files.
+# Raw comments, commenter names/IDs, validation samples,
+# and the API key are intentionally NOT copied.
+
+safe_files <- c(
+  "/Users/insanglee/data/youtube/pre_election/collection_log.csv",
+  "/Users/insanglee/data/youtube/pre_election/manifest.json",
+  "/Users/insanglee/data/youtube/post_election/collection_log.csv",
+  "/Users/insanglee/data/youtube/post_election/manifest.json"
+)
+
+for (f in safe_files) {
+
+  if (file.exists(f)) {
+
+    period_prefix <- case_when(
+      grepl("pre_election", f) ~ "pre_",
+      grepl("post_election", f) ~ "post_",
+      TRUE ~ ""
+    )
+
+    new_name <- paste0(
+      period_prefix,
+      basename(f)
+    )
+
+    file.copy(
+      f,
+      file.path(
+        public_dir,
+        new_name
+      ),
+      overwrite = TRUE
+    )
+  }
+}
+```
+
+## Data Collection
+
+I collected YouTube videos and comments related to the **2026 U.S. midterm election** before and after Election Day using the exact search term **“US midterm election.”** Searches were ordered once by **relevance** and once by **view count**.
+
+The pre-election window covered **September 1–October 27, 2026**. Each ordering returned 100 rows although YouTube reported approximately 1,000,000 results. Only **8 video IDs overlapped**. The relevance search contained 9 duplicate IDs and 91 distinct videos; the view-count search contained no duplicates and 100 distinct videos.
+
+### Pre-Election Search Summary
+
+```{r}
+pre_search_summary <- tribble(
+  ~Order, ~Returned, ~Reported, ~Duplicates,
+  ~Distinct, ~`Top channel`,
+  "Relevance", "100", "1,000,000", "9", "91",
+  "Al Jazeera English (44)",
+  "View count", "100", "1,000,000", "0", "100",
+  "CNN (35)"
+)
+
+kable(
+  pre_search_summary,
+  align = c(
+    "l",
+    "r",
+    "r",
+    "r",
+    "r",
+    "l"
+  )
+)
+```
+
+I repeated the same procedure for **November 4–November 5, 2026**. Both post-election rankings returned 100 distinct videos with no duplicates, while YouTube again reported approximately 1,000,000 results. The two rankings shared **37 videos**.
+
+### Post-Election Search Summary
+
+```{r}
+post_search_summary <- tribble(
+  ~Order, ~Returned, ~Reported, ~Duplicates,
+  ~Distinct, ~`Top channel`,
+  "Relevance", "100", "1,000,000", "0", "100",
+  "Al Jazeera English / FRANCE 24 English (5 each)",
+  "View count", "100", "1,000,000", "0", "100",
+  "ABP NEWS (6)"
+)
+
+kable(
+  post_search_summary,
+  align = c(
+    "l",
+    "r",
+    "r",
+    "r",
+    "r",
+    "l"
+  )
+)
+```
+
+These differences show that YouTube search results are rankings rather than random samples.
+
+I selected **NBC News** as a national network, **CNN** as a cable news channel, and **Al Jazeera English** as an international broadcaster. After retrieving channel details, I used each channel’s uploads list rather than repeated channel-specific searches. Reaching September 1 required approximately **68 units for NBC News, 51 for CNN, and 68 for Al Jazeera English**.
+
+The final title-filter pattern was:
+
+**midterm | midterms | congress | senate | house race | house seat | house majority | ballot | voter | vote | campaign**
+
+The vertical bar **|** indicates **OR** in the regular expression.
+
+I reviewed **20 retained and 20 dropped titles**. The first filter retained some foreign-election stories and missed some U.S. campaign stories, so I refined it and excluded obvious foreign-election terms. The channel route also identified relevant videos that the general search missed.
+
+I selected **three videos per channel per period** and collected at most **300 comments per video**.
+
+### Comments Reported and Received
+
+<details>
+<summary><strong>Show per-video collection details</strong></summary>
+
+```{r}
+video_collection <- tribble(
+  ~Period, ~Channel, ~Video, ~`Reported comments`, ~Received, ~Status,
+
+  "Pre", "Al Jazeera English",
+  "Obama joins El-Sayed in Michigan rally cry before key midterms",
+  2614, 300, "OK",
+
+  "Pre", "Al Jazeera English",
+  "Ku Klux Klan leader claims rising support ahead of US midterm elections",
+  16173, 300, "OK",
+
+  "Pre", "Al Jazeera English",
+  "US midterms 2026 latest: Trump warns US will burn if Dems win",
+  602, 300, "OK",
+
+  "Pre", "CNN",
+  "Midterm numbers are heading into blowout territory: What to know",
+  7012, 300, "OK",
+
+  "Pre", "CNN",
+  "Republican revolt against Trump grows ahead of the midterms",
+  3237, 300, "OK",
+
+  "Pre", "CNN",
+  "I've studied 1000's of data points. Here's my midterm prediction.",
+  6833, 300, "OK",
+
+  "Pre", "NBC News",
+  "How Senate races are shaping up in battleground states ahead of midterms",
+  659, 300, "OK",
+
+  "Pre", "NBC News",
+  "Kornacki: Where Democrats see openings for Senate gains in deep-red states",
+  623, 300, "OK",
+
+  "Pre", "NBC News",
+  "‘I felt so guilty’ that ‘I had to officially change parties’: Latino voters shift on Trump",
+  1362, 300, "OK",
+
+  "Post", "Al Jazeera English",
+  "US midterms: Democrat Abdul El-Sayed wins Michigan Senate race",
+  1666, 300, "OK",
+
+  "Post", "Al Jazeera English",
+  "Democrat Abdul El-Sayed wins election to US Senate from Michigan",
+  2480, 300, "OK",
+
+  "Post", "Al Jazeera English",
+  "Republicans fuming after Democrat Talarico flips Texas Senate blue",
+  1101, 300, "OK",
+
+  "Post", "CNN",
+  "Trump blames Fox News, GOP candidates for midterm losses",
+  8027, 300, "OK",
+
+  "Post", "CNN",
+  "CNN's first reactions to US House & Senate flips",
+  4926, 300, "OK",
+
+  "Post", "CNN",
+  "Dems win the Senate, CNN projects",
+  5350, 300, "OK",
+
+  "Post", "NBC News",
+  "Steve Kornacki analyzes 2026 midterm election results",
+  389, 300, "OK",
+
+  "Post", "NBC News",
+  "President Trump speaks to various media outlets reacting to midterm results",
+  921, 300, "OK",
+
+  "Post", "NBC News",
+  "BREAKING: Democrats win the Senate, taking full control of Congress, NBC News projects",
+  950, 300, "OK"
+)
+
+video_collection_display <- video_collection |>
+  mutate(
+    `Reported comments` = format(
+      `Reported comments`,
+      big.mark = ",",
+      scientific = FALSE
+    ),
+    Received = format(
+      Received,
+      big.mark = ",",
+      scientific = FALSE
+    )
+  )
+
+kable(
+  video_collection_display,
+  align = c(
+    "l",
+    "l",
+    "l",
+    "r",
+    "r",
+    "l"
+  )
+)
+```
+
+</details>
+
+The nine pre-election videos reported **39,115 comments**, while 2,700 were received. The post-election videos reported **25,810**, while 2,700 were received. The main reason is the 300-comment cap; deleted, moderated, held, or unavailable comments may also contribute.
+
+All **18 videos had OK status**; none were disabled, empty, or errors. Before joining, video and comment IDs were deduplicated, and video metadata were joined to comments as a **many-to-one relationship**. No duplicate comment IDs remained.
+
+## Quota Plan and Actual Use
+
+The assignment called for a quota plan before API collection. I did not preserve a separate pre-call table during the original collection session, so the following table is a **reconstruction of the documented workflow**, not a contemporaneous record.
+
+### Reconstructed Quota Plan
+
+```{r}
+quota_plan <- tribble(
+  ~`API task`, ~`Planned pages`, ~`Estimated cost`,
+  "Pre-election search: relevance", "2", "2 search pages",
+  "Pre-election search: view count", "2", "2 search pages",
+  "Post-election search: relevance", "2", "2 search pages",
+  "Post-election search: view count", "2", "2 search pages",
+  "Channel details", "1 minimum", "1+ data units",
+  "NBC News uploads to Sept. 1", "68", "68 data units",
+  "CNN uploads to Sept. 1", "51", "51 data units",
+  "Al Jazeera English uploads to Sept. 1", "68", "68 data units",
+  "Video statistics", "1 minimum", "1+ data units",
+  "Comments: 18 videos, ≤300 each", "54 minimum", "54+ data units"
+)
+
+kable(
+  quota_plan,
+  align = c(
+    "l",
+    "r",
+    "l"
+  )
+)
+```
+
+Search and ordinary data requests use separate quota budgets. The reconstructed values are minimum estimates because comment replies and exploratory requests can require additional pages.
+
+### Actual Quota Use
+
+```{r}
+quota_table <- tribble(
+  ~`Quota bucket`, ~Used, ~Limit, ~Remaining,
+  "Data", "433", "10,000", "9,567",
+  "Search", "4", "100", "96",
+  "Video uploads", "0", "100", "100"
+)
+
+kable(
+  quota_table,
+  align = c(
+    "l",
+    "r",
+    "r",
+    "r"
+  )
+)
+```
+
+The local quota tracker recorded **433 data units** and **4 search units** used. I report the reconstructed plan and observed tracker separately because they are not equivalent records of every API request.
+
+## Comment Structure and Engagement
+
+The final corpus contained **5,400 comments**, with 900 comments per channel in each period. Overall reply share fell from approximately **13.5% pre-election to 8.7% post-election**.
+
+### Reply Share
+
+```{r}
+reply_table <- tribble(
+  ~Period, ~Channel, ~`Reply share (%)`,
+  "Pre", "Al Jazeera English", 1.78,
+  "Pre", "CNN", 27.8,
+  "Pre", "NBC News", 10.9,
+  "Post", "Al Jazeera English", 2.11,
+  "Post", "CNN", 11.6,
+  "Post", "NBC News", 12.3
+)
+
+kable(
+  reply_table,
+  digits = 2,
+  align = c(
+    "l",
+    "l",
+    "r"
+  )
+)
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| fig-align: center
+
+ggplot(
+  reply_table,
+  aes(
+    x = Channel,
+    y = `Reply share (%)`,
+    fill = Period
+  )
+) +
+  geom_col(
+    position = "dodge",
+    width = 0.7
+  ) +
+  labs(
+    title = "Reply Share by Channel and Period",
+    x = NULL,
+    y = "Reply share (%)",
+    fill = NULL
+  ) +
+  theme_minimal(
+    base_size = 12
+  ) +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(
+      face = "bold"
+    )
+  )
+```
+
+Likes were highly concentrated: depending on channel and period, the **top 1% of comments received 27%–65% of all likes**.
+
+### Like Concentration
+
+```{r}
+like_table <- tribble(
+  ~Period, ~Channel, ~`Top 1% like share (%)`,
+  "Pre", "Al Jazeera English", 33.5,
+  "Pre", "CNN", 64.7,
+  "Pre", "NBC News", 27.3,
+  "Post", "Al Jazeera English", 30.6,
+  "Post", "CNN", 57.7,
+  "Post", "NBC News", 60.3
+)
+
+kable(
+  like_table,
+  digits = 1,
+  align = c(
+    "l",
+    "l",
+    "r"
+  )
+)
+```
+
+The most active **10% of authors produced 16.0%–26.2% of comments**, showing additional concentration in participation.
+
+### Authorship Concentration
+
+```{r}
+author_table <- tribble(
+  ~Period, ~Channel, ~`Top 10% author share (%)`,
+  "Pre", "Al Jazeera English", 16.6,
+  "Pre", "CNN", 26.2,
+  "Pre", "NBC News", 19.0,
+  "Post", "Al Jazeera English", 16.0,
+  "Post", "CNN", 21.6,
+  "Post", "NBC News", 21.1
+)
+
+kable(
+  author_table,
+  digits = 1,
+  align = c(
+    "l",
+    "l",
+    "r"
+  )
+)
+```
+
+## KWIC and Phrase Analysis
+
+I treated each **comment as one document**. Document variables included channel, video ID, reply status, like count, date, and election period. Punctuation and recognized symbols were removed during tokenization; URLs were explicitly removed for sentiment analysis, mentions were not separately removed, and emoji meaning was not assumed to be fully represented.
+
+I reviewed **20 KWIC lines each** for “democrat*,” “republican*,” “trump,” “vote*,” and “ballot*.”
+
+### KWIC Coding
+
+```{r}
+kwic_tally <- tribble(
+  ~Keyword, ~`Party naming`, ~Candidate, ~Process, ~Grievance,
+  "democrat*", 2, 4, 6, 8,
+  "republican*", 5, 1, 5, 9,
+  "trump", 0, 2, 10, 8,
+  "vote*", 0, 0, 16, 4,
+  "ballot*", 0, 0, 16, 4
+)
+
+kable(
+  kwic_tally,
+  align = c(
+    "l",
+    "r",
+    "r",
+    "r",
+    "r"
+  )
+)
+```
+
+Party terms frequently appeared in grievance contexts, whereas vote* and ballot* mainly referred to electoral processes.
+
+### Multiword Expressions
+
+```{r}
+phrase_table <- tribble(
+  ~Phrase, ~Count,
+  "house majority", 0,
+  "senate race", 6,
+  "early voting", 6,
+  "mail in", 1,
+  "election fraud", 3,
+  "vote blue", 56,
+  "democratic party", 20
+)
+
+kable(
+  phrase_table,
+  align = c(
+    "l",
+    "r"
+  )
+)
+```
+
+The five required expressions were compounded along with **vote blue** and **democratic party**, which were identified from KWIC reading.
+
+## Keyness
+
+```{r}
+keyness_table <- tribble(
+  ~Comparison, ~`Selected distinctive terms`,
+
+  "CNN vs. other channels",
+  "harry, cnn, jeffries, trump, speaker, schumer",
+
+  "NBC News vs. other channels",
+  "steve, kornacki, latino, vote, polls, coverage",
+
+  "Al Jazeera English vs. other channels",
+  "congratulations, abdul, michigan, obama, kkk, burn",
+
+  "Pre-election vs. post-election",
+  "vote, polls, vote blue, voting, republican, seats",
+
+  "Post-election vs. pre-election",
+  "congratulations, war, civil, steve, happy, michigan, won, blame"
+)
+
+kable(
+  keyness_table,
+  align = c(
+    "l",
+    "l"
+  )
+)
+```
+
+Pre-election comments emphasized voting, polling, and competition; post-election comments emphasized reactions, congratulations, winning, and blame. Channel differences likely reflect both news content and the audiences attracted to specific videos rather than channel ideology alone.
+
+## Sentiment Analysis
+
+Sentiment was measured by channel and period using **data_dictionary_LSD2015** and **dfm_lookup()**.
+
+### Dictionary-Based Sentiment
+
+```{r}
+sentiment_summary <- tribble(
+  ~Period, ~Channel, ~`Mean sentiment`, ~`Positive (%)`, ~`Negative (%)`,
+  "Pre", "Al Jazeera English", -0.334, 22.1, 35.9,
+  "Pre", "CNN", -0.351, 23.7, 36.0,
+  "Pre", "NBC News", -0.246, 25.0, 35.7,
+  "Post", "Al Jazeera English", 0.448, 41.1, 20.7,
+  "Post", "CNN", -0.231, 30.8, 36.8,
+  "Post", "NBC News", 0.151, 34.9, 25.3
+)
+
+kable(
+  sentiment_summary,
+  digits = 3,
+  align = c(
+    "l",
+    "l",
+    "r",
+    "r",
+    "r"
+  )
+)
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| fig-align: center
+
+ggplot(
+  sentiment_summary,
+  aes(
+    x = Channel,
+    y = `Mean sentiment`,
+    fill = Period
+  )
+) +
+  geom_col(
+    position = "dodge",
+    width = 0.7
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed"
+  ) +
+  labs(
+    title = "Mean Sentiment by Channel and Period",
+    x = NULL,
+    y = "Mean sentiment score",
+    fill = NULL
+  ) +
+  theme_minimal(
+    base_size = 12
+  ) +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(
+      face = "bold"
+    )
+  )
+```
+
+The **dictionary-based scores suggest** that all three pre-election groups were negative on average. After the election, the dictionary scores became positive for Al Jazeera English and slightly positive for NBC News, while CNN remained negative.
+
+I coded **40 randomly sampled comments** as positive, negative, or neither. Dictionary and manual classifications agreed on **22 of 40 comments (55%)**. This relatively modest agreement indicates that the dictionary-based results should be interpreted cautiously rather than as direct measures of commenters’ emotional attitudes. Errors involved emojis, insults, slogans, sarcasm, and context-dependent language. For example, **landslide** may describe an electoral outcome rather than positive emotion, while **rigged** can indicate grievance that a general sentiment dictionary does not interpret reliably.
+
+## Comparison with Assignment 6
+
+```{r}
+comparison_table <- tribble(
+  ~Dimension,
+  ~`Biden-Xi tweets`,
+  ~`Presidential documents`,
+  ~`YouTube comments`,
+
+  "Producer",
+  "Social media users",
+  "Government / presidential institutions",
+  "Users commenting under selected videos",
+
+  "Intended audience",
+  "Platform users / followers",
+  "Public and institutional audiences",
+  "Viewers of specific YouTube videos",
+
+  "Selection",
+  "Keyword and date retrieval",
+  "Document archive and keyword retrieval",
+  "Search ranking, channels, videos, API, moderation",
+
+  "Can it be collected again?",
+  "Limited by historical platform access",
+  "Relatively reproducible from archives",
+  "Less stable because rankings and comments change",
+
+  "Claims supported",
+  "Selected social-media discourse",
+  "Official government communication",
+  "Selected YouTube commenting audiences"
+)
+
+kable(
+  comparison_table,
+  align = c(
+    "l",
+    "l",
+    "l",
+    "l"
+  )
+)
+```
+
+The three sources support different claims. Presidential documents describe official government communication; the tweets describe selected social-media discourse; and YouTube comments describe self-selected audiences participating beneath selected videos. They should not be generalized to U.S. voters or the public.
+
+## Data-Generating Process and Limitations
+
+The corpus was shaped by the search term, ranking algorithm, channel and video choices, title filtering, the 300-comment cap, moderation, collection timing, and users’ decisions to comment or reply.
+
+Repeated participation also matters because some authors contributed multiple comments. Although no exact duplicate comment IDs remained, **repeated or near-repeated wording, including slogans or similar partisan expressions, may still amplify particular language in the corpus**.
+
+Therefore, keyness and sentiment describe the **comments returned from these selected YouTube videos**, not the electorate as a whole.
+
+## Data and Retention Note
+
+**Source.** Data were collected through the YouTube Data API using an API key.
+
+**Permission and retention.** No YouTube page or transcript scraping was used. The API key is stored outside the public project files and is not included in the manifests. Non-authorized comment data are retained for no more than 30 days.
+
+**Method.** The exact term was **“US midterm election.”** The pre-election window was September 1–October 27, 2026; the post-election window was November 4–November 5, 2026. Searches used relevance and view-count ordering. Three channels were selected, titles were filtered for U.S. midterm content, and three videos per channel per period were collected with a 300-comment cap.
+
+**Known gaps.** Ranking, video and channel selection, moderation, deleted or unavailable comments, API availability, and commenter self-selection limit what the collection represents.
+
+The collection date was **November 5, 2026**, with a planned deletion date of **December 5, 2026**.
+
+## Collection Files
+
+The files below contain **collection logs, manifests, and aggregate results only**. Raw comments, commenter names, commenter channel IDs, the 40-comment validation sample, and the API key are not posted.
+
+```{r}
+#| results: asis
+
+# Create a public-safe version of the video-level summary.
+# Curly quotation marks are converted to plain ASCII quotes
+# to avoid encoding problems in the CSV.
+
+video_collection_public <- video_collection |>
+  mutate(
+    Video = Video |>
+      str_replace_all(
+        "‘|’",
+        "'"
+      ) |>
+      str_replace_all(
+        "“|”",
+        "\""
+      )
+  )
+
+# Save only core aggregate tables required for public submission.
+
+write_csv(
+  video_collection_public,
+  file.path(
+    public_dir,
+    "video_collection_summary.csv"
+  )
+)
+
+write_csv(
+  quota_table,
+  file.path(
+    public_dir,
+    "quota_usage.csv"
+  )
+)
+
+write_csv(
+  reply_table,
+  file.path(
+    public_dir,
+    "reply_share.csv"
+  )
+)
+
+write_csv(
+  like_table,
+  file.path(
+    public_dir,
+    "like_concentration.csv"
+  )
+)
+
+write_csv(
+  author_table,
+  file.path(
+    public_dir,
+    "authorship_concentration.csv"
+  )
+)
+
+write_csv(
+  kwic_tally,
+  file.path(
+    public_dir,
+    "kwic_tally.csv"
+  )
+)
+
+write_csv(
+  keyness_table,
+  file.path(
+    public_dir,
+    "keyness_summary.csv"
+  )
+)
+
+write_csv(
+  sentiment_summary,
+  file.path(
+    public_dir,
+    "sentiment_summary.csv"
+  )
+)
+
+files_to_show <- c(
+  "pre_collection_log.csv",
+  "pre_manifest.json",
+  "post_collection_log.csv",
+  "post_manifest.json",
+  "video_collection_summary.csv",
+  "quota_usage.csv",
+  "reply_share.csv",
+  "like_concentration.csv",
+  "authorship_concentration.csv",
+  "kwic_tally.csv",
+  "keyness_summary.csv",
+  "sentiment_summary.csv"
+)
+
+existing_files <- files_to_show[
+  file.exists(
+    file.path(
+      public_dir,
+      files_to_show
+    )
+  )
+]
+
+if (length(existing_files) > 0) {
+
+  for (f in existing_files) {
+
+    cat(
+      paste0(
+        "- [",
+        f,
+        "](files/assignment07/",
+        f,
+        ")\n"
+      )
+    )
+  }
+
+} else {
+
+  cat(
+    "No public collection files were found."
+  )
+}
+```
+
+## AI Use Disclosure
+
+Generative AI (OpenAI ChatGPT) was used to support R coding, debugging, interpretation of output, organization of the analysis, and refinement of report wording. All final analyses, interpretations, and submission content were reviewed against the actual R output and assignment requirements.

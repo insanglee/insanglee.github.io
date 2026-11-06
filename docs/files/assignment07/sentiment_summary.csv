@@ -1,0 +1,7 @@
+Period,Channel,Mean sentiment,Positive (%),Negative (%)
+Pre,Al Jazeera English,-0.334,22.1,35.9
+Pre,CNN,-0.351,23.7,36
+Pre,NBC News,-0.246,25,35.7
+Post,Al Jazeera English,0.448,41.1,20.7
+Post,CNN,-0.231,30.8,36.8
+Post,NBC News,0.151,34.9,25.3

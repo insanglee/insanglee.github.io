@@ -1,0 +1,1331 @@
+---
+title: "Assignment 6: Text Analytics with quanteda"
+author: "Insang Lee"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    code-summary: "Show code"
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(httr2)
+library(rvest)
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textplots)
+library(quanteda.textmodels)
+library(knitr)
+
+dir.create(
+  "data_private",
+  showWarnings = FALSE
+)
+
+dir.create(
+  "data_private/cpd_texts",
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+gitignore <- if (file.exists(".gitignore")) {
+  readLines(".gitignore", warn = FALSE)
+} else {
+  character()
+}
+
+if (!"data_private/" %in% gitignore) {
+  write_lines(
+    c(gitignore, "data_private/"),
+    ".gitignore"
+  )
+}
+```
+
+# Part 1. Public text: tweets from the 2021 Biden–Xi summit
+
+The first corpus is an archived set of tweets collected during the November 2021 Biden–Xi summit. Because the API access that produced this dataset is no longer available in the same form, the corpus can be analyzed but cannot simply be recollected today. Its interpretation therefore depends on the original keyword strategy and collection window rather than representing all public opinion about the summit.
+
+```{r}
+#| label: tweets-read
+#| echo: false
+#| results: asis
+
+summit <- readr::read_csv(
+  "https://raw.githubusercontent.com/datageneration/datamethods/master/textanalytics/summit_11162021.csv",
+  show_col_types = FALSE
+)
+
+sum_twt <- summit$text
+
+cat(
+  paste0(
+    "The archived corpus contains **",
+    format(length(sum_twt), big.mark = ","),
+    " tweets** collected around the 2021 Biden–Xi summit."
+  )
+)
+```
+
+## Frequent words
+
+```{r}
+#| label: tweets-frequent
+#| fig-width: 8
+#| fig-height: 5
+#| echo: false
+
+tweet_toks_clean <- tokens(
+  sum_twt,
+  remove_punct = TRUE,
+  remove_symbols = TRUE,
+  remove_numbers = TRUE,
+  remove_url = TRUE
+) |>
+  tokens_remove(
+    stopwords("en")
+  )
+
+tweet_dfm_clean <- dfm(
+  tweet_toks_clean
+)
+
+top_words <- topfeatures(
+  tweet_dfm_clean,
+  20
+)
+
+tibble(
+  term = names(top_words),
+  frequency = as.numeric(top_words)
+) |>
+  ggplot(
+    aes(
+      x = reorder(term, frequency),
+      y = frequency
+    )
+  ) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Most frequent words in summit tweets",
+    x = NULL,
+    y = "Frequency"
+  ) +
+  theme_minimal(
+    base_size = 12
+  )
+```
+
+The most frequent vocabulary is dominated by the two presidents, the summit itself, China, and terms connected with the virtual meeting. This provides a simple overview of what was most visible in the collected discussion, although frequency alone does not indicate whether a term was used positively or negatively.
+
+## Hashtag network
+
+```{r}
+#| label: hashtag-network
+#| fig-width: 8
+#| fig-height: 6
+#| echo: false
+
+tweet_dfm_tags <- tokens(
+  sum_twt,
+  remove_punct = TRUE
+) |>
+  dfm()
+
+tag_dfm <- dfm_select(
+  tweet_dfm_tags,
+  pattern = "#*"
+)
+
+top_tags <- names(
+  topfeatures(
+    tag_dfm,
+    50
+  )
+)
+
+tag_fcm <- fcm(
+  tag_dfm
+)
+
+tag_fcm <- fcm_select(
+  tag_fcm,
+  pattern = top_tags
+)
+
+textplot_network(
+  tag_fcm,
+  min_freq = 50,
+  edge_alpha = 0.8,
+  edge_size = 1
+)
+```
+
+The hashtag network shows clusters of terms that appeared together. Central hashtags such as those referring to Biden, China, and Xi connect the summit to broader political and human-rights discussions.
+
+## Mention network
+
+```{r}
+#| label: mention-network
+#| fig-width: 8
+#| fig-height: 6
+#| echo: false
+
+user_dfm <- dfm_select(
+  tweet_dfm_tags,
+  pattern = "@*"
+)
+
+top_users <- names(
+  topfeatures(
+    user_dfm,
+    50
+  )
+)
+
+user_fcm <- fcm(
+  user_dfm
+)
+
+user_fcm <- fcm_select(
+  user_fcm,
+  pattern = top_users
+)
+
+textplot_network(
+  user_fcm,
+  min_freq = 20,
+  edge_alpha = 0.8,
+  edge_size = 1
+)
+```
+
+Unlike the hashtag network, the mention network is more fragmented. This indicates that frequently mentioned accounts did not form one single communication cluster in the archived dataset.
+
+## Latent Semantic Analysis
+
+```{r}
+#| label: tweet-lsa
+#| fig-width: 8
+#| fig-height: 5
+#| echo: false
+
+sum_lsa <- textmodel_lsa(
+  tweet_dfm_clean,
+  nd = 4
+)
+
+lsa_docs <- as.data.frame(
+  sum_lsa$docs
+)
+
+names(lsa_docs)[1:2] <- c(
+  "Dimension1",
+  "Dimension2"
+)
+
+ggplot(
+  lsa_docs,
+  aes(
+    x = Dimension1,
+    y = Dimension2
+  )
+) +
+  geom_point(
+    alpha = 0.30,
+    size = 1
+  ) +
+  labs(
+    title = "LSA representation of summit tweets",
+    x = "LSA dimension 1",
+    y = "LSA dimension 2"
+  ) +
+  theme_minimal(
+    base_size = 12
+  )
+```
+
+The LSA representation summarizes similarities in word use across thousands of tweets. The visible clusters suggest recurring patterns of language, although the latent dimensions themselves do not have an automatic substantive interpretation.
+
+Overall, the tweet corpus captures immediate public communication around the summit. It should not be treated as a representative sample of U.S. or global public opinion because the original query and collection period determined which tweets entered the dataset, participation on Twitter/X is selective, and highly active users can contribute disproportionately.
+
+# Part 2. Government text: Compilation of Presidential Documents
+
+The second corpus comes from the Compilation of Presidential Documents (CPD) in GovInfo. The earlier collection produced 343 search results for documents mentioning “Xi Jinping” from January 20, 2021 onward.
+
+```{r}
+#| label: cpd-load
+#| echo: false
+#| results: asis
+
+cpd_file <- "cpd_xi_jinping_2021plus.csv"
+
+if (!file.exists(cpd_file)) {
+  stop(
+    paste0(
+      "The file ",
+      cpd_file,
+      " was not found. Place the previously collected CPD CSV in the website project folder and render again."
+    )
+  )
+}
+
+cpd_all <- read_csv(
+  cpd_file,
+  show_col_types = FALSE
+)
+
+required_cols <- c(
+  "title",
+  "packageId",
+  "dateIssued"
+)
+
+missing_cols <- setdiff(
+  required_cols,
+  names(cpd_all)
+)
+
+if (length(missing_cols) > 0) {
+  stop(
+    paste(
+      "The CPD file is missing these required columns:",
+      paste(
+        missing_cols,
+        collapse = ", "
+      )
+    )
+  )
+}
+
+cpd_all <- cpd_all |>
+  filter(
+    !is.na(packageId),
+    packageId != ""
+  ) |>
+  distinct(
+    packageId,
+    .keep_all = TRUE
+  )
+
+cat(
+  paste0(
+    "The saved GovInfo search contains **",
+    nrow(cpd_all),
+    " CPD records**."
+  )
+)
+```
+
+## Retrieve the document text
+
+GovInfo provides predictable public HTML links for individual Daily Compilation documents. The document texts are stored locally in a private folder that is excluded from the public repository. Only the collection manifest and retrieval log are published.
+
+```{r}
+#| label: cpd-download
+#| echo: false
+#| results: asis
+
+make_cpd_html_url <- function(package_id) {
+  paste0(
+    "https://www.govinfo.gov/content/pkg/",
+    package_id,
+    "/html/",
+    package_id,
+    ".htm"
+  )
+}
+
+download_cpd_html <- function(package_id) {
+
+  text_file <- file.path(
+    "data_private/cpd_texts",
+    paste0(
+      package_id,
+      ".txt"
+    )
+  )
+
+  html_url <- make_cpd_html_url(
+    package_id
+  )
+
+  if (file.exists(text_file)) {
+
+    existing_text <- paste(
+      readLines(
+        text_file,
+        warn = FALSE,
+        encoding = "UTF-8"
+      ),
+      collapse = "\n"
+    )
+
+    if (nchar(existing_text) > 50) {
+
+      return(
+        tibble(
+          packageId = package_id,
+          html_url = html_url,
+          status = "cached",
+          text_file = text_file
+        )
+      )
+    }
+  }
+
+  result <- tryCatch({
+
+    response <- request(
+      html_url
+    ) |>
+      req_user_agent(
+        "EPPS6302 student text-analysis assignment"
+      ) |>
+      req_retry(
+        max_tries = 3
+      ) |>
+      req_perform()
+
+    html_text <- response |>
+      resp_body_string()
+
+    page <- read_html(
+      html_text
+    )
+
+    body_text <- page |>
+      html_element("body") |>
+      html_text2()
+
+    body_text <- str_squish(
+      body_text
+    )
+
+    if (
+      is.na(body_text) ||
+      nchar(body_text) < 50
+    ) {
+      stop(
+        "No usable document text was found."
+      )
+    }
+
+    writeLines(
+      body_text,
+      text_file,
+      useBytes = TRUE
+    )
+
+    tibble(
+      packageId = package_id,
+      html_url = html_url,
+      status = "downloaded",
+      text_file = text_file
+    )
+
+  }, error = function(e) {
+
+    tibble(
+      packageId = package_id,
+      html_url = html_url,
+      status = paste0(
+        "error: ",
+        conditionMessage(e)
+      ),
+      text_file = NA_character_
+    )
+  })
+
+  result
+}
+
+cpd_download_log <- purrr::map_dfr(
+  unique(cpd_all$packageId),
+  download_cpd_html
+)
+
+cpd_manifest <- cpd_all |>
+  left_join(
+    cpd_download_log,
+    by = "packageId"
+  ) |>
+  select(
+    title,
+    packageId,
+    dateIssued,
+    html_url,
+    status
+  )
+
+write_csv(
+  cpd_manifest,
+  "assignment06_cpd_manifest.csv"
+)
+
+write_csv(
+  cpd_download_log |>
+    select(
+      packageId,
+      html_url,
+      status
+    ),
+  "assignment06_cpd_log.csv"
+)
+
+successful_cpd <- cpd_download_log |>
+  filter(
+    status %in% c(
+      "downloaded",
+      "cached"
+    )
+  )
+
+failed_cpd <- cpd_download_log |>
+  filter(
+    !status %in% c(
+      "downloaded",
+      "cached"
+    )
+  )
+
+cat(
+  paste0(
+    "**",
+    nrow(successful_cpd),
+    " of ",
+    nrow(cpd_download_log),
+    " documents** were available as usable public HTML text."
+  )
+)
+
+if (nrow(failed_cpd) > 0) {
+  cat(
+    paste0(
+      " ",
+      nrow(failed_cpd),
+      " record(s) could not be retrieved and are documented in the retrieval log."
+    )
+  )
+}
+```
+
+Public reproducibility files:
+
+- [CPD collection manifest](assignment06_cpd_manifest.csv)
+- [CPD retrieval log](assignment06_cpd_log.csv)
+
+## Build the CPD corpus
+
+```{r}
+#| label: cpd-corpus
+#| echo: false
+#| results: asis
+
+cpd_docs <- cpd_all |>
+  left_join(
+    cpd_download_log,
+    by = "packageId"
+  ) |>
+  filter(
+    !is.na(text_file)
+  ) |>
+  mutate(
+    text = map_chr(
+      text_file,
+      ~ paste(
+        readLines(
+          .x,
+          warn = FALSE,
+          encoding = "UTF-8"
+        ),
+        collapse = "\n"
+      )
+    ),
+    date = as.Date(
+      substr(
+        dateIssued,
+        1,
+        10
+      )
+    ),
+    administration = case_when(
+      date >= as.Date("2025-01-20") ~ "Trump",
+      date >= as.Date("2021-01-20") ~ "Biden",
+      TRUE ~ NA_character_
+    )
+  ) |>
+  filter(
+    !is.na(administration),
+    nzchar(text)
+  )
+
+if (nrow(cpd_docs) == 0) {
+  stop(
+    "No CPD document text was retrieved. The CPD analysis cannot continue."
+  )
+}
+
+cpd_corpus <- corpus(
+  cpd_docs,
+  text_field = "text",
+  docid_field = "packageId"
+)
+
+admin_counts <- cpd_docs |>
+  count(
+    administration,
+    name = "Documents"
+  )
+
+cat(
+  paste0(
+    "The analysis corpus contains **",
+    nrow(cpd_docs),
+    " documents** with usable text."
+  )
+)
+```
+
+```{r}
+#| label: cpd-administration-table
+#| echo: false
+
+admin_counts |>
+  arrange(
+    administration
+  ) |>
+  kable(
+    col.names = c(
+      "Administration",
+      "Documents"
+    ),
+    align = c(
+      "l",
+      "r"
+    )
+  )
+```
+
+## “Xi Jinping” in context
+
+```{r}
+#| label: cpd-kwic
+#| echo: false
+
+cpd_toks <- tokens(
+  cpd_corpus,
+  remove_punct = FALSE,
+  remove_symbols = FALSE
+)
+
+xi_kwic <- kwic(
+  cpd_toks,
+  pattern = phrase(
+    "Xi Jinping"
+  ),
+  window = 12
+)
+
+if (nrow(xi_kwic) == 0) {
+  stop(
+    "No Xi Jinping occurrences were found in the retrieved CPD text."
+  )
+}
+
+xi_kwic_clean <- xi_kwic |>
+  as.data.frame() |>
+  mutate(
+    context_full = paste(
+      pre,
+      keyword,
+      post
+    ),
+    context_lower = str_to_lower(
+      context_full
+    )
+  ) |>
+  filter(
+    !str_detect(
+      context_lower,
+      "subjects\\s*:"
+    ),
+    !str_detect(
+      context_lower,
+      "category\\s*:"
+    ),
+    !str_detect(
+      context_lower,
+      "names\\s*:"
+    ),
+    !str_detect(
+      context_lower,
+      "locations\\s*:"
+    ),
+    !str_detect(
+      context_lower,
+      "digest of other white house"
+    ),
+    !str_detect(
+      context_lower,
+      "checklist of white house"
+    ),
+    !str_detect(
+      context_lower,
+      "court of appeals"
+    ),
+    !str_detect(
+      context_lower,
+      "acting attorney general"
+    ),
+    !str_detect(
+      context_lower,
+      "california state parks"
+    ),
+    !str_detect(
+      context_lower,
+      "district of columbia democratic mayoral"
+    ),
+    !str_detect(
+      context_lower,
+      "former president nicolás maduro"
+    )
+  ) |>
+  distinct(
+    docname,
+    pre,
+    keyword,
+    post,
+    .keep_all = TRUE
+  )
+
+xi_kwic_table <- xi_kwic_clean |>
+  select(
+    docname,
+    pre,
+    keyword,
+    post
+  ) |>
+  slice_head(
+    n = 8
+  )
+
+if (nrow(xi_kwic_table) < 6) {
+  xi_kwic_table <- xi_kwic |>
+    as.data.frame() |>
+    mutate(
+      context_full = paste(
+        pre,
+        keyword,
+        post
+      )
+    ) |>
+    filter(
+      !str_detect(
+        str_to_lower(context_full),
+        "subjects\\s*:"
+      )
+    ) |>
+    distinct(
+      docname,
+      pre,
+      keyword,
+      post
+    ) |>
+    select(
+      docname,
+      pre,
+      keyword,
+      post
+    ) |>
+    slice_head(
+      n = 8
+    )
+}
+```
+
+```{r}
+#| label: cpd-kwic-table
+#| echo: false
+
+xi_kwic_table |>
+  kable(
+    col.names = c(
+      "Document",
+      "Before",
+      "Keyword",
+      "After"
+    ),
+    align = c(
+      "l",
+      "l",
+      "l",
+      "l"
+    )
+  )
+```
+
+The keyword-in-context examples show how references to Xi Jinping appear within official presidential language. Metadata-style subject listings and several administrative or index-like contexts were excluded from the displayed examples so that the table focuses more closely on substantive textual context.
+
+## Biden–Trump keyness
+
+```{r}
+#| label: cpd-keyness
+#| fig-width: 10
+#| fig-height: 6.5
+#| echo: false
+
+cpd_toks_key <- tokens(
+  cpd_corpus,
+  remove_punct = TRUE,
+  remove_symbols = TRUE,
+  remove_numbers = TRUE
+) |>
+  tokens_tolower() |>
+  tokens_remove(
+    stopwords("en")
+  ) |>
+  tokens_remove(
+    pattern = c(
+      "q",
+      "a",
+      "i",
+      "trump",
+      "biden"
+    )
+  )
+
+cpd_dfm <- dfm(
+  cpd_toks_key
+)
+
+keep_features <- featnames(
+  cpd_dfm
+)[
+  nchar(
+    featnames(cpd_dfm)
+  ) > 1
+]
+
+cpd_dfm <- dfm_select(
+  cpd_dfm,
+  pattern = keep_features,
+  selection = "keep"
+)
+
+cpd_grouped <- dfm_group(
+  cpd_dfm,
+  groups = docvars(
+    cpd_dfm,
+    "administration"
+  )
+)
+
+if (
+  !all(
+    c(
+      "Biden",
+      "Trump"
+    ) %in% docnames(cpd_grouped)
+  )
+) {
+  stop(
+    "Both Biden and Trump documents are required for the CPD keyness comparison."
+  )
+}
+
+cpd_grouped <- dfm_trim(
+  cpd_grouped,
+  min_termfreq = 5
+)
+
+cpd_key <- textstat_keyness(
+  cpd_grouped,
+  target = "Trump"
+)
+
+textplot_keyness(
+  cpd_key,
+  n = 20
+)
+```
+
+The keyness comparison identifies vocabulary that is disproportionately associated with Trump-era versus Biden-era CPD documents in this corpus. Very short artifacts and the presidents’ own surnames were removed so that the comparison emphasizes more substantively useful differences in official language.
+
+The CPD corpus answers a different question from the tweets. It consists of official government texts selected first by inclusion in the Compilation of Presidential Documents and again by the GovInfo search for Xi Jinping. KWIC reveals how Xi is discussed in context, while keyness identifies vocabulary that is disproportionately associated with one administration relative to the other. These patterns describe official presidential communication in the collected corpus; they do not provide a neutral record of U.S.–China relations, private deliberations, or public opinion.
+
+# Part 3. U.S. presidential inaugural addresses, 1945 onward
+
+The third corpus is generated by the institutional tradition of presidential inaugural addresses rather than by an API search or keyword-based collection window.
+
+```{r}
+#| label: inaugural-setup
+#| echo: false
+#| results: asis
+
+inaug <- corpus_subset(
+  data_corpus_inaugural,
+  Year >= 1945
+)
+
+inaug_toks <- tokens(
+  inaug,
+  remove_punct = TRUE,
+  remove_symbols = TRUE,
+  remove_numbers = TRUE
+)
+
+inaug_dfm <- dfm(
+  inaug_toks
+)
+
+inaug_years <- docvars(
+  inaug,
+  "Year"
+)
+
+cat(
+  paste0(
+    "The corpus contains **",
+    ndoc(inaug),
+    " inaugural addresses from ",
+    min(inaug_years),
+    " through ",
+    max(inaug_years),
+    "**."
+  )
+)
+```
+
+## Length, lexical diversity, and readability
+
+```{r}
+#| label: inaugural-stats
+#| include: false
+
+length_df <- tibble(
+  document = docnames(inaug),
+  year = docvars(
+    inaug,
+    "Year"
+  ),
+  president = docvars(
+    inaug,
+    "President"
+  ),
+  party = as.character(
+    docvars(
+      inaug,
+      "Party"
+    )
+  ),
+  words = ntoken(
+    inaug_toks
+  )
+)
+
+lexdiv_df <- textstat_lexdiv(
+  inaug_toks,
+  measure = "TTR"
+) |>
+  as_tibble()
+
+readability_df <- textstat_readability(
+  inaug,
+  measure = "Flesch"
+) |>
+  as_tibble()
+
+inaug_stats <- length_df |>
+  left_join(
+    lexdiv_df |>
+      select(
+        document,
+        TTR
+      ),
+    by = "document"
+  ) |>
+  left_join(
+    readability_df |>
+      select(
+        document,
+        Flesch
+      ),
+    by = "document"
+  )
+```
+
+```{r}
+#| label: inaugural-length
+#| fig-width: 9
+#| fig-height: 5
+#| echo: false
+
+ggplot(
+  inaug_stats,
+  aes(
+    x = year,
+    y = words
+  )
+) +
+  geom_line(
+    linewidth = 0.6
+  ) +
+  geom_point(
+    size = 2
+  ) +
+  labs(
+    title = "Length of inaugural addresses, 1945 onward",
+    x = "Year",
+    y = "Number of tokens"
+  ) +
+  theme_minimal(
+    base_size = 12
+  )
+```
+
+The length of inaugural addresses varies substantially across presidents and years rather than following a simple linear historical trend.
+
+```{r}
+#| label: inaugural-diversity-readability
+#| fig-width: 9
+#| fig-height: 5
+#| echo: false
+
+ggplot(
+  inaug_stats,
+  aes(
+    x = TTR,
+    y = Flesch,
+    label = president
+  )
+) +
+  geom_point(
+    size = 2
+  ) +
+  geom_text(
+    check_overlap = TRUE,
+    vjust = -0.6,
+    size = 3
+  ) +
+  labs(
+    title = "Lexical diversity and readability",
+    x = "Type-token ratio",
+    y = "Flesch readability"
+  ) +
+  theme_minimal(
+    base_size = 12
+  )
+```
+
+Lexical diversity and readability capture different characteristics of presidential rhetoric. A speech can use a varied vocabulary without necessarily being easier to read, and vice versa.
+
+## Cosine similarity among inaugural addresses
+
+```{r}
+#| label: inaugural-cosine
+#| fig-width: 9
+#| fig-height: 8
+#| echo: false
+
+inaug_dfm_clean <- inaug_toks |>
+  tokens_tolower() |>
+  tokens_remove(
+    stopwords("en")
+  ) |>
+  dfm() |>
+  dfm_trim(
+    min_termfreq = 2
+  )
+
+cosine_sim <- textstat_simil(
+  inaug_dfm_clean,
+  method = "cosine",
+  margin = "documents"
+)
+
+cosine_matrix <- as.matrix(
+  cosine_sim
+)
+
+cosine_long <- as.data.frame(
+  as.table(
+    cosine_matrix
+  )
+) |>
+  rename(
+    Address_1 = Var1,
+    Address_2 = Var2,
+    Similarity = Freq
+  ) |>
+  mutate(
+    Address_1 = factor(
+      Address_1,
+      levels = docnames(
+        inaug_dfm_clean
+      )
+    ),
+    Address_2 = factor(
+      Address_2,
+      levels = rev(
+        docnames(
+          inaug_dfm_clean
+        )
+      )
+    )
+  )
+
+ggplot(
+  cosine_long,
+  aes(
+    x = Address_1,
+    y = Address_2,
+    fill = Similarity
+  )
+) +
+  geom_tile() +
+  coord_fixed() +
+  labs(
+    title = "Cosine similarity among inaugural addresses",
+    x = NULL,
+    y = NULL,
+    fill = "Similarity"
+  ) +
+  theme_minimal(
+    base_size = 9
+  ) +
+  theme(
+    axis.text.x = element_text(
+      angle = 60,
+      hjust = 1,
+      vjust = 1
+    ),
+    panel.grid = element_blank()
+  )
+```
+
+The heatmap makes pairwise similarity easier to compare than a full numeric matrix. **Lighter cells indicate higher cosine similarity, while darker cells indicate lower similarity.**
+
+## Keyness by party
+
+```{r}
+#| label: inaugural-party-keyness
+#| fig-width: 10
+#| fig-height: 6.5
+#| echo: false
+
+party_values <- docvars(
+  inaug_dfm_clean,
+  "Party"
+)
+
+party_dfm <- dfm_group(
+  inaug_dfm_clean,
+  groups = party_values
+)
+
+party_dfm <- party_dfm[
+  c(
+    "Democratic",
+    "Republican"
+  ),
+]
+
+party_key <- textstat_keyness(
+  party_dfm,
+  target = "Democratic"
+)
+
+textplot_keyness(
+  party_key,
+  n = 20
+)
+```
+
+Party keyness identifies vocabulary that occurs disproportionately in Democratic versus Republican inaugural addresses. These associations are descriptive features of this corpus and should not automatically be treated as direct measures of ideology.
+
+## Is the 2025 address included?
+
+```{r}
+#| label: inaugural-2025
+#| echo: false
+#| results: asis
+
+latest_year <- max(
+  docvars(
+    inaug,
+    "Year"
+  )
+)
+
+latest_index <- which.max(
+  docvars(
+    inaug,
+    "Year"
+  )
+)
+
+latest_president <- docvars(
+  inaug,
+  "President"
+)[latest_index]
+
+if (latest_year >= 2025) {
+
+  cat(
+    paste0(
+      "Yes. The installed inaugural corpus includes the **",
+      latest_year,
+      " ",
+      latest_president,
+      " inaugural address**. No additional document is required."
+    )
+  )
+
+} else {
+
+  cat(
+    paste0(
+      "No. The latest address in this installed corpus is from ",
+      latest_year,
+      ". I would obtain the 2025 transcript from the American Presidency Project, preserve the raw text, add matching metadata, and append it before rerunning the analysis."
+    )
+  )
+}
+```
+
+# Part 4. Wordfish
+
+Wordfish treats word counts as generated by a statistical model in which documents occupy positions on a latent dimension and words differ in how strongly they discriminate along that dimension.
+
+```{r}
+#| label: wordfish
+#| fig-width: 9
+#| fig-height: 6
+#| echo: false
+
+wf_dfm <- inaug_toks |>
+  tokens_tolower() |>
+  tokens_remove(
+    stopwords("en")
+  ) |>
+  dfm() |>
+  dfm_trim(
+    min_termfreq = 5,
+    min_docfreq = 2
+  )
+
+wf <- textmodel_wordfish(
+  wf_dfm,
+  dir = c(
+    1,
+    ndoc(wf_dfm)
+  )
+)
+
+textplot_scale1d(
+  wf
+)
+```
+
+```{r}
+#| label: wordfish-extremes
+#| echo: false
+
+wf_positions <- tibble(
+  document = docnames(
+    wf_dfm
+  ),
+  year = docvars(
+    wf_dfm,
+    "Year"
+  ),
+  president = docvars(
+    wf_dfm,
+    "President"
+  ),
+  position = wf$theta
+) |>
+  arrange(
+    position
+  )
+
+wf_extremes <- bind_rows(
+  wf_positions |>
+    slice_head(
+      n = 3
+    ),
+  wf_positions |>
+    slice_tail(
+      n = 3
+    )
+)
+```
+
+```{r}
+#| label: wordfish-extremes-table
+#| echo: false
+
+wf_extremes |>
+  mutate(
+    position = round(
+      position,
+      2
+    )
+  ) |>
+  kable(
+    col.names = c(
+      "Address",
+      "Year",
+      "President",
+      "Estimated position"
+    ),
+    align = c(
+      "l",
+      "r",
+      "l",
+      "r"
+    )
+  )
+```
+
+Wordfish estimates a latent textual dimension rather than an automatically labeled left–right ideological scale. In this corpus, the ordering appears to capture a substantial temporal or historical shift in inaugural rhetoric: earlier addresses, especially those from Truman and Eisenhower, are located toward the negative end, while recent addresses, including Biden and both Trump addresses, are located toward the positive end. Because presidents from different parties appear on the same side of the scale, the dimension does not appear to represent simple partisan ideology. Its substantive meaning would need to be validated by examining the words with the strongest discrimination parameters and comparing the estimated positions with external historical or independently coded measures. The direction argument is necessary because the sign of a one-dimensional latent scale is arbitrary: the same relative configuration could otherwise appear with all signs reversed. Fixing the direction makes the orientation reproducible but does not change the relative distances among documents.
+
+# Short report
+
+The three corpora in this assignment illustrate why text analysis must be interpreted together with the process that generated the data. The archived summit tweets were produced by individual users and collected during a particular period around the November 2021 Biden–Xi meeting. Frequent-word counts summarize recurring vocabulary, hashtag and mention networks show which labels and accounts appeared together, and latent semantic analysis reduces high-dimensional word-use patterns to a smaller set of dimensions. These tools are useful for describing communication on the platform during the collection window. They cannot, however, be treated as a representative measure of U.S. or global public opinion. The original keyword query determined which tweets could enter the corpus, Twitter/X users are a selective population, and highly active accounts can contribute many more observations than ordinary users.
+
+The CPD corpus represents a very different data-generating process. These texts are official presidential documents included in the Compilation of Presidential Documents and then selected again by my GovInfo query for the exact phrase “Xi Jinping” from January 20, 2021 onward. The document texts were obtained from GovInfo’s public HTML renditions using the package identifiers retained in the collection manifest. KWIC is useful because it shows the words immediately surrounding each occurrence of Xi’s name rather than reducing those references to isolated counts. Keyness compares vocabulary that is relatively more characteristic of the Biden and Trump administrations within the retrieved corpus. These patterns support claims about differences in official presidential communication, but not about private policy deliberations, the complete content of U.S. foreign policy, or all government communication about China. Differences in the number and type of documents produced by each administration can also affect the comparison.
+
+The inaugural-address corpus is more structured because the documents are generated by a recurring political and ceremonial tradition rather than by a keyword search. Restricting the corpus to 1945 onward permits comparisons across modern presidents using several complementary measures. Document length describes the amount of text, lexical diversity captures variation in vocabulary, readability summarizes textual complexity, cosine similarity compares distributions of words across speeches, and party keyness identifies vocabulary used disproportionately in Democratic or Republican inaugural addresses. The similarity heatmap makes the pairwise comparisons visible without treating the entire numeric matrix as a substantive result. None of these measures by itself proves ideological differences because inaugural language also reflects historical context, individual style, and the ceremonial purpose of the speech.
+
+Wordfish provides a different kind of comparison. It is an unsupervised scaling model that uses word counts to estimate each document’s position on a latent textual dimension. The model assumes that document positions and word-specific parameters help generate observed word frequencies. In the estimated results, the dimension appears to reflect a substantial temporal or historical shift in inaugural rhetoric: earlier speeches such as Truman’s and Eisenhower’s appear toward one end, while recent speeches by Biden and Trump appear toward the other. Because presidents from both parties occupy similar regions of the scale, the dimension does not appear to represent a simple Democratic–Republican ideological divide. This interpretation would still require validation by examining highly discriminating words and comparing the estimated positions with external historical or independently coded measures. The direction setting is needed for identification because the sign of a one-dimensional latent scale is arbitrary.
+
+Overall, quanteda provides useful and reproducible tools for summarizing large text collections, but the interpretation of those summaries depends on how each corpus was produced. The tweets provide a window into platform-based public communication around a particular event, the CPD documents provide a window into selected official presidential communication, and the inaugural addresses provide a structured historical series of ceremonial rhetoric. Claims from each analysis should remain tied to those source populations and selection mechanisms.
+
+# Data note for the CPD collection
+
+**Source.** GovInfo, Compilation of Presidential Documents.
+
+**Access.** CPD records and document renditions are publicly accessible through GovInfo. The analysis uses the previously collected search manifest and GovInfo’s predictable public HTML document links. No API key or downloaded document text is published.
+
+**Query.**
+
+    collection:(CPD) AND "Xi Jinping" AND publishdate:range(2021-01-20,)
+
+**Selection.** The search retrieves CPD records mentioning the exact phrase “Xi Jinping” from January 20, 2021 onward. The earlier collection returned 343 records. The package identifier for each search result is retained in the manifest and used to retrieve the corresponding public HTML rendition.
+
+**Gaps and limitations.** The collection includes only material indexed in CPD and only documents matched by the query. It can miss references that use other names or descriptions, documents outside CPD, and material not captured by GovInfo’s indexing process. Search results also depend on the database state at the time of collection. The public manifest and retrieval log document what was selected and successfully retrieved, while the document texts themselves remain in a private local folder.
+
+# AI Use Disclosure
+
+Generative AI was used to support R coding and debugging, organization, and wording. I reviewed the assignment requirements, analysis workflow, interpretations, and final submission materials against the actual R output before submission.

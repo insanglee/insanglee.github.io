@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -13,10 +13,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -75,10 +78,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-445b8638c3d06994fee0907d791121c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -508,8 +511,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  3 China                              Asia        3,854,885                  
  4 Japan                              Asia        1,287,470                  
  5 Switzerland                        Europe      939,140                    
- 6 India                              Asia        785,710                    
- 7 Russia                             Europe/Asia 761,200                    
+ 6 Russia                             Europe/Asia 761,200                    
+ 7 India                              Asia        734,606                    
  8 Taiwan                             Asia        597,150                    
  9 Saudi Arabia                       Asia        487,370                    
 10 Hong Kong *                        Asia        445,900                    
@@ -597,7 +600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  2 India         1,429,404,000 17.3%       1 Jul 2… Official projection[4] "[b]"
  3 China         1,404,890,000 17.0%       31 Dec … Official estimate[5]   "[c]"
  4 United States 341,784,857   4.1%        1 Jul 2… Official estimate[6]   "[d]"
- 5 Indonesia     288,315,089   3.5%        31 Dec … National annual proje… ""   
+ 5 Indonesia     290,125,073   3.5%        30 Jun … National annual proje… ""   
  6 Pakistan      241,499,431   2.9%        1 Mar 2… 2023 census result[8]  "[e]"
  7 Nigeria       223,800,000   2.7%        1 Jul 2… Official projection[9] ""   
  8 Brazil        214,211,951   2.6%        1 Jul 2… Official estimate[10]  ""   
@@ -705,8 +708,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  1 China                           2026-08-01       
  2 Japan                           2026-06-30       
  3 Switzerland                     2026-06-30       
- 4 India                           2026-09-04       
- 5 Russia                          2026-08-21       
+ 4 Russia                          2026-08-21       
+ 5 India                           2026-10-09       
  6 Taiwan                          2026-06-30       
  7 Saudi Arabia                    2026-05-31       
  8 Hong Kong *                     2026-06-30       
@@ -748,8 +751,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  1 China                      3854885 2026-08-01       
  2 Japan                      1287470 2026-06-30       
  3 Switzerland                 939140 2026-06-30       
- 4 India                       785710 2026-09-04       
- 5 Russia                      761200 2026-08-21       
+ 4 Russia                      761200 2026-08-21       
+ 5 India                       734606 2026-10-09       
  6 Taiwan                      597150 2026-06-30       
  7 Saudi Arabia                487370 2026-05-31       
  8 Hong Kong *                 445900 2026-06-30       
@@ -850,7 +853,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 57                     Gambia, The    GM   GMB 2024 6.288492e+08
 58                         Georgia    GE   GEO 2024 4.447217e+09
 59                         Germany    DE   DEU 2024 3.779351e+11
-60                           Ghana    GH   GHA 2024 4.472458e+09
+60                           Ghana    GH   GHA 2024 7.117344e+09
 61                          Greece    GR   GRC 2024 1.522175e+10
 62                         Grenada    GD   GRD 2024 4.232631e+08
 63                       Guatemala    GT   GTM 2024 2.441242e+10
@@ -939,7 +942,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 146                    Switzerland    CH   CHE 2024 9.093657e+11
 147                     Tajikistan    TJ   TJK 2024 3.630709e+09
 148                       Thailand    TH   THA 2024 2.369340e+11
-149                    Timor-Leste    TL   TLS 2024 7.804352e+08
+149                    Timor-Leste    TL   TLS 2024 7.790131e+08
 150                          Tonga    TO   TON 2024 3.772987e+08
 151            Trinidad and Tobago    TT   TTO 2024 5.601121e+09
 152                        Tunisia    TN   TUN 2024 9.343597e+09
@@ -1172,16 +1175,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
     function toggleCodeHandler(show) {
       return function(e) {
-        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
-        for (let i=0; i<detailsSrc.length; i++) {
-          const details = detailsSrc[i].parentElement;
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
           if (show) {
             details.open = true;
           } else {
             details.removeAttribute("open");
           }
         }
-        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
         const fromCls = show ? "hidden" : "unhidden";
         const toCls = show ? "unhidden" : "hidden";
         for (let i=0; i<cellCodeDivs.length; i++) {
