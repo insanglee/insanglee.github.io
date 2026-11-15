@@ -774,14 +774,14 @@
     "href": "epps6356.html",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard\nPrepare for Class 10"
   },
   {
     "objectID": "epps6356.html#assignments",
     "href": "epps6356.html#assignments",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard\nPrepare for Class 10"
   },
   {
     "objectID": "epps6356_assign02.html",
@@ -1342,5 +1342,47 @@
     "title": "NYC Subway Ridership and Arrest Dashboard",
     "section": "Row",
     "text": "Row\n\nRidership and Arrest Measures Across the Nine Selected Stations\n\nstation_summary |&gt;\n  arrange(\n    desc(total_ridership)\n  ) |&gt;\n  mutate(\n    total_ridership =\n      comma(total_ridership),\n    total_arrests =\n      comma(total_arrests),\n    arrests_per_100k =\n      round(arrests_per_100k, 2)\n  ) |&gt;\n  rename(\n    Station = station_complex,\n    Borough = borough,\n    `Total Ridership` =\n      total_ridership,\n    `Total Arrests` =\n      total_arrests,\n    `Arrests per 100,000 Riders` =\n      arrests_per_100k\n  ) |&gt;\n  select(\n    Station,\n    Borough,\n    `Total Ridership`,\n    `Total Arrests`,\n    `Arrests per 100,000 Riders`\n  ) |&gt;\n  datatable(\n    filter = \"top\",\n    options = list(\n      pageLength = 10,\n      scrollX = TRUE\n    ),\n    rownames = FALSE\n  )"
+  },
+  {
+    "objectID": "epps6356_prep_class10.html",
+    "href": "epps6356_prep_class10.html",
+    "title": "EPPS 6356 — Prepare for Class 10",
+    "section": "",
+    "text": "This practice uses the Happy Planet Index data to examine the relationship between GDP per capita and life expectancy, visualize regression coefficients, and display uncertainty using simulation.\n\nlibrary(tidyverse)\nlibrary(readxl)\nlibrary(janitor)\nlibrary(broom)\nlibrary(MASS)\nlibrary(ggdist)\nlibrary(patchwork)\n\n# Read the country-level HPI data\nhpi_raw &lt;- read_excel(\n  \"HPI.xlsx\",\n  sheet = \"1. All countries\",\n  skip = 8\n) |&gt;\n  clean_names()"
+  },
+  {
+    "objectID": "epps6356_prep_class10.html#linear-model",
+    "href": "epps6356_prep_class10.html#linear-model",
+    "title": "EPPS 6356 — Prepare for Class 10",
+    "section": "Linear Model",
+    "text": "Linear Model\n\np_lm &lt;- ggplot(\n  hpi_practice,\n  aes(x = gdp_per_capita, y = life_expectancy)\n) +\n  geom_point(alpha = 0.6) +\n  geom_smooth(method = \"lm\", se = TRUE) +\n  scale_x_log10() +\n  labs(\n    title = \"Linear Model\",\n    x = \"GDP per Capita (log scale)\",\n    y = \"Life Expectancy (years)\"\n  ) +\n  theme_minimal()\n\np_lm"
+  },
+  {
+    "objectID": "epps6356_prep_class10.html#loess",
+    "href": "epps6356_prep_class10.html#loess",
+    "title": "EPPS 6356 — Prepare for Class 10",
+    "section": "LOESS",
+    "text": "LOESS\n\np_loess &lt;- ggplot(\n  hpi_practice,\n  aes(x = gdp_per_capita, y = life_expectancy)\n) +\n  geom_point(alpha = 0.6) +\n  geom_smooth(method = \"loess\", se = TRUE) +\n  scale_x_log10() +\n  labs(\n    title = \"LOESS\",\n    x = \"GDP per Capita (log scale)\",\n    y = \"Life Expectancy (years)\"\n  ) +\n  theme_minimal()\n\np_loess"
+  },
+  {
+    "objectID": "epps6356_prep_class10.html#comparison",
+    "href": "epps6356_prep_class10.html#comparison",
+    "title": "EPPS 6356 — Prepare for Class 10",
+    "section": "Comparison",
+    "text": "Comparison\n\np_lm + p_loess\n\n\n\n\n\n\n\n\nShort answer:\nLOESS fits slightly better because the relationship between GDP per capita and life expectancy is not perfectly linear, especially at lower GDP levels. Both models show a strong positive relationship, but LOESS captures the curvature more clearly."
+  },
+  {
+    "objectID": "epps6356_prep_class10.html#coefficient-plot",
+    "href": "epps6356_prep_class10.html#coefficient-plot",
+    "title": "EPPS 6356 — Prepare for Class 10",
+    "section": "Coefficient Plot",
+    "text": "Coefficient Plot\n\ncoef_df &lt;- tidy(m, conf.int = TRUE)\n\nggplot(\n  coef_df |&gt; filter(term != \"(Intercept)\"),\n  aes(\n    x = estimate,\n    y = term,\n    xmin = conf.low,\n    xmax = conf.high\n  )\n) +\n  geom_pointrange() +\n  geom_vline(\n    xintercept = 0,\n    linetype = \"dashed\"\n  ) +\n  labs(\n    title = \"Coefficient Plot\",\n    x = \"Estimated coefficient (95% CI)\",\n    y = NULL\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nShort interpretation:\nGDP per capita has a strong positive association with life expectancy. The ecological footprint coefficient is much smaller and its confidence interval includes zero, indicating substantially greater uncertainty about its association in this model."
+  },
+  {
+    "objectID": "epps6356_prep_class10.html#ai-use-disclosure",
+    "href": "epps6356_prep_class10.html#ai-use-disclosure",
+    "title": "EPPS 6356 — Prepare for Class 10",
+    "section": "AI Use Disclosure",
+    "text": "AI Use Disclosure\nGenerative AI was used to assist with R coding, troubleshooting, and interpretation of the practice exercises. I reviewed the code, checked the outputs, and made the final decisions about the analysis and presentation."
   }
 ]
