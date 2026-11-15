@@ -12,3 +12,4 @@ title: "EPPS 6356"
 - [Assignment 6](epps6356_assign06.qmd)
 - [Assignment 7](epps6356_assign07.qmd)
 - [Assignment 8](epps6356_assign08.qmd)
+- [Assignment 9 Static Maps](maps.qmd)

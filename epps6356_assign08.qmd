@@ -6,6 +6,7 @@ format:
     theme: cosmo
     nav-buttons: [github]
     orientation: rows
+server: shiny
 execute:
   warning: false
   message: false
@@ -13,6 +14,7 @@ execute:
 
 ```{r}
 #| label: setup
+#| context: setup
 #| include: false
 
 library(tidyverse)
@@ -20,21 +22,32 @@ library(lubridate)
 library(plotly)
 library(DT)
 library(scales)
+library(shiny)
+library(leaflet)
+library(bslib)
+library(bsicons)
+library(sf)
 
 # ============================================================
-# EPPS 6356 Assignment 8
-# Dashboard Prototype
+# EPPS 6356
+# Assignment 8 Dashboard + Assignment 9 Reactive Map
 # Insang Lee
 # ============================================================
 
 dashboard_data <- read_csv(
   "subway_arrests_dashboard_2024.csv",
   show_col_types = FALSE
-)
-
-dashboard_data <- dashboard_data |>
+) |>
   mutate(
-    month = as.Date(month)
+    month = as.Date(month),
+    borough_name = case_when(
+      borough %in% c("M", "Manhattan") ~ "Manhattan",
+      borough %in% c("Bk", "Brooklyn") ~ "Brooklyn",
+      borough %in% c("Q", "Queens") ~ "Queens",
+      borough %in% c("Bx", "Bronx") ~ "Bronx",
+      borough %in% c("SI", "Staten Island") ~ "Staten Island",
+      TRUE ~ borough
+    )
   )
 
 # ============================================================
@@ -67,7 +80,10 @@ station_summary <- dashboard_data |>
   group_by(
     station_complex_id,
     station_complex,
-    borough
+    borough,
+    borough_name,
+    latitude,
+    longitude
   ) |>
   summarise(
     total_ridership = sum(
@@ -103,6 +119,51 @@ overall_rate <-
   total_arrests /
   total_ridership *
   100000
+
+# ============================================================
+# NYC borough boundaries
+# ============================================================
+
+boroughs <- st_read(
+  "https://data.cityofnewyork.us/resource/gthc-hcne.geojson?$limit=5000",
+  quiet = TRUE
+) |>
+  transmute(
+    borough_name = boroname,
+    geometry
+  ) |>
+  st_transform(4326)
+
+# ============================================================
+# Monthly borough summaries for reactive map
+# ============================================================
+
+borough_month <- dashboard_data |>
+  group_by(
+    month,
+    borough_name
+  ) |>
+  summarise(
+    monthly_ridership = sum(
+      monthly_ridership,
+      na.rm = TRUE
+    ),
+    arrest_count = sum(
+      arrest_count,
+      na.rm = TRUE
+    ),
+    .groups = "drop"
+  ) |>
+  mutate(
+    arrests_per_100k =
+      arrest_count /
+      monthly_ridership *
+      100000
+  )
+
+month_choices <- sort(
+  unique(dashboard_data$month)
+)
 ```
 
 # Overview
@@ -248,6 +309,235 @@ ggplotly(
   )
 ```
 
+# Map
+
+## {.sidebar}
+
+```{r}
+selectInput(
+  "map_month",
+  "Month",
+  choices = setNames(
+    as.character(month_choices),
+    format(month_choices, "%B %Y")
+  ),
+  selected = as.character(
+    max(month_choices)
+  )
+)
+
+selectInput(
+  "map_borough",
+  "Borough",
+  choices = c(
+    "All",
+    "Manhattan",
+    "Brooklyn",
+    "Queens"
+  ),
+  selected = "All"
+)
+```
+
+## Row {height=20%}
+
+```{r}
+value_box(
+  "Ridership Shown",
+  textOutput("map_ridership"),
+  showcase = bs_icon("train-front")
+)
+```
+
+```{r}
+value_box(
+  "Arrests Shown",
+  textOutput("map_arrests"),
+  showcase = bs_icon("bar-chart")
+)
+```
+
+## Row {height=80%}
+
+```{r}
+#| title: "Ridership-Adjusted Arrest Rates by Borough"
+
+leafletOutput(
+  "subway_map",
+  height = "500px"
+)
+```
+
+```{r}
+#| title: "Station Arrest Rates for the Selected Month"
+
+plotOutput(
+  "map_chart",
+  height = "500px"
+)
+```
+
+```{r}
+#| context: server
+
+# Shared reactive spatial data.
+# Used by the map and both reactive value boxes.
+map_data <- reactive({
+
+  selected_month <- as.Date(
+    input$map_month
+  )
+
+  d <- borough_month |>
+    filter(
+      month == selected_month
+    )
+
+  if (
+    input$map_borough != "All"
+  ) {
+    d <- d |>
+      filter(
+        borough_name ==
+          input$map_borough
+      )
+  }
+
+  boroughs |>
+    inner_join(
+      d,
+      by = "borough_name"
+    )
+})
+
+# Station-level data for companion chart
+station_map_data <- reactive({
+
+  selected_month <- as.Date(
+    input$map_month
+  )
+
+  d <- dashboard_data |>
+    filter(
+      month == selected_month
+    )
+
+  if (
+    input$map_borough != "All"
+  ) {
+    d <- d |>
+      filter(
+        borough_name ==
+          input$map_borough
+      )
+  }
+
+  d
+})
+
+output$map_ridership <- renderText({
+
+  comma(
+    sum(
+      map_data()$monthly_ridership,
+      na.rm = TRUE
+    )
+  )
+})
+
+output$map_arrests <- renderText({
+
+  comma(
+    sum(
+      map_data()$arrest_count,
+      na.rm = TRUE
+    )
+  )
+})
+
+output$subway_map <- renderLeaflet({
+
+  d <- map_data()
+
+  pal <- colorNumeric(
+    palette = "YlGnBu",
+    domain = d$arrests_per_100k,
+    na.color = "#d9d9d9"
+  )
+
+  leaflet(d) |>
+    addProviderTiles(
+      "CartoDB.Positron"
+    ) |>
+    addPolygons(
+      fillColor =
+        ~pal(arrests_per_100k),
+      fillOpacity = 0.75,
+      color = "white",
+      weight = 1,
+      label = ~paste0(
+        borough_name,
+        ": ",
+        round(
+          arrests_per_100k,
+          2
+        ),
+        " arrests per 100,000 riders"
+      ),
+      popup = ~paste0(
+        "<b>",
+        borough_name,
+        "</b>",
+        "<br>Ridership: ",
+        comma(
+          monthly_ridership
+        ),
+        "<br>Arrests: ",
+        comma(
+          arrest_count
+        ),
+        "<br>Arrests per 100,000 riders: ",
+        round(
+          arrests_per_100k,
+          2
+        )
+      )
+    ) |>
+    addLegend(
+      pal = pal,
+      values = ~arrests_per_100k,
+      title = "Arrests per 100,000 riders",
+      position = "bottomright"
+    )
+})
+
+output$map_chart <- renderPlot({
+
+  station_map_data() |>
+    arrange(
+      arrests_per_100k
+    ) |>
+    ggplot(
+      aes(
+        x = arrests_per_100k,
+        y = fct_reorder(
+          station_complex,
+          arrests_per_100k
+        )
+      )
+    ) +
+    geom_col() +
+    labs(
+      x = "Arrests per 100,000 Riders",
+      y = NULL,
+      caption = "Sources: MTA Subway Hourly Ridership Data and NYPD Arrest Data"
+    ) +
+    theme_minimal(
+      base_size = 12
+    )
+})
+```
+
 # Station Comparison
 
 ## Row
@@ -390,8 +680,10 @@ station_summary |>
   rename(
     Station = station_complex,
     Borough = borough,
-    `Total Ridership` = total_ridership,
-    `Total Arrests` = total_arrests,
+    `Total Ridership` =
+      total_ridership,
+    `Total Arrests` =
+      total_arrests,
     `Arrests per 100,000 Riders` =
       arrests_per_100k
   ) |>
@@ -414,11 +706,11 @@ station_summary |>
 
 # About
 
-**Assignment 8 Dashboard Prototype: NYC Subway Ridership and Arrest Patterns**
+**Assignment 8 and Assignment 9 Dashboard: NYC Subway Ridership and Arrest Patterns**
 
-This dashboard was created for **EPPS 6356 Assignment 8**, which asks students to develop a working dashboard prototype and a plan for the final team project.
+This dashboard was initially created for **EPPS 6356 Assignment 8** and expanded for **Assignment 9** with a reactive spatial visualization.
 
-The purpose of this prototype is to test the dashboard structure, visualizations, and interactive features using a manageable subset of the planned final-project data before expanding the analysis to a larger dataset.
+The purpose of the dashboard is to examine subway ridership and arrest patterns across selected New York City subway stations while accounting for differences in passenger volume.
 
 **Research Question**
 
@@ -427,15 +719,14 @@ How do subway ridership and arrest patterns vary across stations and over time, 
 **Data Sources**
 
 - MTA Subway Hourly Ridership Data
-- NYPD Arrests Data
-
-The MTA data provide information on subway ridership, station complexes, boroughs, and station locations. The NYPD data provide information on arrest dates, offense types, boroughs, and arrest locations.
+- NYPD Arrest Data
+- NYC Open Data Borough Boundaries
 
 **Prototype Scope**
 
-For Assignment 8, the dashboard uses **2024 data for nine high-ridership subway station complexes** in Manhattan, Queens, and Brooklyn.
+The dashboard uses **2024 data for nine selected high-ridership subway station complexes** in Manhattan, Queens, and Brooklyn.
 
-A smaller group of stations is used in this prototype to make the first version of the dashboard manageable. The final project is planned to expand the analysis to the full subway network and the **2020–2024** period.
+The final project is planned to expand the analysis to the full subway network and the **2020–2024** period.
 
 **Unit of Analysis**
 
@@ -447,7 +738,7 @@ Monthly subway ridership and arrest measures are calculated for each selected st
 
 NYPD arrests were assigned to the **nearest selected subway station** when the arrest occurred within **500 meters** of that station.
 
-This approach allows arrest activity near subway stations to be compared with passenger volume. The 500-meter distance rule is used for the Assignment 8 prototype and may be refined in the final project.
+This approach allows arrest activity near subway stations to be compared with passenger volume.
 
 **Key Measures**
 
@@ -462,35 +753,34 @@ The ridership-adjusted arrest rate is calculated as:
 
 **Arrests per 100,000 riders = (Monthly arrests / Monthly ridership) × 100,000**
 
-This measure helps distinguish stations with high arrest counts because they serve many passengers from stations with relatively high arrest activity after passenger volume is taken into account.
-
 **Visualizations**
 
-The dashboard uses three chart types from **Abela's Chart Suggestions—A Thought-Starter**:
+The dashboard includes:
 
-- **Chart #6 — Line Chart:** monthly change over time
-- **Chart #9 — Scatter Chart:** relationship between ridership and arrest rate
-- **Chart #18 — Bubble Chart:** relationship among arrest counts, arrest rates, and passenger volume
+- Monthly time-series line charts
+- Station-level scatter plot
+- Ridership-adjusted bubble chart
+- Reactive Leaflet choropleth map
+- Reactive station-level comparison chart
+- Interactive station-level data table
 
-The dashboard also includes value boxes and an interactive station-level data table to summarize and compare the selected stations.
-
-**Interaction**
+**Map Interaction**
 
 Users can:
 
-- Hover over chart elements to view additional information
-- Use the time-series range selector to focus on specific periods
-- Search and sort the station-level data table
-- Compare raw arrest counts with ridership-adjusted arrest rates across stations
-
-Additional filters and reactive features may be added as the dashboard is expanded in the next stage of the project.
+- Select a month
+- Select a borough
+- View updated ridership and arrest totals
+- View ridership-adjusted arrest rates on the map
+- Compare station-level arrest rates in the companion chart
+- View borough information through map labels and popups
 
 **AI Use Disclosure**
 
 ChatGPT was used to assist with R coding, troubleshooting, and clarification of assignment requirements. I tested the suggested code in RStudio, reviewed the outputs, and made the final decisions about the dashboard design, data preparation, and content.
 
-**Assignment 8 Files**
+**Assignment Files**
 
-- [Dashboard Prototype](epps6356_assign08.html)
+- [Static Maps — Assignment 9](maps.html)
 - [Final Project Plan — PLAN.md](PLAN.md)
 - [GitHub Repository](https://github.com/insanglee/insanglee.github.io)

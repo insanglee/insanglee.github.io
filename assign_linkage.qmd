@@ -1,0 +1,46 @@
+---
+title: "Assignment 8: Record Linkage"
+author: "Insang Lee"
+format:
+  html:
+    toc: true
+    toc-location: right
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+## Reading Questions
+
+### Fellegi-Sunter Model
+
+The Fellegi-Sunter model estimates the probability structure of agreement patterns for true matches and non-matches, using quantities such as the *m*- and *u*-probabilities to construct a likelihood-based match score. Unlike the workshop’s fixed weighted score, it estimates linkage uncertainty from the data rather than assigning similarity weights only by rule.
+
+### Unique IDs
+
+Records with a reliable unique identifier can be linked directly because the identifier unambiguously determines whether two records belong to the same entity. Records without such an identifier require probabilistic linkage because names and other identifying fields may contain missing values, spelling errors, or measurement error, making the match uncertain.
+
+## Data-Generating Process
+
+## Answer-Key Sensitivity
+
+## Blocking
+
+## Data-Based Weights
+
+## Threshold Calibration
+
+## Review Band
+
+## Error Diagnosis
+
+## Downstream Effects
+
+## Deterministic vs. Probabilistic Linkage
+
+## Report
+
+## Data Note
+
+## AI Use Disclosure

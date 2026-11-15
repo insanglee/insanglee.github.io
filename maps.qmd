@@ -1,0 +1,274 @@
+---
+title: "NYC Subway Ridership and Arrest Maps"
+format:
+  html:
+    code-fold: show
+    toc: true
+lightbox: true
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(sf)
+library(tmap)
+library(patchwork)
+
+# Dashboard data created for Assignment 8
+dashboard_data <- read_csv(
+  "subway_arrests_dashboard_2024.csv",
+  show_col_types = FALSE
+)
+
+# Create one row per station for 2024
+station_summary <- dashboard_data |>
+  group_by(
+    station_complex_id,
+    station_complex,
+    borough,
+    latitude,
+    longitude
+  ) |>
+  summarise(
+    total_ridership = sum(monthly_ridership, na.rm = TRUE),
+    total_arrests = sum(arrest_count, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    arrests_per_100k =
+      total_arrests / total_ridership * 100000,
+
+    borough_name = case_when(
+      borough %in% c("M", "Manhattan") ~ "Manhattan",
+      borough %in% c("Bk", "Brooklyn") ~ "Brooklyn",
+      borough %in% c("Q", "Queens") ~ "Queens",
+      borough %in% c("Bx", "Bronx") ~ "Bronx",
+      borough %in% c("SI", "Staten Island") ~ "Staten Island",
+      TRUE ~ borough
+    )
+  )
+
+# Summarize station measures by borough
+borough_summary <- station_summary |>
+  group_by(borough_name) |>
+  summarise(
+    total_ridership = sum(total_ridership, na.rm = TRUE),
+    total_arrests = sum(total_arrests, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    arrests_per_100k =
+      total_arrests / total_ridership * 100000
+  )
+
+# NYC Open Data Borough Boundaries
+boroughs <- st_read(
+  "https://data.cityofnewyork.us/resource/gthc-hcne.geojson?$limit=5000",
+  quiet = TRUE
+) |>
+  transmute(
+    borough_name = boroname,
+    geometry
+  )
+
+# Join the project data to borough boundaries
+borough_map <- boroughs |>
+  left_join(
+    borough_summary,
+    by = "borough_name"
+  )
+
+# Station locations as spatial points
+station_sf <- st_as_sf(
+  station_summary,
+  coords = c("longitude", "latitude"),
+  crs = 4326,
+  remove = FALSE
+)
+```
+
+## 1. Join and Check
+
+The station-level data are summarized by borough and joined to official New York City borough boundaries using borough names as the join key.
+
+The following table checks whether any boroughs represented in the project data failed to match a borough boundary.
+
+```{r}
+#| label: join-check
+
+anti_join(
+  borough_summary,
+  st_drop_geometry(boroughs),
+  by = "borough_name"
+)
+```
+
+No selected-station borough summaries should remain unmatched after borough names are standardized. Bronx and Staten Island have no values in this prototype because none of the nine selected Assignment 8 stations are located in those boroughs.
+
+## 2. Projection Comparison
+
+The same New York City borough boundaries are shown using three coordinate reference systems.
+
+```{r}
+#| label: projection-comparison
+#| fig-width: 12
+#| fig-height: 4
+
+p4326 <- ggplot(
+  st_transform(boroughs, 4326)
+) +
+  geom_sf() +
+  labs(title = "EPSG:4326\nWGS 84") +
+  theme_void()
+
+p3857 <- ggplot(
+  st_transform(boroughs, 3857)
+) +
+  geom_sf() +
+  labs(title = "EPSG:3857\nWeb Mercator") +
+  theme_void()
+
+p5070 <- ggplot(
+  st_transform(boroughs, 5070)
+) +
+  geom_sf() +
+  labs(title = "EPSG:5070\nAlbers Equal Area") +
+  theme_void()
+
+p4326 + p3857 + p5070
+```
+
+EPSG:4326 stores locations using longitude and latitude, while EPSG:3857 is designed for web mapping and changes the appearance of area and distance. EPSG:5070 is an equal-area projection and is preferable when preserving relative area is important.
+
+## 3. Choropleth Map
+
+The choropleth displays arrests per 100,000 riders, which adjusts arrest counts for differences in passenger volume.
+
+```{r}
+#| label: choropleth
+#| fig-width: 8
+#| fig-height: 6
+
+borough_map_projected <- st_transform(
+  borough_map,
+  5070
+)
+
+tm_shape(borough_map_projected) +
+  tm_polygons(
+    fill = "arrests_per_100k",
+    fill.scale = tm_scale_intervals(
+      style = "quantile",
+      n = 3,
+      values = "brewer.yl_gn_bu",
+      value.na = "grey85",
+      label.na = "No data"
+    ),
+    fill.legend = tm_legend(
+      title = "Arrests per\n100,000 riders"
+    ),
+    col = "white",
+    lwd = 1
+  ) +
+  tm_title(
+    "Ridership-Adjusted Arrest Rates Differ Across the Selected Boroughs"
+  ) +
+  tm_credits(
+    "Sources: MTA Subway Hourly Ridership Data; NYPD Arrest Data; NYC Open Data Borough Boundaries. EPSG:5070.",
+    position = c("left", "bottom")
+  )
+```
+
+The map uses a ridership-adjusted rate rather than a raw arrest count so boroughs with different passenger volumes can be compared more meaningfully. Boroughs without selected stations in the Assignment 8 prototype are displayed as having no data.
+
+## 4. Classification Comparison
+
+The same ridership-adjusted arrest rate is shown using equal-interval, quantile, and Jenks classifications.
+
+```{r}
+#| label: classification-comparison
+#| fig-width: 12
+#| fig-height: 4
+
+classification_maps <- c(
+  "equal",
+  "quantile",
+  "jenks"
+) |>
+  map(
+    \(style_name)
+    tm_shape(borough_map_projected) +
+      tm_polygons(
+        fill = "arrests_per_100k",
+        fill.scale = tm_scale_intervals(
+          style = style_name,
+          n = 3,
+          value.na = "grey85",
+          label.na = "No data"
+        ),
+        fill.legend = tm_legend(
+          title = "Arrests per\n100,000 riders"
+        ),
+        col = "white",
+        lwd = 0.8
+      ) +
+      tm_title(
+        stringr::str_to_title(style_name)
+      )
+  )
+
+tmap_arrange(
+  classification_maps[[1]],
+  classification_maps[[2]],
+  classification_maps[[3]],
+  ncol = 3
+)
+```
+
+The classification method affects how differences between boroughs are visually emphasized. Equal intervals use fixed numeric ranges, quantiles distribute observations across classes, and Jenks identifies natural groupings in the observed values. Because the Assignment 8 prototype includes selected stations in only three boroughs, differences among the three classification methods should be interpreted cautiously. For this prototype, the quantile classification is used for the main choropleth because it provides a clear comparison among the boroughs with available data.
+
+## 5. Proportional Symbols
+
+Total ridership is a count, so proportional symbols are used to show passenger volume at each selected subway station.
+
+```{r}
+#| label: proportional-symbols
+#| fig-width: 8
+#| fig-height: 7
+
+station_sf_projected <- st_transform(
+  station_sf,
+  5070
+)
+
+ggplot() +
+  geom_sf(
+    data = st_transform(boroughs, 5070),
+    fill = "grey92",
+    colour = "white",
+    linewidth = 0.5
+  ) +
+  geom_sf(
+    data = station_sf_projected,
+    aes(size = total_ridership),
+    alpha = 0.7
+  ) +
+  scale_size_area(
+    max_size = 16,
+    name = "2024 Ridership"
+  ) +
+  labs(
+    title = "Passenger Volume Varies Across the Nine Selected Subway Stations",
+    caption = "Sources: MTA Subway Hourly Ridership Data; NYC Open Data Borough Boundaries. EPSG:5070."
+  ) +
+  theme_void() +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+Larger symbols represent stations with higher total ridership in 2024. Unlike a choropleth, proportional symbols are appropriate here because total ridership is a count rather than a rate.

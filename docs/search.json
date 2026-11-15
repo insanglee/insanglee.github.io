@@ -774,14 +774,14 @@
     "href": "epps6356.html",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps"
   },
   {
     "objectID": "epps6356.html#assignments",
     "href": "epps6356.html#assignments",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps"
   },
   {
     "objectID": "epps6356_assign02.html",
@@ -1167,5 +1167,145 @@
     "title": "Teaching",
     "section": "Teaching Assistant",
     "text": "Teaching Assistant\nCRIM 3302 — Advanced Criminology\nSpring 2026, Fall 2025, Spring 2025, Fall 2024\nThe University of Texas at Dallas"
+  },
+  {
+    "objectID": "maps.html",
+    "href": "maps.html",
+    "title": "NYC Subway Ridership and Arrest Maps",
+    "section": "",
+    "text": "Code\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(patchwork)\n\n# Dashboard data created for Assignment 8\ndashboard_data &lt;- read_csv(\n  \"subway_arrests_dashboard_2024.csv\",\n  show_col_types = FALSE\n)\n\n# Create one row per station for 2024\nstation_summary &lt;- dashboard_data |&gt;\n  group_by(\n    station_complex_id,\n    station_complex,\n    borough,\n    latitude,\n    longitude\n  ) |&gt;\n  summarise(\n    total_ridership = sum(monthly_ridership, na.rm = TRUE),\n    total_arrests = sum(arrest_count, na.rm = TRUE),\n    .groups = \"drop\"\n  ) |&gt;\n  mutate(\n    arrests_per_100k =\n      total_arrests / total_ridership * 100000,\n\n    borough_name = case_when(\n      borough %in% c(\"M\", \"Manhattan\") ~ \"Manhattan\",\n      borough %in% c(\"Bk\", \"Brooklyn\") ~ \"Brooklyn\",\n      borough %in% c(\"Q\", \"Queens\") ~ \"Queens\",\n      borough %in% c(\"Bx\", \"Bronx\") ~ \"Bronx\",\n      borough %in% c(\"SI\", \"Staten Island\") ~ \"Staten Island\",\n      TRUE ~ borough\n    )\n  )\n\n# Summarize station measures by borough\nborough_summary &lt;- station_summary |&gt;\n  group_by(borough_name) |&gt;\n  summarise(\n    total_ridership = sum(total_ridership, na.rm = TRUE),\n    total_arrests = sum(total_arrests, na.rm = TRUE),\n    .groups = \"drop\"\n  ) |&gt;\n  mutate(\n    arrests_per_100k =\n      total_arrests / total_ridership * 100000\n  )\n\n# NYC Open Data Borough Boundaries\nboroughs &lt;- st_read(\n  \"https://data.cityofnewyork.us/resource/gthc-hcne.geojson?$limit=5000\",\n  quiet = TRUE\n) |&gt;\n  transmute(\n    borough_name = boroname,\n    geometry\n  )\n\n# Join the project data to borough boundaries\nborough_map &lt;- boroughs |&gt;\n  left_join(\n    borough_summary,\n    by = \"borough_name\"\n  )\n\n# Station locations as spatial points\nstation_sf &lt;- st_as_sf(\n  station_summary,\n  coords = c(\"longitude\", \"latitude\"),\n  crs = 4326,\n  remove = FALSE\n)"
+  },
+  {
+    "objectID": "assign_linkage.html",
+    "href": "assign_linkage.html",
+    "title": "Assignment 8: Record Linkage",
+    "section": "",
+    "text": "The Fellegi-Sunter model estimates the probability structure of agreement patterns for true matches and non-matches, using quantities such as the m- and u-probabilities to construct a likelihood-based match score. Unlike the workshop’s fixed weighted score, it estimates linkage uncertainty from the data rather than assigning similarity weights only by rule.\n\n\n\nRecords with a reliable unique identifier can be linked directly because the identifier unambiguously determines whether two records belong to the same entity. Records without such an identifier require probabilistic linkage because names and other identifying fields may contain missing values, spelling errors, or measurement error, making the match uncertain."
+  },
+  {
+    "objectID": "assign_linkage.html#reading-questions",
+    "href": "assign_linkage.html#reading-questions",
+    "title": "Assignment 8: Record Linkage",
+    "section": "",
+    "text": "The Fellegi-Sunter model estimates the probability structure of agreement patterns for true matches and non-matches, using quantities such as the m- and u-probabilities to construct a likelihood-based match score. Unlike the workshop’s fixed weighted score, it estimates linkage uncertainty from the data rather than assigning similarity weights only by rule.\n\n\n\nRecords with a reliable unique identifier can be linked directly because the identifier unambiguously determines whether two records belong to the same entity. Records without such an identifier require probabilistic linkage because names and other identifying fields may contain missing values, spelling errors, or measurement error, making the match uncertain."
+  },
+  {
+    "objectID": "assign_linkage.html#data-generating-process",
+    "href": "assign_linkage.html#data-generating-process",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Data-Generating Process",
+    "text": "Data-Generating Process"
+  },
+  {
+    "objectID": "assign_linkage.html#answer-key-sensitivity",
+    "href": "assign_linkage.html#answer-key-sensitivity",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Answer-Key Sensitivity",
+    "text": "Answer-Key Sensitivity"
+  },
+  {
+    "objectID": "assign_linkage.html#blocking",
+    "href": "assign_linkage.html#blocking",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Blocking",
+    "text": "Blocking"
+  },
+  {
+    "objectID": "assign_linkage.html#data-based-weights",
+    "href": "assign_linkage.html#data-based-weights",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Data-Based Weights",
+    "text": "Data-Based Weights"
+  },
+  {
+    "objectID": "assign_linkage.html#threshold-calibration",
+    "href": "assign_linkage.html#threshold-calibration",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Threshold Calibration",
+    "text": "Threshold Calibration"
+  },
+  {
+    "objectID": "assign_linkage.html#review-band",
+    "href": "assign_linkage.html#review-band",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Review Band",
+    "text": "Review Band"
+  },
+  {
+    "objectID": "assign_linkage.html#error-diagnosis",
+    "href": "assign_linkage.html#error-diagnosis",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Error Diagnosis",
+    "text": "Error Diagnosis"
+  },
+  {
+    "objectID": "assign_linkage.html#downstream-effects",
+    "href": "assign_linkage.html#downstream-effects",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Downstream Effects",
+    "text": "Downstream Effects"
+  },
+  {
+    "objectID": "assign_linkage.html#deterministic-vs.-probabilistic-linkage",
+    "href": "assign_linkage.html#deterministic-vs.-probabilistic-linkage",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Deterministic vs. Probabilistic Linkage",
+    "text": "Deterministic vs. Probabilistic Linkage"
+  },
+  {
+    "objectID": "assign_linkage.html#report",
+    "href": "assign_linkage.html#report",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Report",
+    "text": "Report"
+  },
+  {
+    "objectID": "assign_linkage.html#data-note",
+    "href": "assign_linkage.html#data-note",
+    "title": "Assignment 8: Record Linkage",
+    "section": "Data Note",
+    "text": "Data Note"
+  },
+  {
+    "objectID": "assign_linkage.html#ai-use-disclosure",
+    "href": "assign_linkage.html#ai-use-disclosure",
+    "title": "Assignment 8: Record Linkage",
+    "section": "AI Use Disclosure",
+    "text": "AI Use Disclosure"
+  },
+  {
+    "objectID": "maps.html#join-and-check",
+    "href": "maps.html#join-and-check",
+    "title": "NYC Subway Ridership and Arrest Maps",
+    "section": "1. Join and Check",
+    "text": "1. Join and Check\nThe station-level data are summarized by borough and joined to official New York City borough boundaries using borough names as the join key.\nThe following table checks whether any boroughs represented in the project data failed to match a borough boundary.\n\n\nCode\nanti_join(\n  borough_summary,\n  st_drop_geometry(boroughs),\n  by = \"borough_name\"\n)\n\n\n# A tibble: 0 × 4\n# ℹ 4 variables: borough_name &lt;chr&gt;, total_ridership &lt;dbl&gt;,\n#   total_arrests &lt;dbl&gt;, arrests_per_100k &lt;dbl&gt;\n\n\nNo selected-station borough summaries should remain unmatched after borough names are standardized. Bronx and Staten Island have no values in this prototype because none of the nine selected Assignment 8 stations are located in those boroughs."
+  },
+  {
+    "objectID": "maps.html#projection-comparison",
+    "href": "maps.html#projection-comparison",
+    "title": "NYC Subway Ridership and Arrest Maps",
+    "section": "2. Projection Comparison",
+    "text": "2. Projection Comparison\nThe same New York City borough boundaries are shown using three coordinate reference systems.\n\n\nCode\np4326 &lt;- ggplot(\n  st_transform(boroughs, 4326)\n) +\n  geom_sf() +\n  labs(title = \"EPSG:4326\\nWGS 84\") +\n  theme_void()\n\np3857 &lt;- ggplot(\n  st_transform(boroughs, 3857)\n) +\n  geom_sf() +\n  labs(title = \"EPSG:3857\\nWeb Mercator\") +\n  theme_void()\n\np5070 &lt;- ggplot(\n  st_transform(boroughs, 5070)\n) +\n  geom_sf() +\n  labs(title = \"EPSG:5070\\nAlbers Equal Area\") +\n  theme_void()\n\np4326 + p3857 + p5070\n\n\n\n\n\n\n\n\n\nEPSG:4326 stores locations using longitude and latitude, while EPSG:3857 is designed for web mapping and changes the appearance of area and distance. EPSG:5070 is an equal-area projection and is preferable when preserving relative area is important."
+  },
+  {
+    "objectID": "maps.html#choropleth-map",
+    "href": "maps.html#choropleth-map",
+    "title": "NYC Subway Ridership and Arrest Maps",
+    "section": "3. Choropleth Map",
+    "text": "3. Choropleth Map\nThe choropleth displays arrests per 100,000 riders, which adjusts arrest counts for differences in passenger volume.\n\n\nCode\nborough_map_projected &lt;- st_transform(\n  borough_map,\n  5070\n)\n\ntm_shape(borough_map_projected) +\n  tm_polygons(\n    fill = \"arrests_per_100k\",\n    fill.scale = tm_scale_intervals(\n      style = \"quantile\",\n      n = 3,\n      values = \"brewer.yl_gn_bu\",\n      value.na = \"grey85\",\n      label.na = \"No data\"\n    ),\n    fill.legend = tm_legend(\n      title = \"Arrests per\\n100,000 riders\"\n    ),\n    col = \"white\",\n    lwd = 1\n  ) +\n  tm_title(\n    \"Ridership-Adjusted Arrest Rates Differ Across the Selected Boroughs\"\n  ) +\n  tm_credits(\n    \"Sources: MTA Subway Hourly Ridership Data; NYPD Arrest Data; NYC Open Data Borough Boundaries. EPSG:5070.\",\n    position = c(\"left\", \"bottom\")\n  )\n\n\n\n\n\n\n\n\n\nThe map uses a ridership-adjusted rate rather than a raw arrest count so boroughs with different passenger volumes can be compared more meaningfully. Boroughs without selected stations in the Assignment 8 prototype are displayed as having no data."
+  },
+  {
+    "objectID": "maps.html#classification-comparison",
+    "href": "maps.html#classification-comparison",
+    "title": "NYC Subway Ridership and Arrest Maps",
+    "section": "4. Classification Comparison",
+    "text": "4. Classification Comparison\nThe same ridership-adjusted arrest rate is shown using equal-interval, quantile, and Jenks classifications.\n\n\nCode\nclassification_maps &lt;- c(\n  \"equal\",\n  \"quantile\",\n  \"jenks\"\n) |&gt;\n  map(\n    \\(style_name)\n    tm_shape(borough_map_projected) +\n      tm_polygons(\n        fill = \"arrests_per_100k\",\n        fill.scale = tm_scale_intervals(\n          style = style_name,\n          n = 3,\n          value.na = \"grey85\",\n          label.na = \"No data\"\n        ),\n        fill.legend = tm_legend(\n          title = \"Arrests per\\n100,000 riders\"\n        ),\n        col = \"white\",\n        lwd = 0.8\n      ) +\n      tm_title(\n        stringr::str_to_title(style_name)\n      )\n  )\n\ntmap_arrange(\n  classification_maps[[1]],\n  classification_maps[[2]],\n  classification_maps[[3]],\n  ncol = 3\n)\n\n\n\n\n\n\n\n\n\nThe classification method affects how differences between boroughs are visually emphasized. Equal intervals use fixed numeric ranges, quantiles distribute observations across classes, and Jenks identifies natural groupings in the observed values. Because the Assignment 8 prototype includes selected stations in only three boroughs, differences among the three classification methods should be interpreted cautiously. For this prototype, the quantile classification is used for the main choropleth because it provides a clear comparison among the boroughs with available data."
+  },
+  {
+    "objectID": "maps.html#proportional-symbols",
+    "href": "maps.html#proportional-symbols",
+    "title": "NYC Subway Ridership and Arrest Maps",
+    "section": "5. Proportional Symbols",
+    "text": "5. Proportional Symbols\nTotal ridership is a count, so proportional symbols are used to show passenger volume at each selected subway station.\n\n\nCode\nstation_sf_projected &lt;- st_transform(\n  station_sf,\n  5070\n)\n\nggplot() +\n  geom_sf(\n    data = st_transform(boroughs, 5070),\n    fill = \"grey92\",\n    colour = \"white\",\n    linewidth = 0.5\n  ) +\n  geom_sf(\n    data = station_sf_projected,\n    aes(size = total_ridership),\n    alpha = 0.7\n  ) +\n  scale_size_area(\n    max_size = 16,\n    name = \"2024 Ridership\"\n  ) +\n  labs(\n    title = \"Passenger Volume Varies Across the Nine Selected Subway Stations\",\n    caption = \"Sources: MTA Subway Hourly Ridership Data; NYC Open Data Borough Boundaries. EPSG:5070.\"\n  ) +\n  theme_void() +\n  theme(\n    legend.position = \"bottom\"\n  )\n\n\n\n\n\n\n\n\n\nLarger symbols represent stations with higher total ridership in 2024. Unlike a choropleth, proportional symbols are appropriate here because total ridership is a count rather than a rate."
   }
 ]
