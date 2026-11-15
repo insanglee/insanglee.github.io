@@ -4161,6 +4161,9 @@
     }
   },
   "files": {
+    "_publish.yml": {
+      "checksum": "776f82de3843c01c7c70a96a50402aaa"
+    },
     "_quarto.yml": {
       "checksum": "e6ae655ac45306bead9afe5e4de4dd3d"
     },
@@ -4231,10 +4234,13 @@
       "checksum": "d828775275749701b48bd9d958814111"
     },
     "epps6356_assign08.html": {
-      "checksum": "ab2be172d20fe36a1be3904fc4a1e8a7"
+      "checksum": "b192f8eeae6f0ab3e4d59f9001703c7a"
     },
     "epps6356_assign08.qmd": {
-      "checksum": "8acb2edba2b34fbb845be23e01ec1917"
+      "checksum": "8de220aa6c0550dd081458c29307c9ff"
+    },
+    "nyc_boroughs.geojson": {
+      "checksum": "de68728b6772a76f2b7f5da146fcdb5b"
     },
     "subway_arrests_dashboard_2024.csv": {
       "checksum": "d0a63a76d800b3232dda5e6e941cc9ff"

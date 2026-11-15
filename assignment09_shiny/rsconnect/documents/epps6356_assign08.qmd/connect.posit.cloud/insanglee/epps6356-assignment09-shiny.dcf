@@ -1,0 +1,10 @@
+name: epps6356-assignment09-shiny
+title: NYC Subway Ridership and Arrest Dashboard
+username: insanglee
+account: insanglee
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 01a1de1c-5522-0956-c045-1f87e9084c83
+bundleId:
+url: https://connect.posit.cloud/insanglee/content/01a1de1c-5522-0956-c045-1f87e9084c83
+version: 1

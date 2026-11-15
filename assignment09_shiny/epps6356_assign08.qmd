@@ -7,6 +7,9 @@ format:
     nav-buttons: [github]
     orientation: rows
 server: shiny
+resource_files:
+  - subway_arrests_dashboard_2024.csv
+  - nyc_boroughs.geojson
 execute:
   warning: false
   message: false
@@ -50,31 +53,15 @@ dashboard_data <- read_csv(
     )
   )
 
-# ============================================================
-# Monthly summary
-# ============================================================
-
 monthly_summary <- dashboard_data |>
   group_by(month) |>
   summarise(
-    monthly_ridership = sum(
-      monthly_ridership,
-      na.rm = TRUE
-    ),
-    arrest_count = sum(
-      arrest_count,
-      na.rm = TRUE
-    ),
+    monthly_ridership = sum(monthly_ridership, na.rm = TRUE),
+    arrest_count = sum(arrest_count, na.rm = TRUE),
     arrests_per_100k =
-      arrest_count /
-      monthly_ridership *
-      100000,
+      arrest_count / monthly_ridership * 100000,
     .groups = "drop"
   )
-
-# ============================================================
-# Station summary
-# ============================================================
 
 station_summary <- dashboard_data |>
   group_by(
@@ -83,24 +70,12 @@ station_summary <- dashboard_data |>
     borough_name
   ) |>
   summarise(
-    total_ridership = sum(
-      monthly_ridership,
-      na.rm = TRUE
-    ),
-    total_arrests = sum(
-      arrest_count,
-      na.rm = TRUE
-    ),
+    total_ridership = sum(monthly_ridership, na.rm = TRUE),
+    total_arrests = sum(arrest_count, na.rm = TRUE),
     arrests_per_100k =
-      total_arrests /
-      total_ridership *
-      100000,
+      total_arrests / total_ridership * 100000,
     .groups = "drop"
   )
-
-# ============================================================
-# Dashboard value boxes
-# ============================================================
 
 total_ridership <- sum(
   dashboard_data$monthly_ridership,
@@ -117,12 +92,8 @@ overall_rate <-
   total_ridership *
   100000
 
-# ============================================================
-# NYC borough boundaries
-# ============================================================
-
 boroughs <- st_read(
-  "https://data.cityofnewyork.us/resource/gthc-hcne.geojson?$limit=5000",
+  "nyc_boroughs.geojson",
   quiet = TRUE
 ) |>
   transmute(
@@ -130,10 +101,6 @@ boroughs <- st_read(
     geometry
   ) |>
   st_transform(4326)
-
-# ============================================================
-# Monthly borough summaries for reactive map
-# ============================================================
 
 borough_month <- dashboard_data |>
   group_by(
@@ -207,103 +174,19 @@ list(
 ### Ridership Peaks in October
 
 ```{r}
-#| label: monthly-ridership
-#| fig-height: 5
-
-p_ridership <- ggplot(
-  monthly_summary,
-  aes(
-    x = month,
-    y = monthly_ridership,
-    group = 1,
-    text = paste0(
-      "Month: ",
-      format(month, "%B %Y"),
-      "<br>Ridership: ",
-      comma(monthly_ridership)
-    )
-  )
-) +
-  geom_line(
-    linewidth = 1
-  ) +
-  geom_point(
-    size = 2.5
-  ) +
-  scale_x_date(
-    date_breaks = "1 month",
-    date_labels = "%b"
-  ) +
-  scale_y_continuous(
-    labels = label_number(
-      scale_cut = cut_short_scale()
-    )
-  ) +
-  labs(
-    x = "Month",
-    y = "Monthly Ridership",
-    caption = "Source: MTA Subway Hourly Ridership Data, 2024"
-  ) +
-  theme_minimal(base_size = 12)
-
-ggplotly(
-  p_ridership,
-  tooltip = "text"
-) |>
-  layout(
-    hovermode = "x unified",
-    xaxis = list(
-      rangeslider = list(
-        visible = TRUE
-      )
-    )
-  )
+plotlyOutput(
+  "overview_ridership",
+  height = "100%"
+)
 ```
 
 ### Arrests Vary Across 2024, Peaking in May
 
 ```{r}
-#| label: monthly-arrests
-#| fig-height: 5
-
-p_arrests <- ggplot(
-  monthly_summary,
-  aes(
-    x = month,
-    y = arrest_count,
-    group = 1,
-    text = paste0(
-      "Month: ",
-      format(month, "%B %Y"),
-      "<br>Arrests: ",
-      comma(arrest_count)
-    )
-  )
-) +
-  geom_line(
-    linewidth = 1
-  ) +
-  geom_point(
-    size = 2.5
-  ) +
-  scale_x_date(
-    date_breaks = "1 month",
-    date_labels = "%b"
-  ) +
-  labs(
-    x = "Month",
-    y = "Number of Arrests",
-    caption = "Source: NYPD Arrests Data, 2024; arrests within 500 meters of selected stations"
-  ) +
-  theme_minimal(base_size = 12)
-
-ggplotly(
-  p_arrests,
-  tooltip = "text"
-) |>
-  layout(
-    hovermode = "x unified"
-  )
+plotlyOutput(
+  "overview_arrests",
+  height = "100%"
+)
 ```
 
 # Map
@@ -374,12 +257,128 @@ plotOutput(
 )
 ```
 
+# Station Comparison
+
+## Row
+
+### Higher Ridership Does Not Always Mean a Higher Arrest Rate
+
+```{r}
+plotlyOutput(
+  "station_scatter",
+  height = "100%"
+)
+```
+
+### Passenger Volume Changes How Arrest Counts Are Interpreted
+
+```{r}
+plotlyOutput(
+  "station_bubble",
+  height = "100%"
+)
+```
+
+# Data
+
+## Row
+
+### Ridership and Arrest Measures Across the Nine Selected Stations
+
+```{r}
+DTOutput(
+  "station_table"
+)
+```
+
 ```{r}
 #| context: server
 
-# ============================================================
-# Shared reactive spatial data
-# ============================================================
+output$overview_ridership <- renderPlotly({
+
+  p <- ggplot(
+    monthly_summary,
+    aes(
+      x = month,
+      y = monthly_ridership,
+      group = 1,
+      text = paste0(
+        "Month: ",
+        format(month, "%B %Y"),
+        "<br>Ridership: ",
+        comma(monthly_ridership)
+      )
+    )
+  ) +
+    geom_line(linewidth = 1) +
+    geom_point(size = 2.5) +
+    scale_x_date(
+      date_breaks = "1 month",
+      date_labels = "%b"
+    ) +
+    scale_y_continuous(
+      labels = label_number(
+        scale_cut = cut_short_scale()
+      )
+    ) +
+    labs(
+      x = "Month",
+      y = "Monthly Ridership",
+      caption = "Source: MTA Subway Hourly Ridership Data, 2024"
+    ) +
+    theme_minimal(base_size = 12)
+
+  ggplotly(
+    p,
+    tooltip = "text"
+  ) |>
+    layout(
+      hovermode = "x unified",
+      xaxis = list(
+        rangeslider = list(
+          visible = TRUE
+        )
+      )
+    )
+})
+
+output$overview_arrests <- renderPlotly({
+
+  p <- ggplot(
+    monthly_summary,
+    aes(
+      x = month,
+      y = arrest_count,
+      group = 1,
+      text = paste0(
+        "Month: ",
+        format(month, "%B %Y"),
+        "<br>Arrests: ",
+        comma(arrest_count)
+      )
+    )
+  ) +
+    geom_line(linewidth = 1) +
+    geom_point(size = 2.5) +
+    scale_x_date(
+      date_breaks = "1 month",
+      date_labels = "%b"
+    ) +
+    labs(
+      x = "Month",
+      y = "Number of Arrests",
+      caption = "Source: NYPD Arrests Data, 2024; arrests within 500 meters of selected stations"
+    ) +
+    theme_minimal(base_size = 12)
+
+  ggplotly(
+    p,
+    tooltip = "text"
+  ) |>
+    layout(
+      hovermode = "x unified"
+    )
+})
 
 map_data <- reactive({
 
@@ -408,10 +407,6 @@ map_data <- reactive({
       by = "borough_name"
     )
 })
-
-# ============================================================
-# Station-level reactive data
-# ============================================================
 
 station_map_data <- reactive({
 
@@ -457,10 +452,6 @@ station_map_data <- reactive({
   d
 })
 
-# ============================================================
-# Reactive value boxes
-# ============================================================
-
 output$map_ridership <- renderText({
 
   comma(
@@ -481,13 +472,13 @@ output$map_arrests <- renderText({
   )
 })
 
-# ============================================================
-# Reactive Leaflet map
-# ============================================================
-
 output$subway_map <- renderLeaflet({
 
   d <- map_data()
+
+  req(
+    nrow(d) > 0
+  )
 
   pal <- colorNumeric(
     palette = "YlGnBu",
@@ -498,8 +489,7 @@ output$subway_map <- renderLeaflet({
   leaflet(d) |>
     addTiles() |>
     addPolygons(
-      fillColor =
-        ~pal(arrests_per_100k),
+      fillColor = ~pal(arrests_per_100k),
       fillOpacity = 0.75,
       color = "white",
       weight = 1,
@@ -539,10 +529,6 @@ output$subway_map <- renderLeaflet({
     )
 })
 
-# ============================================================
-# Reactive companion chart
-# ============================================================
-
 output$map_chart <- renderPlot({
 
   station_map_data() |>
@@ -564,176 +550,162 @@ output$map_chart <- renderPlot({
       y = NULL,
       caption = "Sources: MTA Subway Hourly Ridership Data and NYPD Arrest Data"
     ) +
-    theme_minimal(
-      base_size = 12
+    theme_minimal(base_size = 12)
+})
+
+output$station_scatter <- renderPlotly({
+
+  p <- ggplot(
+    station_summary,
+    aes(
+      x = total_ridership,
+      y = arrests_per_100k,
+      color = borough,
+      text = paste0(
+        "Station: ",
+        station_complex,
+        "<br>Borough: ",
+        borough,
+        "<br>Total ridership: ",
+        comma(total_ridership),
+        "<br>Total arrests: ",
+        comma(total_arrests),
+        "<br>Arrests per 100,000 riders: ",
+        round(
+          arrests_per_100k,
+          2
+        )
+      )
+    )
+  ) +
+    geom_point(
+      size = 4.5,
+      alpha = 0.8
+    ) +
+    scale_x_continuous(
+      labels = label_number(
+        scale_cut = cut_short_scale()
+      )
+    ) +
+    labs(
+      x = "Total Ridership, 2024",
+      y = "Arrests per 100,000 Riders",
+      color = "Borough",
+      caption = "Sources: MTA Subway Hourly Ridership Data and NYPD Arrests Data, 2024"
+    ) +
+    theme_minimal(base_size = 12) +
+    theme(
+      legend.position = "bottom"
+    )
+
+  ggplotly(
+    p,
+    tooltip = "text"
+  )
+})
+
+output$station_bubble <- renderPlotly({
+
+  p <- ggplot(
+    station_summary,
+    aes(
+      x = total_arrests,
+      y = arrests_per_100k,
+      size = total_ridership,
+      color = borough,
+      text = paste0(
+        "Station: ",
+        station_complex,
+        "<br>Borough: ",
+        borough,
+        "<br>Total arrests: ",
+        comma(total_arrests),
+        "<br>Total ridership: ",
+        comma(total_ridership),
+        "<br>Arrests per 100,000 riders: ",
+        round(
+          arrests_per_100k,
+          2
+        )
+      )
+    )
+  ) +
+    geom_point(alpha = 0.75) +
+    scale_size_continuous(
+      range = c(5, 18),
+      labels = label_number(
+        scale_cut = cut_short_scale()
+      ),
+      name = "2024 Ridership"
+    ) +
+    labs(
+      x = "Total Arrests",
+      y = "Arrests per 100,000 Riders",
+      color = "Borough",
+      caption = "Sources: MTA Subway Hourly Ridership Data and NYPD Arrests Data, 2024"
+    ) +
+    guides(
+      color = guide_legend(
+        title = "Borough"
+      ),
+      size = guide_legend(
+        title = "2024 Ridership"
+      )
+    ) +
+    theme_minimal(base_size = 12) +
+    theme(
+      legend.position = "bottom"
+    )
+
+  ggplotly(
+    p,
+    tooltip = "text"
+  )
+})
+
+output$station_table <- renderDT({
+
+  station_summary |>
+    arrange(
+      desc(total_ridership)
+    ) |>
+    mutate(
+      total_ridership =
+        comma(total_ridership),
+      total_arrests =
+        comma(total_arrests),
+      arrests_per_100k =
+        round(
+          arrests_per_100k,
+          2
+        )
+    ) |>
+    rename(
+      Station = station_complex,
+      Borough = borough,
+      `Total Ridership` =
+        total_ridership,
+      `Total Arrests` =
+        total_arrests,
+      `Arrests per 100,000 Riders` =
+        arrests_per_100k
+    ) |>
+    select(
+      Station,
+      Borough,
+      `Total Ridership`,
+      `Total Arrests`,
+      `Arrests per 100,000 Riders`
+    ) |>
+    datatable(
+      filter = "top",
+      options = list(
+        pageLength = 10,
+        scrollX = TRUE
+      ),
+      rownames = FALSE
     )
 })
-```
-
-# Station Comparison
-
-## Row
-
-### Higher Ridership Does Not Always Mean a Higher Arrest Rate
-
-```{r}
-#| label: station-scatter
-#| fig-height: 6
-
-p_scatter <- ggplot(
-  station_summary,
-  aes(
-    x = total_ridership,
-    y = arrests_per_100k,
-    color = borough,
-    text = paste0(
-      "Station: ",
-      station_complex,
-      "<br>Borough: ",
-      borough,
-      "<br>Total ridership: ",
-      comma(total_ridership),
-      "<br>Total arrests: ",
-      comma(total_arrests),
-      "<br>Arrests per 100,000 riders: ",
-      round(arrests_per_100k, 2)
-    )
-  )
-) +
-  geom_point(
-    size = 4.5,
-    alpha = 0.8
-  ) +
-  scale_x_continuous(
-    labels = label_number(
-      scale_cut = cut_short_scale()
-    )
-  ) +
-  labs(
-    x = "Total Ridership, 2024",
-    y = "Arrests per 100,000 Riders",
-    color = "Borough",
-    caption = "Sources: MTA Subway Hourly Ridership Data and NYPD Arrests Data, 2024"
-  ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "bottom"
-  )
-
-ggplotly(
-  p_scatter,
-  tooltip = "text"
-)
-```
-
-### Passenger Volume Changes How Arrest Counts Are Interpreted
-
-```{r}
-#| label: station-bubble
-#| fig-height: 6
-
-p_bubble <- ggplot(
-  station_summary,
-  aes(
-    x = total_arrests,
-    y = arrests_per_100k,
-    size = total_ridership,
-    color = borough,
-    text = paste0(
-      "Station: ",
-      station_complex,
-      "<br>Borough: ",
-      borough,
-      "<br>Total arrests: ",
-      comma(total_arrests),
-      "<br>Total ridership: ",
-      comma(total_ridership),
-      "<br>Arrests per 100,000 riders: ",
-      round(arrests_per_100k, 2)
-    )
-  )
-) +
-  geom_point(
-    alpha = 0.75
-  ) +
-  scale_size_continuous(
-    range = c(5, 18),
-    labels = label_number(
-      scale_cut = cut_short_scale()
-    ),
-    name = "2024 Ridership"
-  ) +
-  labs(
-    x = "Total Arrests",
-    y = "Arrests per 100,000 Riders",
-    color = "Borough",
-    caption = "Sources: MTA Subway Hourly Ridership Data and NYPD Arrests Data, 2024"
-  ) +
-  guides(
-    color = guide_legend(
-      title = "Borough"
-    ),
-    size = guide_legend(
-      title = "2024 Ridership"
-    )
-  ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "bottom"
-  )
-
-ggplotly(
-  p_bubble,
-  tooltip = "text"
-)
-```
-
-# Data
-
-## Row
-
-### Ridership and Arrest Measures Across the Nine Selected Stations
-
-```{r}
-#| label: station-table
-
-station_summary |>
-  arrange(
-    desc(total_ridership)
-  ) |>
-  mutate(
-    total_ridership =
-      comma(total_ridership),
-    total_arrests =
-      comma(total_arrests),
-    arrests_per_100k =
-      round(arrests_per_100k, 2)
-  ) |>
-  rename(
-    Station = station_complex,
-    Borough = borough,
-    `Total Ridership` =
-      total_ridership,
-    `Total Arrests` =
-      total_arrests,
-    `Arrests per 100,000 Riders` =
-      arrests_per_100k
-  ) |>
-  select(
-    Station,
-    Borough,
-    `Total Ridership`,
-    `Total Arrests`,
-    `Arrests per 100,000 Riders`
-  ) |>
-  datatable(
-    filter = "top",
-    options = list(
-      pageLength = 10,
-      scrollX = TRUE
-    ),
-    rownames = FALSE
-  )
 ```
 
 # About

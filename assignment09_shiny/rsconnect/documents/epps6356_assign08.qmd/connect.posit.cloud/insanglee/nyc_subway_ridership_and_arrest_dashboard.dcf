@@ -1,0 +1,10 @@
+name: nyc_subway_ridership_and_arrest_dashboard
+title: NYC Subway Ridership and Arrest Dashboard
+username: insanglee
+account: insanglee
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 01a1ddf1-40df-c5bc-0b31-e6deeb9ff27b
+bundleId:
+url: https://connect.posit.cloud/insanglee/content/01a1ddf1-40df-c5bc-0b31-e6deeb9ff27b
+version: 1
