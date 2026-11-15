@@ -774,14 +774,14 @@
     "href": "epps6356.html",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard"
   },
   {
     "objectID": "epps6356.html#assignments",
     "href": "epps6356.html#assignments",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard"
   },
   {
     "objectID": "epps6356_assign02.html",
@@ -1307,5 +1307,40 @@
     "title": "NYC Subway Ridership and Arrest Maps",
     "section": "5. Proportional Symbols",
     "text": "5. Proportional Symbols\nTotal ridership is a count, so proportional symbols are used to show passenger volume at each selected subway station.\n\n\nCode\nstation_sf_projected &lt;- st_transform(\n  station_sf,\n  5070\n)\n\nggplot() +\n  geom_sf(\n    data = st_transform(boroughs, 5070),\n    fill = \"grey92\",\n    colour = \"white\",\n    linewidth = 0.5\n  ) +\n  geom_sf(\n    data = station_sf_projected,\n    aes(size = total_ridership),\n    alpha = 0.7\n  ) +\n  scale_size_area(\n    max_size = 16,\n    name = \"2024 Ridership\"\n  ) +\n  labs(\n    title = \"Passenger Volume Varies Across the Nine Selected Subway Stations\",\n    caption = \"Sources: MTA Subway Hourly Ridership Data; NYC Open Data Borough Boundaries. EPSG:5070.\"\n  ) +\n  theme_void() +\n  theme(\n    legend.position = \"bottom\"\n  )\n\n\n\n\n\n\n\n\n\nLarger symbols represent stations with higher total ridership in 2024. Unlike a choropleth, proportional symbols are appropriate here because total ridership is a count rather than a rate."
+  },
+  {
+    "objectID": "epps6356_assign08.html",
+    "href": "epps6356_assign08.html",
+    "title": "NYC Subway Ridership and Arrest Dashboard",
+    "section": "",
+    "text": "list(\n  value = label_number(\n    scale_cut = cut_short_scale()\n  )(total_ridership),\n  color = \"primary\"\n)\n\n$value\n[1] \"204M\"\n\n$color\n[1] \"primary\"\n\n\n\nlist(\n  value = comma(total_arrests),\n  color = \"secondary\"\n)\n\n$value\n[1] \"13,975\"\n\n$color\n[1] \"secondary\"\n\n\n\nlist(\n  value = round(overall_rate, 2),\n  color = \"info\"\n)\n\n$value\n[1] 6.84\n\n$color\n[1] \"info\"\n\n\n\n\n\n\n\n\np_ridership &lt;- ggplot(\n  monthly_summary,\n  aes(\n    x = month,\n    y = monthly_ridership,\n    group = 1,\n    text = paste0(\n      \"Month: \",\n      format(month, \"%B %Y\"),\n      \"&lt;br&gt;Ridership: \",\n      comma(monthly_ridership)\n    )\n  )\n) +\n  geom_line(linewidth = 1) +\n  geom_point(size = 2.5) +\n  scale_x_date(\n    date_breaks = \"1 month\",\n    date_labels = \"%b\"\n  ) +\n  scale_y_continuous(\n    labels = label_number(\n      scale_cut = cut_short_scale()\n    )\n  ) +\n  labs(\n    x = \"Month\",\n    y = \"Monthly Ridership\",\n    caption = \"Source: MTA Subway Hourly Ridership Data, 2024\"\n  ) +\n  theme_minimal(base_size = 12)\n\nggplotly(\n  p_ridership,\n  tooltip = \"text\"\n) |&gt;\n  layout(\n    hovermode = \"x unified\",\n    xaxis = list(\n      rangeslider = list(\n        visible = TRUE\n      )\n    )\n  )\n\n\n\n\n\n\n\n\n\np_arrests &lt;- ggplot(\n  monthly_summary,\n  aes(\n    x = month,\n    y = arrest_count,\n    group = 1,\n    text = paste0(\n      \"Month: \",\n      format(month, \"%B %Y\"),\n      \"&lt;br&gt;Arrests: \",\n      comma(arrest_count)\n    )\n  )\n) +\n  geom_line(linewidth = 1) +\n  geom_point(size = 2.5) +\n  scale_x_date(\n    date_breaks = \"1 month\",\n    date_labels = \"%b\"\n  ) +\n  labs(\n    x = \"Month\",\n    y = \"Number of Arrests\",\n    caption = \"Source: NYPD Arrests Data, 2024; arrests within 500 meters of selected stations\"\n  ) +\n  theme_minimal(base_size = 12)\n\nggplotly(\n  p_arrests,\n  tooltip = \"text\"\n) |&gt;\n  layout(\n    hovermode = \"x unified\"\n  )"
+  },
+  {
+    "objectID": "epps6356_assign08.html#row",
+    "href": "epps6356_assign08.html#row",
+    "title": "NYC Subway Ridership and Arrest Dashboard",
+    "section": "",
+    "text": "list(\n  value = label_number(\n    scale_cut = cut_short_scale()\n  )(total_ridership),\n  color = \"primary\"\n)\n\n$value\n[1] \"204M\"\n\n$color\n[1] \"primary\"\n\n\n\nlist(\n  value = comma(total_arrests),\n  color = \"secondary\"\n)\n\n$value\n[1] \"13,975\"\n\n$color\n[1] \"secondary\"\n\n\n\nlist(\n  value = round(overall_rate, 2),\n  color = \"info\"\n)\n\n$value\n[1] 6.84\n\n$color\n[1] \"info\""
+  },
+  {
+    "objectID": "epps6356_assign08.html#row-1",
+    "href": "epps6356_assign08.html#row-1",
+    "title": "NYC Subway Ridership and Arrest Dashboard",
+    "section": "",
+    "text": "p_ridership &lt;- ggplot(\n  monthly_summary,\n  aes(\n    x = month,\n    y = monthly_ridership,\n    group = 1,\n    text = paste0(\n      \"Month: \",\n      format(month, \"%B %Y\"),\n      \"&lt;br&gt;Ridership: \",\n      comma(monthly_ridership)\n    )\n  )\n) +\n  geom_line(linewidth = 1) +\n  geom_point(size = 2.5) +\n  scale_x_date(\n    date_breaks = \"1 month\",\n    date_labels = \"%b\"\n  ) +\n  scale_y_continuous(\n    labels = label_number(\n      scale_cut = cut_short_scale()\n    )\n  ) +\n  labs(\n    x = \"Month\",\n    y = \"Monthly Ridership\",\n    caption = \"Source: MTA Subway Hourly Ridership Data, 2024\"\n  ) +\n  theme_minimal(base_size = 12)\n\nggplotly(\n  p_ridership,\n  tooltip = \"text\"\n) |&gt;\n  layout(\n    hovermode = \"x unified\",\n    xaxis = list(\n      rangeslider = list(\n        visible = TRUE\n      )\n    )\n  )\n\n\n\n\n\n\n\n\n\np_arrests &lt;- ggplot(\n  monthly_summary,\n  aes(\n    x = month,\n    y = arrest_count,\n    group = 1,\n    text = paste0(\n      \"Month: \",\n      format(month, \"%B %Y\"),\n      \"&lt;br&gt;Arrests: \",\n      comma(arrest_count)\n    )\n  )\n) +\n  geom_line(linewidth = 1) +\n  geom_point(size = 2.5) +\n  scale_x_date(\n    date_breaks = \"1 month\",\n    date_labels = \"%b\"\n  ) +\n  labs(\n    x = \"Month\",\n    y = \"Number of Arrests\",\n    caption = \"Source: NYPD Arrests Data, 2024; arrests within 500 meters of selected stations\"\n  ) +\n  theme_minimal(base_size = 12)\n\nggplotly(\n  p_arrests,\n  tooltip = \"text\"\n) |&gt;\n  layout(\n    hovermode = \"x unified\"\n  )"
+  },
+  {
+    "objectID": "epps6356_assign08.html#row-2",
+    "href": "epps6356_assign08.html#row-2",
+    "title": "NYC Subway Ridership and Arrest Dashboard",
+    "section": "Row",
+    "text": "Row\n\nHigher Ridership Does Not Always Mean a Higher Arrest Rate\n\np_scatter &lt;- ggplot(\n  station_summary,\n  aes(\n    x = total_ridership,\n    y = arrests_per_100k,\n    color = borough,\n    text = paste0(\n      \"Station: \",\n      station_complex,\n      \"&lt;br&gt;Borough: \",\n      borough,\n      \"&lt;br&gt;Total ridership: \",\n      comma(total_ridership),\n      \"&lt;br&gt;Total arrests: \",\n      comma(total_arrests),\n      \"&lt;br&gt;Arrests per 100,000 riders: \",\n      round(arrests_per_100k, 2)\n    )\n  )\n) +\n  geom_point(\n    size = 4.5,\n    alpha = 0.8\n  ) +\n  scale_x_continuous(\n    labels = label_number(\n      scale_cut = cut_short_scale()\n    )\n  ) +\n  labs(\n    x = \"Total Ridership, 2024\",\n    y = \"Arrests per 100,000 Riders\",\n    color = \"Borough\",\n    caption = \"Sources: MTA Subway Hourly Ridership Data and NYPD Arrests Data, 2024\"\n  ) +\n  theme_minimal(base_size = 12) +\n  theme(\n    legend.position = \"bottom\"\n  )\n\nggplotly(\n  p_scatter,\n  tooltip = \"text\"\n)\n\n\n\n\n\n\n\nPassenger Volume Changes How Arrest Counts Are Interpreted\n\np_bubble &lt;- ggplot(\n  station_summary,\n  aes(\n    x = total_arrests,\n    y = arrests_per_100k,\n    size = total_ridership,\n    color = borough,\n    text = paste0(\n      \"Station: \",\n      station_complex,\n      \"&lt;br&gt;Borough: \",\n      borough,\n      \"&lt;br&gt;Total arrests: \",\n      comma(total_arrests),\n      \"&lt;br&gt;Total ridership: \",\n      comma(total_ridership),\n      \"&lt;br&gt;Arrests per 100,000 riders: \",\n      round(arrests_per_100k, 2)\n    )\n  )\n) +\n  geom_point(\n    alpha = 0.75\n  ) +\n  scale_size_continuous(\n    range = c(5, 18),\n    labels = label_number(\n      scale_cut = cut_short_scale()\n    ),\n    name = \"2024 Ridership\"\n  ) +\n  labs(\n    x = \"Total Arrests\",\n    y = \"Arrests per 100,000 Riders\",\n    color = \"Borough\",\n    caption = \"Sources: MTA Subway Hourly Ridership Data and NYPD Arrests Data, 2024\"\n  ) +\n  guides(\n    color = guide_legend(\n      title = \"Borough\"\n    ),\n    size = guide_legend(\n      title = \"2024 Ridership\"\n    )\n  ) +\n  theme_minimal(base_size = 12) +\n  theme(\n    legend.position = \"bottom\"\n  )\n\nggplotly(\n  p_bubble,\n  tooltip = \"text\"\n)"
+  },
+  {
+    "objectID": "epps6356_assign08.html#row-3",
+    "href": "epps6356_assign08.html#row-3",
+    "title": "NYC Subway Ridership and Arrest Dashboard",
+    "section": "Row",
+    "text": "Row\n\nRidership and Arrest Measures Across the Nine Selected Stations\n\nstation_summary |&gt;\n  arrange(\n    desc(total_ridership)\n  ) |&gt;\n  mutate(\n    total_ridership =\n      comma(total_ridership),\n    total_arrests =\n      comma(total_arrests),\n    arrests_per_100k =\n      round(arrests_per_100k, 2)\n  ) |&gt;\n  rename(\n    Station = station_complex,\n    Borough = borough,\n    `Total Ridership` =\n      total_ridership,\n    `Total Arrests` =\n      total_arrests,\n    `Arrests per 100,000 Riders` =\n      arrests_per_100k\n  ) |&gt;\n  select(\n    Station,\n    Borough,\n    `Total Ridership`,\n    `Total Arrests`,\n    `Arrests per 100,000 Riders`\n  ) |&gt;\n  datatable(\n    filter = \"top\",\n    options = list(\n      pageLength = 10,\n      scrollX = TRUE\n    ),\n    rownames = FALSE\n  )"
   }
 ]

@@ -42,17 +42,20 @@ Ridership and arrest measures vary over time, allowing us to examine temporal tr
 
 ## 3. Charts
 
-### Chart 1: Monthly Time-Series Line Chart  
+### Chart 1: Monthly Time-Series Line Chart
+
 **Abela Thought-Starter #6 — Line Chart**
 
 This chart will show monthly changes in subway ridership and arrest measures during 2024, making it appropriate for identifying trends and possible seasonal patterns over time.
 
-### Chart 2: Station-Level Scatter Plot  
+### Chart 2: Station-Level Scatter Plot
+
 **Abela Thought-Starter #9 — Scatter Chart**
 
 This chart will show the relationship between station-level ridership and arrests per 100,000 riders, helping identify stations that differ from the overall pattern.
 
-### Chart 3: Ridership-Adjusted Bubble Chart  
+### Chart 3: Ridership-Adjusted Bubble Chart
+
 **Abela Thought-Starter #18 — Bubble Chart**
 
 This chart will compare station-level arrest counts and arrest rates while using bubble size to represent passenger volume. This allows three variables to be examined simultaneously.
@@ -77,3 +80,42 @@ The dashboard will be developed as a **Quarto dashboard** and published on the p
 Quarto is appropriate for the Assignment 8 prototype because it supports dashboard layouts, interactive R visualizations, and direct integration with the existing website.
 
 The dashboard can later be extended with additional Shiny reactivity and deployed through **Posit Connect Cloud or Shinylive** as the final project develops.
+
+## Assignment 9
+
+### 1. Units and Boundaries
+
+The main spatial unit for the project is the subway station complex. Each station is represented by latitude and longitude coordinates from the MTA ridership data.
+
+For the static choropleth maps required in Assignment 9, station-level measures will also be summarized by borough and joined to New York City borough boundaries obtained from **NYC Open Data**. Borough names will be used as the join key.
+
+For the Assignment 9 prototype, the analysis will continue to use the nine selected subway station complexes from Assignment 8.
+
+### 2. Variables
+
+The main variables to be mapped are:
+
+- Total subway ridership
+- Total arrest count
+- Arrests per 100,000 riders
+
+Ridership and arrest counts are totals and will be displayed using proportional symbols at subway station locations.
+
+Arrests per 100,000 riders is a rate and can be used for choropleth mapping after station-level values are summarized by borough.
+
+### 3. Coordinate Reference Systems
+
+The station coordinates are stored in **EPSG:4326 (WGS 84)**.
+
+For static maps, an appropriate projected coordinate system for New York City will be used when comparing spatial patterns or measuring distances.
+
+For the interactive Leaflet map, the spatial data will be converted to **EPSG:4326**, because Leaflet displays maps using Web Mercator (**EPSG:3857**).
+
+### 4. Interaction
+
+Users will be able to select:
+
+- The variable to display
+- A borough
+
+The reactive map, value boxes, and companion chart will update based on the selected inputs.

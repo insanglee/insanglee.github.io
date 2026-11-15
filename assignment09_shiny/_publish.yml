@@ -1,0 +1,4 @@
+- source: epps6356_assign08.qmd
+  posit-connect-cloud:
+    - id: 01a1ddf1-40df-c5bc-0b31-e6deeb9ff27b
+      url: https://connect.posit.cloud/insanglee/content/01a1ddf1-40df-c5bc-0b31-e6deeb9ff27b

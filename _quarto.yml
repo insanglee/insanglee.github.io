@@ -3,6 +3,7 @@ project:
   output-dir: docs
   render:
     - "*.qmd"
+    - "!assignment09_shiny/"
 
 website:
   title: "Insang Lee"
