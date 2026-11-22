@@ -6,6 +6,8 @@ format:
     toc: true
     toc-location: right
     theme: cosmo
+    code-fold: true
+    code-summary: "Show code"
 execute:
   warning: false
   message: false
