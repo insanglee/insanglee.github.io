@@ -5,6 +5,10 @@ project:
     - "*.qmd"
     - "!assignment09_shiny/"
 
+execute:
+  freeze: auto
+  
+  
 website:
   title: "Insang Lee"
   description: "PhD student in Criminology at the University of Texas at Dallas"
