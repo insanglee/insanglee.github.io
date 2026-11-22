@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - cv.pdf
   render:
     - "*.qmd"
     - "!assignment09_shiny/"
