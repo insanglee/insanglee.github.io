@@ -1159,14 +1159,14 @@
     "href": "epps6356.html",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard\nPrepare for Class 10"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard\nPrepare for Class 10\nRelationships and Models Workshop"
   },
   {
     "objectID": "epps6356.html#assignments",
     "href": "epps6356.html#assignments",
     "title": "EPPS 6356",
     "section": "",
-    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard\nPrepare for Class 10"
+    "text": "Assignment 1\nAssignment 2\nAssignment 3\nPrepare for Class 5: Write and Post\nAssignment 5\nAssignment 6\nAssignment 7\nAssignment 8\nAssignment 9 Static Maps\nAssignment 9 Reactive Dashboard\nPrepare for Class 10\nRelationships and Models Workshop"
   },
   {
     "objectID": "full_prompt_log_prep_class5.html",
@@ -1363,5 +1363,40 @@
     "title": "Workshop Web Scraping",
     "section": "AI Use Appendix",
     "text": "AI Use Appendix\nChatGPT was used to clarify selected R code, troubleshoot errors, and clarify parts of the workshop instructions. I executed the code, reviewed the outputs, and made the final decisions about the content and explanations."
+  },
+  {
+    "objectID": "epps6356_relationship_workshop.html",
+    "href": "epps6356_relationship_workshop.html",
+    "title": "Relationships and Models Workshop",
+    "section": "",
+    "text": "This exercise examines a model of the Happy Planet Index using population and happy life years.\n\n\nShow code\nlibrary(tidyverse)\nlibrary(vroom)\nlibrary(janitor)\nlibrary(easystats)\n\nhpi2016 &lt;- vroom::vroom(\n  \"https://raw.githubusercontent.com/datageneration/datavisualizationinpractice/main/data/happyplanetindex.csv\",\n  .name_repair = janitor::make_clean_names,\n  show_col_types = FALSE\n) |&gt;\n  mutate(\n    gdp_pc = readr::parse_number(gdp_capita_ppp)\n  )\n\nm_hpi &lt;- lm(\n  happy_planet_index ~ log(population) + happy_life_years,\n  data = hpi2016\n)\n\n\n\n\n\n\nShow code\ncheck_model(m_hpi)\n\n\n\n\n\n\n\n\n\nThe diagnostic checks do not indicate major problems with heteroscedasticity, multicollinearity, influential observations, or residual normality. The linearity panel shows some curvature, so possible nonlinearity is the main feature worth noting.\n\n\nShow code\ncheck_heteroscedasticity(m_hpi)\n\n\nOK: Error variance appears to be homoscedastic (p = 0.119).\n\n\nShow code\ncheck_collinearity(m_hpi)\n\n\n# Check for Multicollinearity\n\nLow Correlation\n\n             Term  VIF   VIF 95% CI adj. VIF Tolerance Tolerance 95% CI\n  log(population) 1.01 [1.00, 1.06]     1.00      0.99     [0.95, 1.00]\n happy_life_years 1.01 [1.00, 1.06]     1.00      0.99     [0.95, 1.00]\n\n\nShow code\ncheck_outliers(m_hpi)\n\n\nOK: No outliers detected.\n- Based on the following method and threshold: cook (0.8).\n- For variable: (Whole model)\n\n\nShow code\ncheck_normality(m_hpi)\n\n\nOK: residuals appear as normally distributed (p = 0.430).\n\n\n\n\n\n\n\nShow code\nmodel_parameters(m_hpi)\n\n\nParameter        | Coefficient |   SE |         95% CI | t(137) |      p\n------------------------------------------------------------------------\n(Intercept)      |        4.25 | 5.56 | [-6.75, 15.25] |   0.76 | 0.446 \npopulation [log] |        0.84 | 0.33 | [ 0.19,  1.48] |   2.56 | 0.012 \nhappy life years |        0.28 | 0.04 | [ 0.20,  0.36] |   7.08 | &lt; .001\n\n\nShow code\nplot(model_parameters(m_hpi))\n\n\n\n\n\n\n\n\n\nThe coefficient for happy life years is positive, approximately 0.28, with a 95% confidence interval of about 0.20 to 0.36.\n\n\n\nThe Happy Planet Index is constructed using wellbeing, life expectancy, inequality, and ecological footprint. Happy life years already combines wellbeing and life expectancy. Therefore, the model partly explains an index using a variable that contains some of the same information used to construct that index, which limits substantive interpretation.\n\n\n\n\n\nShow code\nparams &lt;- model_parameters(m_hpi)\n\nhly &lt;- params |&gt;\n  filter(Parameter == \"happy_life_years\")\n\neffect_10 &lt;- hly$Coefficient * 10\nlow_10 &lt;- hly$CI_low * 10\nhigh_10 &lt;- hly$CI_high * 10\n\neffect_10\n\n\n[1] 2.832382\n\n\nShow code\nlow_10\n\n\n[1] 2.040931\n\n\nShow code\nhigh_10\n\n\n[1] 3.623832\n\n\nA 10-year increase in happy life years is associated with an estimated 2.8-point increase in the Happy Planet Index, with a 95% confidence interval of approximately 2.0 to 3.6 points."
+  },
+  {
+    "objectID": "epps6356_relationship_workshop.html#model-diagnostics",
+    "href": "epps6356_relationship_workshop.html#model-diagnostics",
+    "title": "Relationships and Models Workshop",
+    "section": "",
+    "text": "Show code\ncheck_model(m_hpi)\n\n\n\n\n\n\n\n\n\nThe diagnostic checks do not indicate major problems with heteroscedasticity, multicollinearity, influential observations, or residual normality. The linearity panel shows some curvature, so possible nonlinearity is the main feature worth noting.\n\n\nShow code\ncheck_heteroscedasticity(m_hpi)\n\n\nOK: Error variance appears to be homoscedastic (p = 0.119).\n\n\nShow code\ncheck_collinearity(m_hpi)\n\n\n# Check for Multicollinearity\n\nLow Correlation\n\n             Term  VIF   VIF 95% CI adj. VIF Tolerance Tolerance 95% CI\n  log(population) 1.01 [1.00, 1.06]     1.00      0.99     [0.95, 1.00]\n happy_life_years 1.01 [1.00, 1.06]     1.00      0.99     [0.95, 1.00]\n\n\nShow code\ncheck_outliers(m_hpi)\n\n\nOK: No outliers detected.\n- Based on the following method and threshold: cook (0.8).\n- For variable: (Whole model)\n\n\nShow code\ncheck_normality(m_hpi)\n\n\nOK: residuals appear as normally distributed (p = 0.430)."
+  },
+  {
+    "objectID": "epps6356_relationship_workshop.html#model-parameters",
+    "href": "epps6356_relationship_workshop.html#model-parameters",
+    "title": "Relationships and Models Workshop",
+    "section": "",
+    "text": "Show code\nmodel_parameters(m_hpi)\n\n\nParameter        | Coefficient |   SE |         95% CI | t(137) |      p\n------------------------------------------------------------------------\n(Intercept)      |        4.25 | 5.56 | [-6.75, 15.25] |   0.76 | 0.446 \npopulation [log] |        0.84 | 0.33 | [ 0.19,  1.48] |   2.56 | 0.012 \nhappy life years |        0.28 | 0.04 | [ 0.20,  0.36] |   7.08 | &lt; .001\n\n\nShow code\nplot(model_parameters(m_hpi))\n\n\n\n\n\n\n\n\n\nThe coefficient for happy life years is positive, approximately 0.28, with a 95% confidence interval of about 0.20 to 0.36."
+  },
+  {
+    "objectID": "epps6356_relationship_workshop.html#why-this-model-is-difficult-to-interpret",
+    "href": "epps6356_relationship_workshop.html#why-this-model-is-difficult-to-interpret",
+    "title": "Relationships and Models Workshop",
+    "section": "",
+    "text": "The Happy Planet Index is constructed using wellbeing, life expectancy, inequality, and ecological footprint. Happy life years already combines wellbeing and life expectancy. Therefore, the model partly explains an index using a variable that contains some of the same information used to construct that index, which limits substantive interpretation."
+  },
+  {
+    "objectID": "epps6356_relationship_workshop.html#effect-of-10-more-happy-life-years",
+    "href": "epps6356_relationship_workshop.html#effect-of-10-more-happy-life-years",
+    "title": "Relationships and Models Workshop",
+    "section": "",
+    "text": "Show code\nparams &lt;- model_parameters(m_hpi)\n\nhly &lt;- params |&gt;\n  filter(Parameter == \"happy_life_years\")\n\neffect_10 &lt;- hly$Coefficient * 10\nlow_10 &lt;- hly$CI_low * 10\nhigh_10 &lt;- hly$CI_high * 10\n\neffect_10\n\n\n[1] 2.832382\n\n\nShow code\nlow_10\n\n\n[1] 2.040931\n\n\nShow code\nhigh_10\n\n\n[1] 3.623832\n\n\nA 10-year increase in happy life years is associated with an estimated 2.8-point increase in the Happy Planet Index, with a 95% confidence interval of approximately 2.0 to 3.6 points."
   }
 ]

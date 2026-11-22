@@ -15,3 +15,4 @@ title: "EPPS 6356"
 - [Assignment 9 Static Maps](maps.qmd)
 - [Assignment 9 Reactive Dashboard](https://01a1de1c-5522-0956-c045-1f87e9084c83.share.connect.posit.cloud/)
 - [Prepare for Class 10](epps6356_prep_class10.qmd)
+- [Relationships and Models Workshop](epps6356_relationship_workshop.qmd)

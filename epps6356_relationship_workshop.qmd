@@ -1,0 +1,90 @@
+---
+title: "Relationships and Models Workshop"
+author: "Insang Lee"
+format:
+  html:
+    code-fold: true
+    code-summary: "Show code"
+execute:
+  warning: false
+  message: false
+---
+
+# Model Diagnostics and Interpretation
+
+This exercise examines a model of the Happy Planet Index using population and happy life years.
+
+```{r}
+library(tidyverse)
+library(vroom)
+library(janitor)
+library(easystats)
+
+hpi2016 <- vroom::vroom(
+  "https://raw.githubusercontent.com/datageneration/datavisualizationinpractice/main/data/happyplanetindex.csv",
+  .name_repair = janitor::make_clean_names,
+  show_col_types = FALSE
+) |>
+  mutate(
+    gdp_pc = readr::parse_number(gdp_capita_ppp)
+  )
+
+m_hpi <- lm(
+  happy_planet_index ~ log(population) + happy_life_years,
+  data = hpi2016
+)
+```
+
+## Model Diagnostics
+
+```{r}
+#| fig-width: 11
+#| fig-height: 9
+
+check_model(m_hpi)
+```
+
+The diagnostic checks do not indicate major problems with heteroscedasticity, multicollinearity, influential observations, or residual normality. The linearity panel shows some curvature, so possible nonlinearity is the main feature worth noting.
+
+```{r}
+check_heteroscedasticity(m_hpi)
+check_collinearity(m_hpi)
+check_outliers(m_hpi)
+check_normality(m_hpi)
+```
+
+## Model Parameters
+
+```{r}
+model_parameters(m_hpi)
+plot(model_parameters(m_hpi))
+```
+
+The coefficient for happy life years is positive, approximately 0.28, with a 95% confidence interval of about 0.20 to 0.36.
+
+## Why This Model Is Difficult to Interpret
+
+The Happy Planet Index is constructed using wellbeing, life expectancy, inequality, and ecological footprint. Happy life years already combines wellbeing and life expectancy. Therefore, the model partly explains an index using a variable that contains some of the same information used to construct that index, which limits substantive interpretation.
+
+## Effect of 10 More Happy Life Years
+
+```{r}
+params <- model_parameters(m_hpi)
+
+hly <- params |>
+  filter(Parameter == "happy_life_years")
+
+effect_10 <- hly$Coefficient * 10
+low_10 <- hly$CI_low * 10
+high_10 <- hly$CI_high * 10
+
+effect_10
+low_10
+high_10
+```
+
+A 10-year increase in happy life years is associated with an estimated **2.8-point increase in the Happy Planet Index**, with a 95% confidence interval of approximately **2.0 to 3.6 points**.
+
+# AI Use Disclosure
+
+Generative AI was used to assist with R troubleshooting, code organization, and concise interpretation of the workshop results. I reviewed the code and checked the outputs before publication.
