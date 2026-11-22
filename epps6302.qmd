@@ -12,3 +12,4 @@ title: "EPPS 6302"
 - [Assignment 5](assign05.html)
 - [Assignment 6](assign06.html)
 - [Assignment 7](assign07.html)
+- [Assignment 8: Record Linkage](assign_linkage.html)
