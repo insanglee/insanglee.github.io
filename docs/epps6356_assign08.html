@@ -43,22 +43,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-445b8638c3d06994fee0907d791121c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-445b8638c3d06994fee0907d791121c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-445b8638c3d06994fee0907d791121c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-dashboard/quarto-dashboard.js"></script>
-<script src="site_libs/quarto-dashboard/stickythead.js"></script>
-
-
-
-<script src="site_libs/quarto-dashboard/web-components.js" type="module"></script>
-<script src="site_libs/quarto-dashboard/components.js"></script>
-
+<link href="site_libs/bootstrap/bootstrap-445b8638c3d06994fee0907d791121c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -106,10 +94,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/selectize-0.12.0/selectize.min.js"></script>
 
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="quarto-dashboard nav-fixed dashboard-fill fullcontent quarto-light">
-
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -170,209 +158,193 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          <div class="quarto-dashboard-links"><a class="quarto-dashboard-link" href="https://github.com/insanglee/insanglee.github.io/" title="GitHub"><i class="bi bi-github"></i></a></div></div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-<header id="quarto-dashboard-header">
-<nav class="navbar navbar-expand-md slim" data-bs-theme="dark">
-  <div class="navbar-container container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-controls="dashboard-collapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>    
-
-
-    <div class="navbar-brand-container">
-
-
-      <div class="navbar-title">
-        <div class="navbar-title-text"><a href="#">NYC Subway Ridership and Arrest Dashboard</a></div>
-        
-        <div class="navbar-author">Insang Lee</div>
-      </div>
-    </div>
-<div id="dashboard-collapse" class="navbar-collapse collapse"><ul class="navbar-nav navbar-nav-scroll me-auto" role="tablist"><li class="nav-item" role="presentation"><a id="tab-overview" class="nav-link active" data-bs-toggle="tab" role="tab" data-bs-target="#overview" data-scrolling="false" href="#overview" aria-controls="overview" aria-selected="true"><span class="nav-link-text">Overview</span></a></li><li class="nav-item" role="presentation"><a id="tab-station-comparison" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#station-comparison" data-scrolling="false" href="#station-comparison" aria-controls="station-comparison" aria-selected="false"><span class="nav-link-text">Station Comparison</span></a></li><li class="nav-item" role="presentation"><a id="tab-data" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#data" data-scrolling="false" href="#data" aria-controls="data" aria-selected="false"><span class="nav-link-text">Data</span></a></li><li class="nav-item" role="presentation"><a id="tab-about" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#about" data-scrolling="false" href="#about" aria-controls="about" aria-selected="false"><span class="nav-link-text">About</span></a></li></ul></div></div>
-</nav>
-</header></header>
+</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-layout-custom page-navbar quarto-dashboard-content bslib-gap-spacing html-fill-container bslib-page-fill quarto-dashboard-pages">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#row" id="toc-row" class="nav-link" data-scroll-target="#row">Row</a></li>
+  <li><a href="#row-1" id="toc-row-1" class="nav-link" data-scroll-target="#row-1">Row</a>
+  <ul class="collapse">
+  <li><a href="#ridership-peaks-in-october" id="toc-ridership-peaks-in-october" class="nav-link" data-scroll-target="#ridership-peaks-in-october">Ridership Peaks in October</a></li>
+  <li><a href="#arrests-vary-across-2024-peaking-in-may" id="toc-arrests-vary-across-2024-peaking-in-may" class="nav-link" data-scroll-target="#arrests-vary-across-2024-peaking-in-may">Arrests Vary Across 2024, Peaking in May</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#station-comparison" id="toc-station-comparison" class="nav-link" data-scroll-target="#station-comparison">Station Comparison</a>
+  <ul class="collapse">
+  <li><a href="#row-2" id="toc-row-2" class="nav-link" data-scroll-target="#row-2">Row</a>
+  <ul class="collapse">
+  <li><a href="#higher-ridership-does-not-always-mean-a-higher-arrest-rate" id="toc-higher-ridership-does-not-always-mean-a-higher-arrest-rate" class="nav-link" data-scroll-target="#higher-ridership-does-not-always-mean-a-higher-arrest-rate">Higher Ridership Does Not Always Mean a Higher Arrest Rate</a></li>
+  <li><a href="#passenger-volume-changes-how-arrest-counts-are-interpreted" id="toc-passenger-volume-changes-how-arrest-counts-are-interpreted" class="nav-link" data-scroll-target="#passenger-volume-changes-how-arrest-counts-are-interpreted">Passenger Volume Changes How Arrest Counts Are Interpreted</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
+  <ul class="collapse">
+  <li><a href="#row-3" id="toc-row-3" class="nav-link" data-scroll-target="#row-3">Row</a>
+  <ul class="collapse">
+  <li><a href="#ridership-and-arrest-measures-across-the-nine-selected-stations" id="toc-ridership-and-arrest-measures-across-the-nine-selected-stations" class="nav-link" data-scroll-target="#ridership-and-arrest-measures-across-the-nine-selected-stations">Ridership and Arrest Measures Across the Nine Selected Stations</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#about" id="toc-about" class="nav-link" data-scroll-target="#about">About</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
+<main class="content" id="quarto-document-content">
 
-<div class="bslib-grid-item html-fill-item tab-content bslib-grid" data-layout="fill" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
-<div id="overview" class="dashboard-page tab-pane show active html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-overview">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content) minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
-grid-auto-rows: minmax(0, 1fr);">
-<div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-primary showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
-<div class="card-body html-fill-item html-fill-container">
-<div class="html-fill-item html-fill-container value-box-grid">
-<div class="value-box-showcase html-fill-item html-fill-container">
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">NYC Subway Ridership and Arrest Dashboard</h1>
+</div>
 
-<i class="bi bi-train-front"></i></div>
-<div class="value-box-area">
-<p class="value-box-title">
-Total Ridership
-</p>
-<p class="value-box-value">
-204M
-</p>
-</div>
-</div>
-</div>
-<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-secondary showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
-<div class="card-body html-fill-item html-fill-container">
-<div class="html-fill-item html-fill-container value-box-grid">
-<div class="value-box-showcase html-fill-item html-fill-container">
 
-<i class="bi bi-clipboard-data"></i></div>
-<div class="value-box-area">
-<p class="value-box-title">
-Arrests Near Selected Stations
-</p>
-<p class="value-box-value">
-13,975
-</p>
-</div>
-</div>
-</div>
-<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-info showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
-<div class="card-body html-fill-item html-fill-container">
-<div class="html-fill-item html-fill-container value-box-grid">
-<div class="value-box-showcase html-fill-item html-fill-container">
 
-<i class="bi bi-bar-chart"></i></div>
-<div class="value-box-area">
-<p class="value-box-title">
-Arrests per 100,000 Riders
-</p>
-<p class="value-box-value">
-6.84
-</p>
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Insang Lee </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<section id="row" class="level2">
+<h2 class="anchored" data-anchor-id="row">Row</h2>
+<div class="cell" content="valuebox" title="Total Ridership" data-icon="train-front">
+<div class="cell-output cell-output-stdout">
+<pre><code>$value
+[1] "204M"
+
+$color
+[1] "primary"</code></pre>
 </div>
 </div>
+<div class="cell" content="valuebox" title="Arrests Near Selected Stations" data-icon="clipboard-data">
+<div class="cell-output cell-output-stdout">
+<pre><code>$value
+[1] "13,975"
+
+$color
+[1] "secondary"</code></pre>
 </div>
-<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
-grid-auto-rows: minmax(0, 1fr);">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
-<div class="card cell html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-body html-fill-item html-fill-container">
-<div class="cell-output-display html-fill-item html-fill-container">
-<div class="plotly html-widget html-fill-item html-fill-container" id="htmlwidget-7551f7690f64fb87938a" style="width:100%;height:406px;"></div>
+<div class="cell" content="valuebox" title="Arrests per 100,000 Riders" data-icon="bar-chart">
+<div class="cell-output cell-output-stdout">
+<pre><code>$value
+[1] 6.84
+
+$color
+[1] "info"</code></pre>
+</div>
+</div>
+</section>
+<section id="row-1" class="level2">
+<h2 class="anchored" data-anchor-id="row-1">Row</h2>
+<section id="ridership-peaks-in-october" class="level3">
+<h3 class="anchored" data-anchor-id="ridership-peaks-in-october">Ridership Peaks in October</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-7551f7690f64fb87938a" style="width:100%;height:406px;"></div>
 <script type="application/json" data-for="htmlwidget-7551f7690f64fb87938a">{"x":{"data":[{"x":[19723,19754,19783,19814,19844,19875,19905,19936,19967,19997,20028,20058],"y":[15470915,15308612,17003578,16985565,17927663,16553329,16686138,16483642,17299405,18994492,17273372,18230309],"text":["Month: January 2024<br>Ridership: 15,470,915","Month: February 2024<br>Ridership: 15,308,612","Month: March 2024<br>Ridership: 17,003,578","Month: April 2024<br>Ridership: 16,985,565","Month: May 2024<br>Ridership: 17,927,663","Month: June 2024<br>Ridership: 16,553,329","Month: July 2024<br>Ridership: 16,686,138","Month: August 2024<br>Ridership: 16,483,642","Month: September 2024<br>Ridership: 17,299,405","Month: October 2024<br>Ridership: 18,994,492","Month: November 2024<br>Ridership: 17,273,372","Month: December 2024<br>Ridership: 18,230,309"],"type":"scatter","mode":"lines+markers","line":{"width":3.7795275590551185,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":9.4488188976377963,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"frame":null}],"layout":{"margin":{"t":23.970112079701121,"r":7.9701120797011216,"b":40.647571606475722,"l":47.023661270236623},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[19706.25,20074.75],"tickmode":"array","ticktext":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"tickvals":[19723,19754,19783,19814,19844,19875,19905,19936,19967,19997,20028,20058],"categoryorder":"array","categoryarray":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505603,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.72455564360919278,"zeroline":false,"anchor":"y","title":{"text":"Month","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241}},"hoverformat":".2f","rangeslider":{"visible":true}},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[15124318,19178786],"tickmode":"array","ticktext":["16M","17M","18M","19M"],"tickvals":[16000000,17000000,18000000,19000000],"categoryorder":"array","categoryarray":["16M","17M","18M","19M"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505608,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.72455564360919278,"zeroline":false,"anchor":"x","title":{"text":"Monthly Ridership","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241}},"hoverformat":".2f"},"shapes":[],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218}},"hovermode":"x unified","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"c8017af48e07":{"x":{},"y":{},"text":{},"type":"scatter"},"c8014d98aca1":{"x":{},"y":{},"text":{}}},"cur_data":"c8017af48e07","visdat":{"c8017af48e07":["function (y) ","x"],"c8014d98aca1":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
-</div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
-<div class="card cell html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-body html-fill-item html-fill-container">
-<div class="cell-output-display html-fill-item html-fill-container">
-<div class="plotly html-widget html-fill-item html-fill-container" id="htmlwidget-d22de000cf7d5c340249" style="width:100%;height:406px;"></div>
+</section>
+<section id="arrests-vary-across-2024-peaking-in-may" class="level3">
+<h3 class="anchored" data-anchor-id="arrests-vary-across-2024-peaking-in-may">Arrests Vary Across 2024, Peaking in May</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-d22de000cf7d5c340249" style="width:100%;height:406px;"></div>
 <script type="application/json" data-for="htmlwidget-d22de000cf7d5c340249">{"x":{"data":[{"x":[19723,19754,19783,19814,19844,19875,19905,19936,19967,19997,20028,20058],"y":[1202,1079,1304,1148,1339,1123,1159,1261,1017,1133,1149,1061],"text":["Month: January 2024<br>Arrests: 1,202","Month: February 2024<br>Arrests: 1,079","Month: March 2024<br>Arrests: 1,304","Month: April 2024<br>Arrests: 1,148","Month: May 2024<br>Arrests: 1,339","Month: June 2024<br>Arrests: 1,123","Month: July 2024<br>Arrests: 1,159","Month: August 2024<br>Arrests: 1,261","Month: September 2024<br>Arrests: 1,017","Month: October 2024<br>Arrests: 1,133","Month: November 2024<br>Arrests: 1,149","Month: December 2024<br>Arrests: 1,061"],"type":"scatter","mode":"lines+markers","line":{"width":3.7795275590551185,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":9.4488188976377963,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"frame":null}],"layout":{"margin":{"t":23.970112079701121,"r":7.9701120797011216,"b":40.647571606475722,"l":53.399750933997524},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[19706.25,20074.75],"tickmode":"array","ticktext":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"tickvals":[19723,19754,19783,19814,19844,19875,19905,19936,19967,19997,20028,20058],"categoryorder":"array","categoryarray":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505603,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.72455564360919278,"zeroline":false,"anchor":"y","title":{"text":"Month","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1000.9,1355.0999999999999],"tickmode":"array","ticktext":["1100","1200","1300"],"tickvals":[1100,1200,1300],"categoryorder":"array","categoryarray":["1100","1200","1300"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505608,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.72455564360919278,"zeroline":false,"anchor":"x","title":{"text":"Number of Arrests","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241}},"hoverformat":".2f"},"shapes":[],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218}},"hovermode":"x unified","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"c8015b0b8554":{"x":{},"y":{},"text":{},"type":"scatter"},"c801515e7c7e":{"x":{},"y":{},"text":{}}},"cur_data":"c8015b0b8554","visdat":{"c8015b0b8554":["function (y) ","x"],"c801515e7c7e":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
-</div>
-</div>
-</div>
-</div>
-<div id="station-comparison" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-station-comparison">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
-grid-auto-rows: minmax(0, 1fr);">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
-<div class="card cell html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-body html-fill-item html-fill-container">
-<div class="cell-output-display html-fill-item html-fill-container">
-<div class="plotly html-widget html-fill-item html-fill-container" id="htmlwidget-629a339f947741fd761b" style="width:100%;height:487px;"></div>
+</section>
+</section>
+</section>
+<section id="station-comparison" class="level1">
+<h1>Station Comparison</h1>
+<section id="row-2" class="level2">
+<h2 class="anchored" data-anchor-id="row-2">Row</h2>
+<section id="higher-ridership-does-not-always-mean-a-higher-arrest-rate" class="level3">
+<h3 class="anchored" data-anchor-id="higher-ridership-does-not-always-mean-a-higher-arrest-rate">Higher Ridership Does Not Always Mean a Higher Arrest Rate</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-629a339f947741fd761b" style="width:100%;height:487px;"></div>
 <script type="application/json" data-for="htmlwidget-629a339f947741fd761b">{"x":{"data":[{"x":[10451950],"y":[8.1228861599988509],"text":"Station: Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)<br>Borough: Brooklyn<br>Total ridership: 10,451,950<br>Total arrests: 849<br>Arrests per 100,000 riders: 8.12","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":0.80000000000000004,"size":17.007874015748033,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"Brooklyn","legendgroup":"Brooklyn","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[16657086,22946143,25076610,33982818,45944536,19306850],"y":[9.5755043829394886,5.3996002726907086,9.0682113730683689,2.7072504699286561,7.5329958713697751,3.2061159640231316],"text":["Station: 34 St-Penn Station (1,2,3)<br>Borough: Manhattan<br>Total ridership: 16,657,086<br>Total arrests: 1,595<br>Arrests per 100,000 riders: 9.58","Station: 14 St-Union Sq (L,N,Q,R,W,4,5,6)<br>Borough: Manhattan<br>Total ridership: 22,946,143<br>Total arrests: 1,239<br>Arrests per 100,000 riders: 5.4","Station: 34 St-Herald Sq (B,D,F,M,N,Q,R,W)<br>Borough: Manhattan<br>Total ridership: 25,076,610<br>Total arrests: 2,274<br>Arrests per 100,000 riders: 9.07","Station: Grand Central-42 St (S,4,5,6,7)<br>Borough: Manhattan<br>Total ridership: 33,982,818<br>Total arrests: 920<br>Arrests per 100,000 riders: 2.71","Station: Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)<br>Borough: Manhattan<br>Total ridership: 45,944,536<br>Total arrests: 3,461<br>Arrests per 100,000 riders: 7.53","Station: Fulton St (A,C,J,Z,2,3,4,5)<br>Borough: Manhattan<br>Total ridership: 19,306,850<br>Total arrests: 619<br>Arrests per 100,000 riders: 3.21"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","opacity":0.80000000000000004,"size":17.007874015748033,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,186,56,1)"}},"hoveron":"points","name":"Manhattan","legendgroup":"Manhattan","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[14751454,15099573],"y":[14.446033590993808,5.8743383008247987],"text":["Station: Flushing-Main St (7)<br>Borough: Queens<br>Total ridership: 14,751,454<br>Total arrests: 2,131<br>Arrests per 100,000 riders: 14.45","Station: 74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)<br>Borough: Queens<br>Total ridership: 15,099,573<br>Total arrests: 887<br>Arrests per 100,000 riders: 5.87"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","opacity":0.80000000000000004,"size":17.007874015748033,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(97,156,255,1)"}},"hoveron":"points","name":"Queens","legendgroup":"Queens","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.970112079701121,"r":7.9701120797011216,"b":40.647571606475722,"l":40.647571606475722},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402243},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[8677320.6999999993,47719165.299999997],"tickmode":"array","ticktext":["10M","20M","30M","40M"],"tickvals":[10000000,20000000,30000000,40000000],"categoryorder":"array","categoryarray":["10M","20M","30M","40M"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505608,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.72455564360919289,"zeroline":false,"anchor":"y","title":{"text":"Total Ridership, 2024","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402243}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[2.1203113138753986,15.032972747047067],"tickmode":"array","ticktext":["5","10","15"],"tickvals":[5,10,15],"categoryorder":"array","categoryarray":["5","10","15"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505608,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.72455564360919278,"zeroline":false,"anchor":"x","title":{"text":"Arrests per 100,000 Riders","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402243}},"hoverformat":".2f"},"shapes":[],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218},"orientation":"h","x":0.5,"y":-0.14999999999999999,"xanchor":"center","yanchor":"top","title":{"text":"Borough","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402243}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"c801547116f2":{"x":{},"y":{},"colour":{},"text":{},"type":"scatter"}},"cur_data":"c801547116f2","visdat":{"c801547116f2":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
-</div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
-<div class="card cell html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-body html-fill-item html-fill-container">
-<div class="cell-output-display html-fill-item html-fill-container">
-<div class="plotly html-widget html-fill-item html-fill-container" id="htmlwidget-8a2315f8e5fedcdb4589" style="width:100%;height:487px;"></div>
+</section>
+<section id="passenger-volume-changes-how-arrest-counts-are-interpreted" class="level3">
+<h3 class="anchored" data-anchor-id="passenger-volume-changes-how-arrest-counts-are-interpreted">Passenger Volume Changes How Arrest Counts Are Interpreted</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-8a2315f8e5fedcdb4589" style="width:100%;height:487px;"></div>
 <script type="application/json" data-for="htmlwidget-8a2315f8e5fedcdb4589">{"x":{"data":[{"x":[849],"y":[8.1228861599988509],"text":"Station: Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)<br>Borough: Brooklyn<br>Total arrests: 849<br>Total ridership: 10,451,950<br>Arrests per 100,000 riders: 8.12","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":0.75,"size":18.897637795275593,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"Brooklyn","legendgroup":"Brooklyn","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1595,1239,2274,920,3461,619],"y":[9.5755043829394886,5.3996002726907086,9.0682113730683689,2.7072504699286561,7.5329958713697751,3.2061159640231316],"text":["Station: 34 St-Penn Station (1,2,3)<br>Borough: Manhattan<br>Total arrests: 1,595<br>Total ridership: 16,657,086<br>Arrests per 100,000 riders: 9.58","Station: 14 St-Union Sq (L,N,Q,R,W,4,5,6)<br>Borough: Manhattan<br>Total arrests: 1,239<br>Total ridership: 22,946,143<br>Arrests per 100,000 riders: 5.4","Station: 34 St-Herald Sq (B,D,F,M,N,Q,R,W)<br>Borough: Manhattan<br>Total arrests: 2,274<br>Total ridership: 25,076,610<br>Arrests per 100,000 riders: 9.07","Station: Grand Central-42 St (S,4,5,6,7)<br>Borough: Manhattan<br>Total arrests: 920<br>Total ridership: 33,982,818<br>Arrests per 100,000 riders: 2.71","Station: Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)<br>Borough: Manhattan<br>Total arrests: 3,461<br>Total ridership: 45,944,536<br>Arrests per 100,000 riders: 7.53","Station: Fulton St (A,C,J,Z,2,3,4,5)<br>Borough: Manhattan<br>Total arrests: 619<br>Total ridership: 19,306,850<br>Arrests per 100,000 riders: 3.21"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","opacity":0.75,"size":[39.441765183051452,48.049489913701628,50.437147385593804,58.904180392662433,68.031496062992133,43.439294543662356],"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,186,56,1)"}},"hoveron":"points","name":"Manhattan","legendgroup":"Manhattan","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2131,887],"y":[14.446033590993808,5.8743383008247987],"text":["Station: Flushing-Main St (7)<br>Borough: Queens<br>Total arrests: 2,131<br>Total ridership: 14,751,454<br>Arrests per 100,000 riders: 14.45","Station: 74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)<br>Borough: Queens<br>Total arrests: 887<br>Total ridership: 15,099,573<br>Arrests per 100,000 riders: 5.87"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","opacity":0.75,"size":[35.99862672030622,36.677463251148644],"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(97,156,255,1)"}},"hoveron":"points","name":"Queens","legendgroup":"Queens","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.970112079701121,"r":7.9701120797011216,"b":40.647571606475722,"l":40.647571606475722},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402243},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[476.89999999999998,3603.0999999999999],"tickmode":"array","ticktext":["1000","2000","3000"],"tickvals":[1000,2000,3000],"categoryorder":"array","categoryarray":["1000","2000","3000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505608,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.72455564360919289,"zeroline":false,"anchor":"y","title":{"text":"Total Arrests","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402243}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[2.1203113138753986,15.032972747047067],"tickmode":"array","ticktext":["5","10","15"],"tickvals":[5,10,15],"categoryorder":"array","categoryarray":["5","10","15"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505608,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.72455564360919278,"zeroline":false,"anchor":"x","title":{"text":"Arrests per 100,000 Riders","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402243}},"hoverformat":".2f"},"shapes":[],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218},"orientation":"h","x":0.5,"y":-0.14999999999999999,"xanchor":"center","yanchor":"top","title":{"text":"2024 Ridership<br />Borough","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402243}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"c8011223856f":{"x":{},"y":{},"size":{},"colour":{},"text":{},"type":"scatter"}},"cur_data":"c8011223856f","visdat":{"c8011223856f":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
-</div>
-</div>
-</div>
-</div>
-<div id="data" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-data">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
-grid-auto-rows: minmax(0, 1fr);">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
-<div class="card cell html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-body html-fill-item html-fill-container">
-<div class="cell-output-display html-fill-item html-fill-container">
-<div class="datatables html-widget html-fill-item html-fill-container" id="htmlwidget-e9855b2355545a6bd0a3" style="width:100%;height:auto;"></div>
+</section>
+</section>
+</section>
+<section id="data" class="level1">
+<h1>Data</h1>
+<section id="row-3" class="level2">
+<h2 class="anchored" data-anchor-id="row-3">Row</h2>
+<section id="ridership-and-arrest-measures-across-the-nine-selected-stations" class="level3">
+<h3 class="anchored" data-anchor-id="ridership-and-arrest-measures-across-the-nine-selected-stations">Ridership and Arrest Measures Across the Nine Selected Stations</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e9855b2355545a6bd0a3" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-e9855b2355545a6bd0a3">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"2.71\" data-max=\"14.45\" data-scale=\"2\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)","Grand Central-42 St (S,4,5,6,7)","34 St-Herald Sq (B,D,F,M,N,Q,R,W)","14 St-Union Sq (L,N,Q,R,W,4,5,6)","Fulton St (A,C,J,Z,2,3,4,5)","34 St-Penn Station (1,2,3)","74-Broadway (7)/Jackson Hts-Roosevelt Av (E,F,M,R)","Flushing-Main St (7)","Atlantic Av-Barclays Ctr (B,D,N,Q,R,2,3,4,5)"],["Manhattan","Manhattan","Manhattan","Manhattan","Manhattan","Manhattan","Queens","Queens","Brooklyn"],["45,944,536","33,982,818","25,076,610","22,946,143","19,306,850","16,657,086","15,099,573","14,751,454","10,451,950"],["3,461","920","2,274","1,239","619","1,595","887","2,131","849"],[7.53,2.71,9.07,5.4,3.21,9.58,5.87,14.45,8.119999999999999]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Station<\/th>\n      <th>Borough<\/th>\n      <th>Total Ridership<\/th>\n      <th>Total Arrests<\/th>\n      <th>Arrests per 100,000 Riders<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"bPaginate":false,"dom":"ifrt","language":{"info":"Showing _TOTAL_ entries"},"pageLength":10,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":4},{"name":"Station","targets":0},{"name":"Borough","targets":1},{"name":"Total Ridership","targets":2},{"name":"Total Arrests","targets":3},{"name":"Arrests per 100,000 Riders","targets":4}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
-</div>
-</div>
-</div>
-</div>
-<div id="about" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-about">
-<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
-<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
-<div class="card-body html-fill-item html-fill-container">
-<strong>Assignment 8 Dashboard Prototype: NYC Subway Ridership and Arrest Patterns</strong>
+</section>
+</section>
+</section>
+<section id="about" class="level1">
+<h1>About</h1>
+<p><strong>Assignment 8 Dashboard Prototype: NYC Subway Ridership and Arrest Patterns</strong></p>
 <p>This dashboard was created for <strong>EPPS 6356 Assignment 8</strong>, which asks students to develop a working dashboard prototype and a plan for the final team project.</p>
 <p>The purpose of this prototype is to test the dashboard structure, visualizations, and interactive features using a manageable subset of the planned final-project data before expanding the analysis to a larger dataset.</p>
-<strong>Research Question</strong>
+<p><strong>Research Question</strong></p>
 <p>How do subway ridership and arrest patterns vary across stations and over time, and how do patterns change after accounting for passenger volume?</p>
-<strong>Data Sources</strong>
+<p><strong>Data Sources</strong></p>
 <ul>
 <li>MTA Subway Hourly Ridership Data</li>
 <li>NYPD Arrests Data</li>
 </ul>
 <p>The MTA data provide information on subway ridership, station complexes, boroughs, and station locations. The NYPD data provide information on arrest dates, offense types, boroughs, and arrest locations.</p>
-<strong>Prototype Scope</strong>
+<p><strong>Prototype Scope</strong></p>
 <p>For Assignment 8, the dashboard uses <strong>2024 data for nine high-ridership subway station complexes</strong> in Manhattan, Queens, and Brooklyn.</p>
 <p>A smaller group of stations is used in this prototype to make the first version of the dashboard manageable. The final project is planned to expand the analysis to the full subway network and the <strong>2020–2024</strong> period.</p>
-<strong>Unit of Analysis</strong>
-<strong>Station × month</strong>
+<p><strong>Unit of Analysis</strong></p>
+<p><strong>Station × month</strong></p>
 <p>Monthly subway ridership and arrest measures are calculated for each selected station complex.</p>
-<strong>Arrest Measure</strong>
+<p><strong>Arrest Measure</strong></p>
 <p>NYPD arrests were assigned to the <strong>nearest selected subway station</strong> when the arrest occurred within <strong>500 meters</strong> of that station.</p>
 <p>This approach allows arrest activity near subway stations to be compared with passenger volume. The 500-meter distance rule is used for the Assignment 8 prototype and may be refined in the final project.</p>
-<strong>Key Measures</strong>
+<p><strong>Key Measures</strong></p>
 <ul>
 <li>Monthly subway ridership</li>
 <li>Monthly arrest count</li>
@@ -382,9 +354,9 @@ grid-auto-rows: minmax(0, 1fr);">
 <li>Month</li>
 </ul>
 <p>The ridership-adjusted arrest rate is calculated as:</p>
-<strong>Arrests per 100,000 riders = (Monthly arrests / Monthly ridership) × 100,000</strong>
+<p><strong>Arrests per 100,000 riders = (Monthly arrests / Monthly ridership) × 100,000</strong></p>
 <p>This measure helps distinguish stations with high arrest counts because they serve many passengers from stations with relatively high arrest activity after passenger volume is taken into account.</p>
-<strong>Visualizations</strong>
+<p><strong>Visualizations</strong></p>
 <p>The dashboard uses three chart types from <strong>Abela’s Chart Suggestions—A Thought-Starter</strong>:</p>
 <ul>
 <li><strong>Chart #6 — Line Chart:</strong> monthly change over time</li>
@@ -392,7 +364,7 @@ grid-auto-rows: minmax(0, 1fr);">
 <li><strong>Chart #18 — Bubble Chart:</strong> relationship among arrest counts, arrest rates, and passenger volume</li>
 </ul>
 <p>The dashboard also includes value boxes and an interactive station-level data table to summarize and compare the selected stations.</p>
-<strong>Interaction</strong>
+<p><strong>Interaction</strong></p>
 <p>Users can:</p>
 <ul>
 <li>Hover over chart elements to view additional information</li>
@@ -401,15 +373,15 @@ grid-auto-rows: minmax(0, 1fr);">
 <li>Compare raw arrest counts with ridership-adjusted arrest rates across stations</li>
 </ul>
 <p>Additional filters and reactive features may be added as the dashboard is expanded in the next stage of the project.</p>
-<strong>AI Use Disclosure</strong>
+<p><strong>AI Use Disclosure</strong></p>
 <p>ChatGPT was used to assist with R coding, troubleshooting, and clarification of assignment requirements. I tested the suggested code in RStudio, reviewed the outputs, and made the final decisions about the dashboard design, data preparation, and content.</p>
-<strong>Assignment 8 Files</strong>
+<p><strong>Assignment 8 Files</strong></p>
 <ul>
 <li><a href="epps6356_assign08.html">Dashboard Prototype</a></li>
 <li><a href="PLAN.md">Final Project Plan — PLAN.md</a></li>
 <li><a href="https://github.com/insanglee/insanglee.github.io">GitHub Repository</a></li>
 </ul>
-<h2>
+<h2 class="anchored" data-anchor-id="about">
 Assignment 9 Reactive Dashboard
 </h2>
 <iframe src="https://01a1de1c-5522-0956-c045-1f87e9084c83.share.connect.posit.cloud/" width="100%" height="900" style="border: none;">
@@ -417,23 +389,11 @@ Assignment 9 Reactive Dashboard
 <p>
 <a href="https://01a1de1c-5522-0956-c045-1f87e9084c83.share.connect.posit.cloud/" target="_blank"> Open Reactive Dashboard in a New Window </a>
 </p>
-</div>
-<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
-    <template>Expand</template>
-    <span class="bslib-full-screen-enter badge rounded-pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
-    </span>
-</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 
 
-<div id="3ade8a4a-fb1d-4a6c-8409-ac45482d5fc9" class="hidden html-fill-item html-fill-container">
+</section>
 
-</div>
-</div>
-</div>
-</div>
-
-
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -836,14 +796,6 @@ Assignment 9 Reactive Dashboard
   </script>
 </div> <!-- /content -->
 
-<script type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (_event) {
-  if (window.bslib.Card) {
-    window.bslib.Card.initializeAllCards();
-  }
-}); 
-</script>
-  
 
 
 

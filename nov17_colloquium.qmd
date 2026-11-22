@@ -1,0 +1,30 @@
+---
+title: "November 17 Colloquium: Silicon Sampling Methods in Public Opinion Research"
+author: "Insang Lee"
+format:
+  html:
+    toc: true
+    toc-location: right
+    theme: cosmo
+---
+
+## Event Information
+
+**Speaker:** Lisa Argyle  
+**Topic:** *Silicon Sampling Methods in Public Opinion Research*  
+**Date:** November 17, 2026  
+**Event:** Data Analytics Colloquium | American Statistical Association North Texas Chapter Joint Event  
+
+## Reflection
+
+I attended Lisa Argyle’s talk on *Silicon Sampling Methods in Public Opinion Research*. The presentation discussed how large language models can be used to simulate human responses in public opinion research, as well as some of the limitations of using synthetic responses in place of actual survey data.
+
+One point I found especially interesting was the difference between generating responses that seem plausible and generating responses that accurately reflect human opinion. The presentation showed that synthetic survey responses can sometimes reproduce the general ordering or direction of public opinion while still overestimating some issues and underestimating others. This suggests that an LLM response can look reasonable without necessarily matching what people would actually say.
+
+The talk also showed how many different choices can affect LLM-generated results. These include the model’s training data, post-training and alignment, prompting, and even the order in which survey response options are presented. I was particularly interested in the discussion of alignment. Models are usually trained to be helpful, honest, and harmless, but this can sometimes make them less willing to produce negative or socially undesirable opinions. That can become a problem when the goal is to represent the full range of actual public opinion.
+
+Another useful part of the presentation was the discussion of different approaches to silicon sampling. Some researchers focus on whether information about human attitudes is already contained in the model and can be recovered through better prompting or fine-tuning. Others treat LLMs more like imperfect respondents whose output may need to be adjusted or combined with human data. The presentation also discussed the connection between LLMs and agent-based modeling.
+
+The part that stayed with me most was the idea that researchers should decide what counts as success before evaluating silicon sampling. A model may not predict the response of a particular individual very well but may still reproduce an overall population pattern. This made me think more carefully about whether the relevant target is an individual response, a subgroup pattern, or an aggregate outcome.
+
+Overall, the presentation made me see both the potential and the limitations of silicon sampling. I think LLMs can be useful research tools, but their responses should not automatically be treated as substitutes for human data. The results depend heavily on how the model is trained and used, and researchers need to be clear about what they are trying to reproduce and how they will evaluate whether the model is doing it well enough.

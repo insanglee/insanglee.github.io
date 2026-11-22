@@ -13,3 +13,4 @@ title: "EPPS 6302"
 - [Assignment 6](assign06.html)
 - [Assignment 7](assign07.html)
 - [Assignment 8: Record Linkage](assign_linkage.html)
+- [November 17 Colloquium: Silicon Sampling Methods in Public Opinion Research](nov17_colloquium.html)

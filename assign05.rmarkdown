@@ -1,0 +1,118 @@
+---
+title: "Assignment 5"
+author: "Insang Lee"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## 1. Manual Search and Export
+
+I searched the GovInfo Congressional Hearings collection using the Committee field for "Foreign Relations" and sorted the results from newest to oldest. I exported the search results as a CSV file and retained the ten most recent records for comparison with the API results.
+
+Search query:
+
+`collection:(CHRG) AND publishdate:range(,2026-10-07) AND committee:(Foreign Relations)`
+
+```{r}
+library(tidyverse)
+
+manual_search <- read_csv("govinfo_manual_search.csv")
+
+manual_top10 <- manual_search |>
+  select(
+    packageId,
+    title,
+    publishdate,
+    detailsLink,
+    pdfLink
+  ) |>
+  slice_head(n = 10)
+
+manual_top10
+```
+
+## 2. GovInfo API
+
+I used the GovInfo Search API to retrieve Congressional Hearings related to the Committee on Foreign Relations. The API request sorted the results by publication date in descending order.
+
+```{r}
+library(httr2)
+
+body <- list(
+  query = 'collection:(CHRG) AND "Committee on Foreign Relations"',
+  pageSize = 100,
+  offsetMark = "*",
+  sorts = list(
+    list(
+      field = "publishdate",
+      sortOrder = "DESC"
+    )
+  )
+)
+
+found <- request("https://api.govinfo.gov/search") |>
+  req_url_query(api_key = Sys.getenv("GOVINFO_API_KEY")) |>
+  req_body_json(body) |>
+  req_perform() |>
+  resp_body_json()
+```
+
+```{r}
+api_top10 <- tibble(
+  title = map_chr(found$results[1:10], "title"),
+  packageId = map_chr(found$results[1:10], "packageId"),
+  dateIssued = map_chr(found$results[1:10], "dateIssued"),
+  resultLink = map_chr(found$results[1:10], "resultLink")
+)
+
+api_top10
+```
+
+## 3. Comparison of the Most Recent 10 Hearings
+
+```{r}
+comparison <- manual_top10 |>
+  select(packageId, manual_title = title, manual_publishdate = publishdate) |>
+  full_join(
+    api_top10 |>
+      select(packageId, api_title = title, api_dateIssued = dateIssued),
+    by = "packageId"
+  ) |>
+  mutate(
+    match = !is.na(manual_title) & !is.na(api_title)
+  )
+
+comparison
+```
+
+```{r}
+comparison |>
+  count(match)
+
+comparison |>
+  filter(!match)
+```
+
+The two methods did not return exactly the same ten hearings. Six hearings appeared in both lists, while four hearings from the manual search were not included in the API top ten and four API results were not included in the manual-search top ten. This difference likely reflects the different search criteria: the manual search used the Committee field with "Foreign Relations," while the API query searched for the phrase "Committee on Foreign Relations" within the Congressional Hearings collection.
+
+### Download Log
+
+```{r}
+cat(readLines("govinfo_download_log.txt"), sep = "\n")
+```
+
+## 4. Document Assessment
+
+The downloaded PDFs are readable, but they are not immediately ready for quantitative analysis. To turn the ten hearings into a table or text corpus, I would first need to extract the text from each PDF, clean repeated headers, page numbers, and formatting artifacts, and then organize the documents using identifiers such as title, date, and package ID.  
+
+The process could be improved by using the text or metadata formats provided by GovInfo instead of relying only on PDFs. The API can provide structured metadata and links to formats such as plain text, which would reduce the amount of manual text extraction and make it easier to build a consistent dataset across documents.
+
+## 5. API Reflection
+
+The API provided structured, machine-readable results with consistent metadata and direct links to downloadable document formats. Compared with the search page and last week’s web scraping, it made the data collection process more reproducible and easier to automate.
+
+## AI Use Appendix
+
+ChatGPT was used to clarify parts of the assignment instructions and troubleshoot selected R code. I executed the code, reviewed the outputs, and made the final decisions about the analysis and written explanations.
